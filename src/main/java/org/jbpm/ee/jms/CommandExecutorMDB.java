@@ -39,9 +39,6 @@ public class CommandExecutorMDB implements MessageListener {
 	private Connection connection;
 	private Session session;
 
-	@Inject @KieSessionConfig
-	private KieSession commandService;
-
     @PostConstruct
     public void init() throws JMSException {
         connection = connectionFactory.createConnection();
@@ -52,9 +49,11 @@ public class CommandExecutorMDB implements MessageListener {
 	public void onMessage(Message message) {
 		ObjectMessage objectMessage = (ObjectMessage) message;
 
+		KieSession commandServiceKieSession;
+		
 		try {
 			// this should be the command object.
-			Object commandResponse = commandService.execute((Command) objectMessage.getObject());
+			Object commandResponse = null; //TODO: Fix this.commandService.execute((Command) objectMessage.getObject());
 
 			if (!(commandResponse instanceof Void)) {
 				// see if there is a correlation and reply to.

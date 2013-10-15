@@ -7,10 +7,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 
-import org.jbpm.ee.cdi.TaskServiceConfig;
 import org.jbpm.ee.service.remote.TaskServiceRemote;
+import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
@@ -25,9 +24,7 @@ import org.kie.api.task.model.TaskSummary;
 @RequestScoped
 public class TaskServiceBean implements TaskService, TaskServiceRemote {
 
-	@Inject @TaskServiceConfig
 	private TaskService taskService;
-	
 	
 	@Override
 	public void activate(long taskId, String userId) {
@@ -177,4 +174,5 @@ public class TaskServiceBean implements TaskService, TaskServiceRemote {
 	public Attachment getAttachmentById(long attachId) {
 		return taskService.getAttachmentById(attachId);
 	}
+	
 }

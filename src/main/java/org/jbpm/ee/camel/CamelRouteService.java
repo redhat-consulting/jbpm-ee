@@ -14,7 +14,6 @@ import org.drools.core.process.instance.impl.DefaultWorkItemManager;
 import org.drools.persistence.info.WorkItemInfo;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.transform.Transformers;
 import org.jbpm.ee.cdi.JBPMServiceBean;
 import org.jbpm.workitem.camel.consumer.CamelConsumerHandler;
 import org.kie.api.runtime.process.WorkItem;
@@ -51,7 +50,7 @@ public class CamelRouteService {
 			String workItemHandlerClass = routeXWorkItem.getWorkItemHandler();
 			
 			//look up the WorkItemHandler from the WorkItemManager.
-			DefaultWorkItemManager wim = (DefaultWorkItemManager)jbpmServiceBean.getWorkItemService();
+			DefaultWorkItemManager wim = null;//(DefaultWorkItemManager)jbpmServiceBean.getWorkItemService();
 			org.kie.api.runtime.process.WorkItemHandler handler = wim.getWorkItemHandler(workItemHandlerClass);
 			
 			WorkItem workItem = wim.getWorkItem(routeXWorkItem.getWorkItem().getId());

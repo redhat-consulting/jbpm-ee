@@ -1,10 +1,11 @@
 package org.jbpm.ee.cdi;
 
 import javax.annotation.Resource;
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.transaction.TransactionManager;
 
@@ -22,6 +23,7 @@ import org.kie.api.runtime.process.WorkItemManager;
 import org.kie.api.task.TaskService;
 import org.kie.internal.KnowledgeBaseFactory;
 import org.kie.internal.persistence.jpa.JPAKnowledgeService;
+import org.kie.internal.task.api.UserGroupCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,22 +35,24 @@ import org.slf4j.LoggerFactory;
  * @author bradsdavis
  *
  */
-@RequestScoped
+@Stateless
 public class JBPMServiceBean {
 	private static final Logger LOG = LoggerFactory.getLogger(JBPMServiceBean.class);
 	
 	@PersistenceContext(name="org.jbpm.persistence.jpa", unitName="org.jbpm.persistence.jpa")
 	EntityManager entityManagerMain;
 
+	@Produces
+	public EntityManagerFactory getEntityManagerFactory() {
+		return entityManagerMain.getEntityManagerFactory();
+	}
+	
 	@Inject
-	KnowledgeManagerBean knowledgeManagerManager;
+	private KnowledgeManagerBean knowledgeManagerManager;
 	
 	@Resource(mappedName="java:jboss/TransactionManager")
 	private TransactionManager transactionManager;
 	
-	@Inject
-	private KieReleaseId kieResource;
-
 	@Produces @TaskServiceConfig
 	public TaskService getTaskService() {
 		HumanTaskServiceFactory htsf = new HumanTaskServiceFactory();
@@ -60,21 +64,29 @@ public class JBPMServiceBean {
 		return htsf.newTaskService();
 	}
 	
+	@Produces
+	public EntityManager getEntityManager() {
+		return entityManagerMain;
+	}
+
+	@Produces
+	public UserGroupCallback getUserGroupCallback() {
+		return HumanTaskServiceFactory.createUserGroupCallback();
+	}
+	
 	/**
 	 * Sets up a new KnowledgeSession with the Human Task Handler defined.
 	 * 
 	 * @return
 	 * @throws SessionException
 	 */
-	
-	@Produces @KieSessionConfig
-	public KieSession getKnowledgeSession() throws SessionException {
+	public KieSession getKnowledgeSession(KieReleaseId releaseId) throws SessionException {
 		Environment environment = KnowledgeBaseFactory.newEnvironment();
 		environment.set( EnvironmentName.ENTITY_MANAGER_FACTORY, entityManagerMain.getEntityManagerFactory());
 		environment.set( EnvironmentName.TRANSACTION_MANAGER, transactionManager);
 
 		//create a session configuration that delegates timers.
-		KieSession knowledgeSession = JPAKnowledgeService.newStatefulKnowledgeSession( knowledgeManagerManager.getKieBase(kieResource), null, environment);
+		KieSession knowledgeSession = JPAKnowledgeService.newStatefulKnowledgeSession( knowledgeManagerManager.getKieBase(releaseId), null, environment);
 		return new AwareStatefulKnowledgeSession(knowledgeSession);
 	}
 
@@ -83,14 +95,12 @@ public class JBPMServiceBean {
 	 * @return
 	 * @throws SessionException
 	 */
-	@Produces @ProcessRuntimeConfig
-	public ProcessRuntime getProcessRuntime() throws SessionException {
-		return this.getKnowledgeSession();
+	public ProcessRuntime getProcessRuntime(KieReleaseId releaseId) throws SessionException {
+		return this.getKnowledgeSession(releaseId);
 	}
 	
-	@Produces
-	public WorkItemManager getWorkItemService() {
-		return this.getProcessRuntime().getWorkItemManager();
+	public WorkItemManager getWorkItemService(KieReleaseId releaseId) {
+		return this.getProcessRuntime(releaseId).getWorkItemManager();
 	}
 	
 }

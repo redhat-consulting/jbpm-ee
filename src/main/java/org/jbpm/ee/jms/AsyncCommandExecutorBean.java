@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -37,9 +36,6 @@ public class AsyncCommandExecutorBean implements RemoteCommandExecutor {
 	@Resource(mappedName = "java:/jms/JBPMCommandRequestQueue")
 	private Queue requestQueue;
 
-	@Inject
-	private KieReleaseId releaseId;
-
 	@Resource(mappedName = "java:/jms/JBPMCommandResponseQueue")
 	private Queue responseQueue;
 
@@ -58,8 +54,6 @@ public class AsyncCommandExecutorBean implements RemoteCommandExecutor {
 	
 	@Override
 	public String execute(KieReleaseId kieReleaseId, RemoteResponseCommand<?> command) {
-		this.releaseId = kieReleaseId;
-		
 		String uuid = UUID.randomUUID().toString();
 		try {
 			ObjectMessage request = session.createObjectMessage();
@@ -68,9 +62,9 @@ public class AsyncCommandExecutorBean implements RemoteCommandExecutor {
 			request.setJMSReplyTo(responseQueue);
 			producer.send(request);
 			
-			request.setObjectProperty("groupId", releaseId.getGroupId());
-			request.setObjectProperty("artifactId", releaseId.getArtifactId());
-			request.setObjectProperty("version", releaseId.getVersion());
+			request.setObjectProperty("groupId", kieReleaseId.getGroupId());
+			request.setObjectProperty("artifactId", kieReleaseId.getArtifactId());
+			request.setObjectProperty("version", kieReleaseId.getVersion());
 			
 			return uuid.toString();
 		} catch (JMSException e) {

@@ -33,7 +33,7 @@ public class BaseJBPMServiceTest {
 		
 		JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "test-jbpm-services.jar")
 	        .addPackages(true, "org.jbpm")
-	        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+	        //.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
 	        .addAsManifestResource("test-persistence.xml", "persistence.xml");
 	    
 		archive.addAsLibraries(jar);

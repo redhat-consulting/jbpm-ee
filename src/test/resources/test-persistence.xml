@@ -72,7 +72,7 @@
 				to cause problems -->
 			<property name="hibernate.id.new_generator_mappings" value="false" />
 			<property name="hibernate.transaction.jta.platform"
-				value="org.hibernate.transaction.JTATransactionFactory" />
+				value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />
 		</properties>
 
 	</persistence-unit>

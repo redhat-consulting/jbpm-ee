@@ -7,6 +7,7 @@ import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jbpm.ee.cdi.JBPMServiceBean;
 import org.jbpm.ee.startup.KnowledgeManagerBean;
+import org.jbpm.ee.support.KieReleaseId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,9 +32,10 @@ public class JBPMServiceBeanTest extends BaseJBPMServiceTest {
 		Assert.assertTrue(jbpmServiceBean != null);
 		
 		LOG.info("Hello world!");
+		KieReleaseId kri = new KieReleaseId();
 		
-		KieSession sns1 = jbpmServiceBean.getKnowledgeSession();
-		KieSession sns2 = jbpmServiceBean.getKnowledgeSession();
+		KieSession sns1 = jbpmServiceBean.getKnowledgeSession(kri);
+		KieSession sns2 = jbpmServiceBean.getKnowledgeSession(kri);
 		
 		Assert.assertTrue(sns1 != sns2);
 		
