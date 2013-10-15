@@ -44,6 +44,7 @@ public class BaseJBPMServiceTest {
 		archive.addAsLibraries(resolver.artifact("org.quartz-scheduler:quartz").resolveAsFiles());
 		archive.addAsLibraries(resolver.artifact("org.jbpm:jbpm-human-task-core").resolveAsFiles());
 		archive.addAsLibraries(resolver.artifact("org.apache.camel:camel-cdi").resolveAsFiles());
+		archive.addAsLibraries(resolver.artifact("org.jboss.solder:solder-impl").resolveAsFiles());
 		return archive;
 	}
 
