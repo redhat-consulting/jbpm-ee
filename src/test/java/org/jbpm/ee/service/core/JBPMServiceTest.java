@@ -30,30 +30,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
-	private static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
+	private static final KieReleaseId KIE_RELEASE_ID = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
+	private static final String PROCESS_IDENTIFIER = "testProj.testProcess";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(JBPMServiceTest.class);
 	
 	public abstract TaskService getTaskService();
 	public abstract ProcessService getProcessService();
 	
-
 	@BeforeClass
     public static void prepare() {
 		KieServices ks = KieServices.Factory.get();
         List<String> processes = new ArrayList<String>();
         processes.add("src/test/resources/kjar/testProcess.bpmn2");
-        InternalKieModule kjar = createKieJar(ks, kri.toReleaseIdImpl(), processes);
+        InternalKieModule kjar = createKieJar(ks, KIE_RELEASE_ID.toReleaseIdImpl(), processes);
         File pom = new File("target/kmodule", "pom.xml");
         pom.getParentFile().mkdir();
         try {
             FileOutputStream fs = new FileOutputStream(pom);
-            fs.write(getPom(kri).getBytes());
+            fs.write(getPom(KIE_RELEASE_ID).getBytes());
             fs.close();
         } catch (Exception e) {
             
         }
         MavenRepository repository = getMavenRepository();
-        repository.deployArtifact(kri.toReleaseIdImpl(), kjar, pom);
+        repository.deployArtifact(KIE_RELEASE_ID.toReleaseIdImpl(), kjar, pom);
     }
 	
 	@Test
@@ -62,17 +63,14 @@ public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
 		TaskService taskService = getTaskService();
 		ProcessService processService = getProcessService();
 		
-		final String processString = "testProj.testProcess";
-		final String variableKey = "processString";
-		
 		Map<String, Object> processVariables = new HashMap<String, Object>();
-		processVariables.put(variableKey, "Initial");
+		processVariables.put("processString", "Initial");
 		
 		List<TaskSummary> tasks = taskService.getTasksAssignedAsPotentialOwner("abaxter", "en-UK");
 		
 		int initialCount = tasks.size();
 		LOG.info("Tasks: " + initialCount);
-		ProcessInstance processInstance = processService.startProcess(kri, processString, processVariables);
+		ProcessInstance processInstance = processService.startProcess(KIE_RELEASE_ID, PROCESS_IDENTIFIER, processVariables);
 		assertNotNull(processInstance);
         assertEquals(ProcessInstance.STATE_ACTIVE, processInstance.getState());
 		
@@ -106,5 +104,37 @@ public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
         LOG.info("Looking up process instance: "+processInstance.getId());
         processInstance = processService.getProcessInstance(processInstance.getId());
         assertNull(processInstance);
+	}
+	
+
+	@Test
+	@Transactional(value=TransactionMode.DEFAULT)
+	public void testMultiProcess() throws Exception {
+
+		TaskService taskService = getTaskService();
+		ProcessService processService = getProcessService();
+		
+		Map<String, Object> processVariables = new HashMap<String, Object>();
+		processVariables.put("processString", "Initial");
+		
+		ProcessInstance instance1 = processService.startProcess(KIE_RELEASE_ID, PROCESS_IDENTIFIER);
+		ProcessInstance instance2 = processService.startProcess(KIE_RELEASE_ID, PROCESS_IDENTIFIER);
+		
+		List<TaskSummary> tasks = taskService.getTasksAssignedAsPotentialOwner("abaxter", "en-UK");
+		//claim and complete..
+		for(TaskSummary summary : tasks) {
+			taskService.claim(summary.getId(), "abaxter");
+			taskService.start(summary.getId(), "abaxter");
+			
+			Map<String,Object> testResults = new HashMap<String,Object>();
+			taskService.complete(summary.getId(), "abaxter", testResults);
+		}
+		
+		//refresh the instances from the server.
+		instance1 = processService.getProcessInstance(instance1.getId());
+		instance2 = processService.getProcessInstance(instance2.getId());
+		assertNull(instance1);
+		assertNull(instance2);
+		
 	}
 }
