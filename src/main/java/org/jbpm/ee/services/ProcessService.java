@@ -2,8 +2,6 @@ package org.jbpm.ee.services;
 
 import java.util.Map;
 
-import javax.ejb.Remote;
-
 import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.runtime.process.ProcessInstance;
 

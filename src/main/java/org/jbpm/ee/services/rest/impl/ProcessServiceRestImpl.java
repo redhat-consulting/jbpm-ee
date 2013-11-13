@@ -1,16 +1,11 @@
 
 package org.jbpm.ee.services.rest.impl;
 
-import java.util.Map;
-
 import javax.inject.Inject;
 
-import org.drools.core.xml.jaxb.util.JaxbMapAdapter;
-import org.drools.core.xml.jaxb.util.JaxbStringObjectPair;
 import org.jbpm.ee.services.ejb.local.ProcessServiceBean;
 import org.jbpm.ee.services.rest.ProcessServiceRest;
 import org.jbpm.ee.services.rest.request.JaxbInitializeProcessRequest;
-import org.jbpm.process.instance.ProcessInstance;
 import org.kie.services.client.serialization.jaxb.impl.JaxbProcessInstanceResponse;
 
 

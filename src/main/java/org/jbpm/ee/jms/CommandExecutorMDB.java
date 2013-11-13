@@ -1,6 +1,7 @@
 package org.jbpm.ee.jms;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.annotation.PostConstruct;
@@ -169,32 +170,34 @@ public class CommandExecutorMDB implements MessageListener {
 
 
 	private Long getWorkItemIdFromCommand(final GenericCommand<?> command) {
-		return getLongFromCommand("getWorkItemId", command);
+		if(AcceptedCommandSets.getCommandsWithWorkItemid().contains(command.getClass())) {
+			return getLongFromCommand("getWorkItemId", command);
+		} else {
+			return null;
+		}
+		
 	}
 	
 	private Long getProcessInstanceIdFromCommand(final GenericCommand<?> command) {
-		return getLongFromCommand("getProcessInstanceId", command);
-	}
-	
-	private Long getLongFromCommand(final String methodName, final GenericCommand<?> command) {
-		Method[] methods = command.getClass().getDeclaredMethods();
-		
-		if(methods != null) {
-			for(Method method : methods) {
-				if(method.getName().equals(methodName)) {
-					Object result;
-					try {
-						result = method.invoke(command, null);
-						return (Long)result;
-					} catch (Exception e) {
-						LOG.error("Exception invoking method: "+methodName, e);
-					}
-				}
-			}
+		if(AcceptedCommandSets.getCommandsWithProcessInstanceId().contains(command.getClass())) {
+			return getLongFromCommand("getProcessInstanceId", command);	
+		} else {
+			return null;
 		}
 		
-		return null;
-		
+	}
+	
+	//TODO: Is it better to explicitly look for commands?
+	
+	private Long getLongFromCommand(final String methodName, final GenericCommand<?> command) {
+		try {
+			Method longMethod = command.getClass().getMethod(methodName);
+			Long result = (Long) longMethod.invoke(command, (Object[]) null);
+			return result;
+		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// We do not expect this
+			throw new CommandException(e);
+		}	
 	}
 	
 }

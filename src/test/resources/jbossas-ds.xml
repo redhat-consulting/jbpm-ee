@@ -8,7 +8,7 @@
 		<xa-datasource jndi-name="jdbc/arquillian-jbpmmain" pool-name="JbpmMainDS">
 			<driver>mysql</driver>
 			<xa-datasource-property name="ServerName">localhost</xa-datasource-property>
-			<xa-datasource-property name="DatabaseName">jbpm-main</xa-datasource-property>
+			<xa-datasource-property name="DatabaseName">jbpm</xa-datasource-property>
 			<security>
 				<user-name>jbpm</user-name>
 				<password>jbpm</password>

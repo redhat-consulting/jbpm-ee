@@ -1,11 +1,8 @@
 package org.jbpm.ee.services.rest.impl;
 
 import java.util.List;
-import java.util.Map;
-
 import javax.inject.Inject;
 
-import org.jboss.resteasy.plugins.providers.jaxb.JaxbMap;
 import org.jbpm.ee.services.ejb.local.TaskServiceBean;
 import org.jbpm.ee.services.rest.TaskServiceRest;
 import org.jbpm.ee.services.rest.request.JaxbMapRequest;

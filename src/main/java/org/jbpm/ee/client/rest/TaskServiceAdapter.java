@@ -3,7 +3,6 @@ package org.jbpm.ee.client.rest;
 import java.util.List;
 import java.util.Map;
 
-import org.dbunit.util.concurrent.Takable;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.rest.TaskServiceRest;
 import org.jbpm.ee.services.rest.request.JaxbMapRequest;
