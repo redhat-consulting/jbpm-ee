@@ -15,14 +15,13 @@
   	</dependency>
 
   	<dependency>
-  		<groupId>org.kie.remote</groupId>
-  		<artifactId>kie-services-client</artifactId>
-  		<exclusions>
-   			<exclusion>
-  				<groupId>org.jboss.resteasy</groupId>
-  				<artifactId>resteasy-jaxrs</artifactId>
-  			</exclusion> 
-		</exclusions>
+  		<groupId>org.kie</groupId>
+  		<artifactId>kie-api</artifactId>
+  		<type>jar</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.drools</groupId>
+  		<artifactId>drools-compiler</artifactId>
   	</dependency>
   </dependencies>
   	<build>

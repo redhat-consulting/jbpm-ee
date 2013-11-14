@@ -12,6 +12,7 @@
   		<groupId>org.jbpm.jbpm-ee</groupId>
   		<artifactId>jbpm-ee-client</artifactId>
   		<version>1.0.0-SNAPSHOT</version>
+  		
   	</dependency>
   			<!-- Various specs and utilities -->
 				<!-- Arquillian and JUnit -->
@@ -24,6 +25,16 @@
 
 
 		<!-- JUnit -->
+		<dependency>
+			<groupId>org.kie.remote</groupId>
+			<artifactId>kie-services-client</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jbpm</groupId>
+					<artifactId>jbpm-shared-services</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
   </dependencies>
   <build>
 		<plugins>
@@ -38,14 +49,6 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.12.3</version>
-			</plugin>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<!-- Java EE 6 does not require web.xml -->
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
