@@ -14,11 +14,11 @@ public class RestServiceBeanTest extends JBPMServiceTest {
 	private static final Logger LOG = LoggerFactory.getLogger(RestServiceBeanTest.class);
 
 	public ProcessService getProcessService() {
-		return RestClientFactory.getProcessService("http://localhost:8080/test-jbpm-services/rest");
+		return RestClientFactory.getProcessService("http://localhost:8080/jbpm-services/rest");
 	}
 	
 	public TaskService getTaskService() {
-		return RestClientFactory.getTaskService("http://localhost:8080/test-jbpm-services/rest");
+		return RestClientFactory.getTaskService("http://localhost:8080/jbpm-services/rest");
 	}
 	
 }

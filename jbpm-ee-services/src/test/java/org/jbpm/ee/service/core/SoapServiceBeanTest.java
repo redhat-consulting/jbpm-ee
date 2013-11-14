@@ -16,7 +16,7 @@ public class SoapServiceBeanTest extends JBPMServiceTest {
 
 	public ProcessService getProcessService() {
 		try {
-			return SoapClientFactory.getProcessService("http://localhost:8080/test-jbpm-services/ProcessService?wsdl");
+			return SoapClientFactory.getProcessService("http://localhost:8080/jbpm-services/ProcessService?wsdl");
 		} catch (ClientException e) {
 			throw new RuntimeException(e);
 		}
@@ -24,7 +24,7 @@ public class SoapServiceBeanTest extends JBPMServiceTest {
 	
 	public TaskService getTaskService() {
 		try {
-			return SoapClientFactory.getTaskService("http://localhost:8080/test-jbpm-services/TaskService?wsdl");
+			return SoapClientFactory.getTaskService("http://localhost:8080/jbpm-services/TaskService?wsdl");
 		} catch (ClientException e) {
 			throw new RuntimeException(e);
 		}
