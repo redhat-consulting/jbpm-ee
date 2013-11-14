@@ -10,6 +10,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,8 @@ public class BaseJBPMServiceTest {
 	private static final File WEB_REF = new File("src/main/webapp/WEB-INF/web.xml");
 	private static final File DS_REF = new File("src/main/webapp/WEB-INF/jbossas-ds.xml");
 	
-	@Deployment
-	@OverProtocol("Servlet 3.0")
+	//@Deployment
+	//@OverProtocol("Servlet 3.0")
 	public static WebArchive createDeployment() throws Exception {
 		//MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class).loadMetadataFromPom("pom.xml");
 	
@@ -60,16 +61,7 @@ public class BaseJBPMServiceTest {
 	     });  
 		
 		archive.addPackages(true, "org.jbpm.ee");
-		/*JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "test-jbpm-services.jar")
-	        .addPackages(true, "org.jbpm.ee")
-	        .addAsManifestResource(BEAN_REF, "beans.xml")
-	        .addAsManifestResource(PERSISTENCE_REF, "persistence.xml")
-	        .addAsResource("usergroup.properties", "usergroup.properties")
-	        .addAsResource("environment.properties", "environment.properties");
-	    
-	    //System.out.println(jar.toString(true));
-		archive.addAsLibraries(jar);
-		*/
+		
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-client").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-ws-client").withoutTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm:jbpm-flow").withTransitivity().asFile());
