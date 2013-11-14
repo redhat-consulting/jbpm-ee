@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.jboss.org/ironjacamar/schema
+        http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
+
+		<xa-datasource jndi-name="jdbc/arquillian-jbpmmain" pool-name="JbpmMainDS">
+			<driver>mysql</driver>
+			<xa-datasource-property name="ServerName">localhost</xa-datasource-property>
+			<xa-datasource-property name="DatabaseName">jbpm</xa-datasource-property>
+			<security>
+				<user-name>jbpm</user-name>
+				<password>jbpm</password>
+			</security>
+			<validation>
+				<valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"></valid-connection-checker>
+				<exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"></exception-sorter>
+			</validation>
+		</xa-datasource>
+</datasources>

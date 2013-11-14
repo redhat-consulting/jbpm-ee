@@ -1,0 +1,10 @@
+package org.jbpm.ee.support.test;
+
+import org.jbpm.ee.support.test.TestLoan;
+
+rule "check"
+when
+	$loan : TestLoan(loanAmount >= 15000)
+then
+	$loan.setIsEligible(true);
+end
