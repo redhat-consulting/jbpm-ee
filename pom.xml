@@ -286,7 +286,7 @@
 	<modules>
 		<module>jbpm-ee-client</module>
 		<module>jbpm-ee-services</module>
-		<module>jbpm-ee-rest-client</module>
+		<module>jbpm-ee-ws-client</module>
 		<module>jbpm-ee-soap</module>
 		<module>jbpm-ee-ear</module>
 	</modules>

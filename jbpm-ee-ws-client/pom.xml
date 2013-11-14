@@ -5,7 +5,7 @@
     <artifactId>jbpm-ee-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>jbpm-ee-rest-client</artifactId>
+  <artifactId>jbpm-ee-ws-client</artifactId>
   <packaging>jar</packaging>
   <dependencies>
   	<dependency>
