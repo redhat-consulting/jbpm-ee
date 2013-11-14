@@ -39,6 +39,12 @@
 			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-rest-client</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+   			<exclusion>
+  				<groupId>org.jboss.resteasy</groupId>
+  				<artifactId>resteasy-jaxrs</artifactId>
+  			</exclusion> 
+		</exclusions>
 		</dependency>
 		
 		<!-- Various specs and utilities -->
