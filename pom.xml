@@ -287,6 +287,5 @@
 		<module>jbpm-ee-client</module>
 		<module>jbpm-ee-services</module>
 		<module>jbpm-ee-ws-client</module>
-		<module>jbpm-ee-ear</module>
 	</modules>
 </project>

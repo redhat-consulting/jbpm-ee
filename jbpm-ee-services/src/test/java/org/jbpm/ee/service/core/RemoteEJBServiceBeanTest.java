@@ -1,6 +1,7 @@
 package org.jbpm.ee.service.core;
 
 import javax.ejb.EJB;
+import javax.naming.InitialContext;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.jbpm.ee.services.ProcessService;
