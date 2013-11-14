@@ -71,7 +71,7 @@ public class BaseJBPMServiceTest {
 		archive.addAsLibraries(resolveStage.resolve("org.quartz-scheduler:quartz").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm:jbpm-human-task-core").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.kie:kie-ci").withTransitivity().asFile());
-		
+		archive.addAsLibraries(resolveStage.resolve("org.kie.remote:kie-services-client").withoutTransitivity().asFile());
 		
 		System.out.println(archive.toString(true));
 		
