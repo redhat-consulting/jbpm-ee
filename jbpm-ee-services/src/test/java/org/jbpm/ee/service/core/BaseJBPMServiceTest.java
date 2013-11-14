@@ -1,5 +1,6 @@
 package org.jbpm.ee.service.core;
 
+import java.io.File;
 import java.io.InputStream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -7,8 +8,6 @@ import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.osgi.spi.OSGiManifestBuilder;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
@@ -19,6 +18,17 @@ public class BaseJBPMServiceTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BaseJBPMServiceTest.class);
 	
+	private static final File ENV_REF = new File("src/main/resources/environment.properties");
+	private static final File USER_REF = new File("src/main/resources/usergroup.properties");
+	
+	private static final File PERSISTENCE_REF = new File("src/main/resources/META-INF/persistence.xml");
+	private static final File BEAN_REF = new File("src/main/resources/META-INF/beans.xml");
+	
+	
+	private static final File JMS_REF = new File("src/main/webapp/WEB-INF/hornetq-jms.xml");
+	private static final File WEB_REF = new File("src/main/webapp/WEB-INF/web.xml");
+	private static final File DS_REF = new File("src/main/webapp/WEB-INF/jbossas-ds.xml");
+	
 	@Deployment
 	@OverProtocol("Servlet 3.0")
 	public static WebArchive createDeployment() throws Exception {
@@ -26,11 +36,15 @@ public class BaseJBPMServiceTest {
 	
 		PomEquippedResolveStage resolveStage = Maven.resolver().loadPomFromFile("pom.xml");
 		
-		final WebArchive archive = ShrinkWrap.create(WebArchive.class, "test-jbpm-services.war");
-		archive.addAsManifestResource("jbossas-ds.xml");
-		archive.addAsManifestResource("hornetq-jms.xml");
-		archive.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
-		archive.addAsWebInfResource("test-web.xml", "web.xml");
+		final WebArchive archive = ShrinkWrap.create(WebArchive.class, "jbpm-services.war");
+		archive.addAsWebInfResource(ENV_REF, "classes/environment.properties");
+		archive.addAsWebInfResource(USER_REF, "classes/usergroup.properties");
+		archive.addAsWebInfResource(DS_REF, "jbossas-ds.xml");
+		archive.addAsWebInfResource(JMS_REF, "hornetq-jms.xml");
+		archive.addAsWebInfResource(PERSISTENCE_REF, "classes/META-INF/persistence.xml");
+		
+		archive.addAsWebInfResource(BEAN_REF, "beans.xml");
+		archive.addAsWebInfResource(WEB_REF, "web.xml");
 		
 		System.out.println(archive);
 		
@@ -45,16 +59,19 @@ public class BaseJBPMServiceTest {
 	         }  
 	     });  
 		
-		JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "test-jbpm-services.jar")
+		archive.addPackages(true, "org.jbpm.ee");
+		/*JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "test-jbpm-services.jar")
 	        .addPackages(true, "org.jbpm.ee")
-	        .addAsManifestResource("META-INF/beans.xml", "beans.xml")
-	        .addAsManifestResource("META-INF/persistence.xml", "persistence.xml")
+	        .addAsManifestResource(BEAN_REF, "beans.xml")
+	        .addAsManifestResource(PERSISTENCE_REF, "persistence.xml")
 	        .addAsResource("usergroup.properties", "usergroup.properties")
 	        .addAsResource("environment.properties", "environment.properties");
+	    
 	    //System.out.println(jar.toString(true));
 		archive.addAsLibraries(jar);
+		*/
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-client").withTransitivity().asFile());
-		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-rest-client").withoutTransitivity().asFile());
+		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-ws-client").withoutTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm:jbpm-flow").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm:jbpm-flow-builder").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm:jbpm-bpmn2").withTransitivity().asFile());
@@ -63,6 +80,9 @@ public class BaseJBPMServiceTest {
 		archive.addAsLibraries(resolveStage.resolve("org.quartz-scheduler:quartz").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm:jbpm-human-task-core").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.kie:kie-ci").withTransitivity().asFile());
+		
+		
+		System.out.println(archive.toString(true));
 		
 		return archive;
 	}

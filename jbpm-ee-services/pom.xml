@@ -53,6 +53,14 @@
 			<artifactId>jboss-javaee-web-6.0</artifactId>
 			<type>pom</type>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>
+						jboss-interceptors-api_1.1_spec
+					</artifactId>
+					<groupId>org.jboss.spec.javax.interceptor</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -181,5 +189,5 @@
 		</dependency>
 
 	</dependencies>
-	<packaging>ejb</packaging>
+	<packaging>war</packaging>
 </project>

@@ -12,18 +12,6 @@
 	<!-- Deployables -->
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-rest</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<type>war</type>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-soap</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<type>war</type>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-services</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<type>ejb</type>
@@ -32,103 +20,7 @@
 		<!-- Lib files (required due to skinny wars) -->
 		
 		<!-- Misc Libraries -->
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protobuf-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-		</dependency>
 		<!-- BRMS Libraries -->
-		  	<dependency>
-  		<groupId>org.kie.remote</groupId>
-  		<artifactId>kie-services-client</artifactId>
-  		</dependency>
-  		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-flow</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-bpmn2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-flow-builder</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-runtime-manager</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>weld-spi</artifactId>
-					<groupId>org.jboss.weld</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>weld-api</artifactId>
-					<groupId>org.jboss.weld</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>weld-core</artifactId>
-					<groupId>org.jboss.weld</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-core-asl</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-persistence-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-human-task-core</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>activation</artifactId>
-					<groupId>javax.activation</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>mail</artifactId>
-					<groupId>javax.mail</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jta</artifactId>
-					<groupId>javax.transaction</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>javax.inject</artifactId>
-					<groupId>javax.inject</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-ci</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>javax.inject</artifactId>
-					<groupId>javax.inject</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-				<dependency>
-			<groupId>org.jboss.spec</groupId>
-			<artifactId>jboss-javaee-web-6.0</artifactId>
-			<type>pom</type>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 	
 	<build>
