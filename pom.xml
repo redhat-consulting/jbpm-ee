@@ -241,6 +241,11 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+			<dependency>
+				<groupId>org.jbpm</groupId>
+				<artifactId>jbpm-shared-services</artifactId>
+				<version>${jbpm.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<profiles>
