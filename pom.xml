@@ -27,6 +27,11 @@
 				<artifactId>hibernate-core</artifactId>
 				<version>4.2.6.Final</version>
 			</dependency>
+			  	<dependency>
+  		<groupId>org.drools</groupId>
+  		<artifactId>drools-compiler</artifactId>
+  		<version>${drools.version}</version>
+  	</dependency>
 			<dependency>
 				<groupId>org.jbpm</groupId>
 				<artifactId>jbpm-flow</artifactId>
@@ -236,6 +241,11 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+			<dependency>
+				<groupId>org.jbpm</groupId>
+				<artifactId>jbpm-shared-services</artifactId>
+				<version>${jbpm.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<profiles>
@@ -287,5 +297,6 @@
 		<module>jbpm-ee-client</module>
 		<module>jbpm-ee-services</module>
 		<module>jbpm-ee-ws-client</module>
+		<module>jbpm-ee-external-test</module>
 	</modules>
 </project>
