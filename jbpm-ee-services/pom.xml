@@ -37,7 +37,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-rest-client</artifactId>
+			<artifactId>jbpm-ee-ws-client</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<exclusions>
    			<exclusion>
