@@ -1,10 +1,10 @@
-package org.jbpm.ee.client.rest.adapter;
+package org.jbpm.ee.client.adapter;
 
 import java.util.Map;
 
 import org.jbpm.ee.services.ProcessService;
-import org.jbpm.ee.services.rest.ProcessServiceRest;
-import org.jbpm.ee.services.rest.request.JaxbInitializeProcessRequest;
+import org.jbpm.ee.services.ws.ProcessServiceWS;
+import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.runtime.process.ProcessInstance;
 
@@ -18,9 +18,9 @@ import org.kie.api.runtime.process.ProcessInstance;
  */
 public class ProcessServiceAdapter implements ProcessService {
 
-	private final ProcessServiceRest restService;
+	private final ProcessServiceWS restService;
 	
-	public ProcessServiceAdapter(ProcessServiceRest restService) {
+	public ProcessServiceAdapter(ProcessServiceWS restService) {
 		this.restService = restService;
 	}
 	

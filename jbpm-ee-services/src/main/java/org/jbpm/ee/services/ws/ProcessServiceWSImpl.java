@@ -1,15 +1,15 @@
 
-package org.jbpm.ee.services.rest.impl;
+package org.jbpm.ee.services.ws;
 
 import javax.ejb.EJB;
+import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
-import org.jbpm.ee.services.rest.ProcessServiceRest;
-import org.jbpm.ee.services.rest.request.JaxbInitializeProcessRequest;
+import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 import org.kie.services.client.serialization.jaxb.impl.JaxbProcessInstanceResponse;
 
-
-public class ProcessServiceRestImpl implements ProcessServiceRest {
+@WebService(targetNamespace="http://jbpm.org/v6/ProcessService/wsdl", serviceName="ProcessService", endpointInterface="org.jbpm.ee.services.ws.ProcessServiceWS")
+public class ProcessServiceWSImpl implements ProcessServiceWS {
 
 	@EJB
 	private ProcessServiceLocal processRuntimeService;

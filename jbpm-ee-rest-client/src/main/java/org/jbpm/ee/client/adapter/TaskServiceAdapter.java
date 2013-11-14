@@ -1,11 +1,11 @@
-package org.jbpm.ee.client.rest.adapter;
+package org.jbpm.ee.client.adapter;
 
 import java.util.List;
 import java.util.Map;
 
 import org.jbpm.ee.services.TaskService;
-import org.jbpm.ee.services.rest.TaskServiceRest;
-import org.jbpm.ee.services.rest.request.JaxbMapRequest;
+import org.jbpm.ee.services.ws.TaskServiceWS;
+import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
 import org.kie.api.task.model.OrganizationalEntity;
@@ -15,9 +15,9 @@ import org.kie.api.task.model.TaskSummary;
 
 public class TaskServiceAdapter implements TaskService {
 
-	private final TaskServiceRest taskService;
+	private final TaskServiceWS taskService;
 	
-	public TaskServiceAdapter(TaskServiceRest taskService) {
+	public TaskServiceAdapter(TaskServiceWS taskService) {
 		this.taskService = taskService;
 	}
 	

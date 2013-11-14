@@ -1,17 +1,17 @@
-package org.jbpm.ee.client.rest.adapter;
+package org.jbpm.ee.client.adapter;
 
 import java.util.Map;
 
 import org.drools.core.process.instance.WorkItem;
 import org.jbpm.ee.services.WorkItemService;
-import org.jbpm.ee.services.rest.WorkItemServiceRest;
-import org.jbpm.ee.services.rest.request.JaxbMapRequest;
+import org.jbpm.ee.services.ws.WorkItemServiceWS;
+import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 
 public class WorkItemServiceAdapter implements WorkItemService {
 
-	private WorkItemServiceRest restService;
+	private WorkItemServiceWS restService;
 	
-	public WorkItemServiceAdapter(WorkItemServiceRest restManager) {
+	public WorkItemServiceAdapter(WorkItemServiceWS restManager) {
 		this.restService = restManager;
 	}
 	

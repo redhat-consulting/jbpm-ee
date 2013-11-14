@@ -1,22 +1,25 @@
-package org.jbpm.ee.services.rest.impl;
+package org.jbpm.ee.services.ws;
 
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.jws.WebService;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
-import org.jbpm.ee.services.rest.TaskServiceRest;
-import org.jbpm.ee.services.rest.request.JaxbMapRequest;
+import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.jbpm.services.task.impl.model.xml.JaxbAttachment;
 import org.jbpm.services.task.impl.model.xml.JaxbContent;
 import org.jbpm.services.task.impl.model.xml.JaxbTask;
+import org.jbpm.services.task.impl.model.xml.adapter.OrganizationalEntityXmlAdapter;
 import org.kie.api.task.model.OrganizationalEntity;
 import org.kie.api.task.model.Status;
 import org.kie.services.client.serialization.jaxb.impl.JaxbLongListResponse;
 import org.kie.services.client.serialization.jaxb.impl.JaxbTaskSummaryListResponse;
 
+@WebService(targetNamespace="http://jbpm.org/v6/TaskService/wsdl", serviceName="TaskService", endpointInterface="org.jbpm.ee.services.ws.TaskServiceWS")
+public class TaskServiceWSImpl implements TaskServiceWS {
 
-public class TaskServiceRestImpl implements TaskServiceRest {
 
 	@EJB
 	private TaskServiceLocal taskService;
@@ -92,7 +95,7 @@ public class TaskServiceRestImpl implements TaskServiceRest {
 	}
 
 	@Override
-	public void nominate(long taskId, String userId, List<OrganizationalEntity> potentialOwners) {
+	public void nominate(long taskId, String userId, @XmlJavaTypeAdapter(OrganizationalEntityXmlAdapter.class) List<OrganizationalEntity> potentialOwners) {
 		taskService.nominate(taskId, userId, potentialOwners);
 	}
 
@@ -133,7 +136,7 @@ public class TaskServiceRestImpl implements TaskServiceRest {
 		response.setResult(taskService.getTasksOwned(userId, language));
 		return response;
 	}
-
+	
 	@Override
 	public JaxbTaskSummaryListResponse getTasksOwnedByStatus(String userId, List<Status> status, String language) {
 		JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();

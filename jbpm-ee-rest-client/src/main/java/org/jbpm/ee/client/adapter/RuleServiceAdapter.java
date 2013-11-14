@@ -1,13 +1,13 @@
-package org.jbpm.ee.client.rest.adapter;
+package org.jbpm.ee.client.adapter;
 
 import org.jbpm.ee.services.RuleService;
-import org.jbpm.ee.services.rest.RuleServiceRest;
+import org.jbpm.ee.services.ws.RuleServiceWS;
 
 public class RuleServiceAdapter implements RuleService {
 
-	private final RuleServiceRest ruleService;
+	private final RuleServiceWS ruleService;
 	
-	public RuleServiceAdapter(RuleServiceRest ruleService) {
+	public RuleServiceAdapter(RuleServiceWS ruleService) {
 		this.ruleService = ruleService;
 	}
 	
