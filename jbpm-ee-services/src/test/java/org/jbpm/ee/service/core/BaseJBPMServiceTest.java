@@ -10,7 +10,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +29,8 @@ public class BaseJBPMServiceTest {
 	private static final File WEB_REF = new File("src/main/webapp/WEB-INF/web.xml");
 	private static final File DS_REF = new File("src/main/webapp/WEB-INF/jbossas-ds.xml");
 	
-	//@Deployment
-	//@OverProtocol("Servlet 3.0")
+	@Deployment
+	@OverProtocol("Servlet 3.0")
 	public static WebArchive createDeployment() throws Exception {
 		//MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class).loadMetadataFromPom("pom.xml");
 	
