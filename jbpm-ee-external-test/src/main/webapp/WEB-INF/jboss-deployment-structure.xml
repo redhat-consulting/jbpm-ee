@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jboss-deployment-structure xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:jboss:deployment-structure:1.0"  xsi:schemaLocation="http://www.jboss.org/schema/jbossas/jboss-deployment-structure-1_0.xsd">
+<jboss-deployment-structure>
   <deployment>
   	<resources>
-  		<resource-root path="WEB-INF/lib/jbpm-human-task-core-6.0.0.CR4.jar">
+  		<resource-root path="*jbpm-human-task-core*">
   			<filter>
   				<exclude path="META-INF"/>
   			</filter>
