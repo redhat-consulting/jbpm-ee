@@ -7,6 +7,7 @@ import javax.jws.WebService;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
+import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.jbpm.services.task.impl.model.xml.JaxbAttachment;
 import org.jbpm.services.task.impl.model.xml.JaxbContent;
@@ -26,146 +27,276 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	
 	@Override
 	public void activate(long taskId, String userId) {
-		taskService.activate(taskId, userId);
+		try {
+			taskService.activate(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void claim(long taskId, String userId) {
-		taskService.claim(taskId, userId);
+		try {
+			taskService.claim(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void claimNextAvailable(String userId, String language) {
-		taskService.claimNextAvailable(userId, language);
+		try {
+			taskService.claimNextAvailable(userId, language);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void complete(long taskId, String userId, JaxbMapRequest data) {
-		taskService.complete(taskId, userId, data.getMap());
+		try {
+			taskService.complete(taskId, userId, data.getMap());
+		} 
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void delegate(long taskId, String userId, String targetUserId) {
-		taskService.delegate(taskId, userId, targetUserId);
+		try {
+			taskService.delegate(taskId, userId, targetUserId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void exit(long taskId, String userId) {
-		taskService.exit(taskId, userId);
+		try {
+			taskService.exit(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void fail(long taskId, String userId, JaxbMapRequest faultData) {
-		taskService.fail(taskId, userId, faultData.getMap());
+		try {
+			taskService.fail(taskId, userId, faultData.getMap());
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void forward(long taskId, String userId, String targetEntityId) {
-		taskService.forward(taskId, userId, targetEntityId);
+		try {
+			taskService.forward(taskId, userId, targetEntityId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void release(long taskId, String userId) {
-		taskService.release(taskId, userId);
+		try {
+			taskService.release(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void resume(long taskId, String userId) {
-		taskService.resume(taskId, userId);
+		try {
+			taskService.resume(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void skip(long taskId, String userId) {
-		taskService.skip(taskId, userId);
+		try {
+			taskService.skip(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void start(long taskId, String userId) {
-		taskService.start(taskId, userId);
+		try {
+			taskService.start(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void stop(long taskId, String userId) {
-		taskService.stop(taskId, userId);
+		try{
+			taskService.stop(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void suspend(long taskId, String userId) {
-		taskService.suspend(taskId, userId);
+		try {
+			taskService.suspend(taskId, userId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void nominate(long taskId, String userId, @XmlJavaTypeAdapter(OrganizationalEntityXmlAdapter.class) List<OrganizationalEntity> potentialOwners) {
-		taskService.nominate(taskId, userId, potentialOwners);
+		try {
+			taskService.nominate(taskId, userId, potentialOwners);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbTask getTaskByWorkItemId(long workItemId) {
-		return new JaxbTask(taskService.getTaskByWorkItemId(workItemId));
+		try {
+			return new JaxbTask(taskService.getTaskByWorkItemId(workItemId));
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbTask getTaskById(long taskId) {
-		return new JaxbTask(taskService.getTaskById(taskId));
+		try {
+			return new JaxbTask(taskService.getTaskById(taskId));
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbTaskSummaryListResponse getTasksAssignedAsBusinessAdministrator(String userId, String language) {
-		JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-		response.setResult(taskService.getTasksAssignedAsBusinessAdministrator(userId, language));
-		return response;
+		try {
+			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
+			response.setResult(taskService.getTasksAssignedAsBusinessAdministrator(userId, language));
+			return response;
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbTaskSummaryListResponse getTasksAssignedAsPotentialOwner(String userId, String language) {
-		JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-		response.setResult(taskService.getTasksAssignedAsPotentialOwner(userId, language));
-		return response;
+		try {
+			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
+			response.setResult(taskService.getTasksAssignedAsPotentialOwner(userId, language));
+			return response;
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbTaskSummaryListResponse getTasksAssignedAsPotentialOwnerByStatus(String userId, List<Status> status, String language) {
-		JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-		response.setResult(taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
-		return response;
+		try {
+			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
+			response.setResult(taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
+			return response;
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbTaskSummaryListResponse getTasksOwned(String userId, String language) {
-		JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-		response.setResult(taskService.getTasksOwned(userId, language));
-		return response;
+		try {
+			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
+			response.setResult(taskService.getTasksOwned(userId, language));
+			return response;
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 	
 	@Override
 	public JaxbTaskSummaryListResponse getTasksOwnedByStatus(String userId, List<Status> status, String language) {
-		JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-		response.setResult(taskService.getTasksOwnedByStatus(userId, status, language));
-		return response;
+		try {
+			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
+			response.setResult(taskService.getTasksOwnedByStatus(userId, status, language));
+			return response;
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbLongListResponse getTasksByProcessInstanceId(long processInstanceId) {
-		JaxbLongListResponse response = new JaxbLongListResponse();
-		response.setResult(taskService.getTasksByProcessInstanceId(processInstanceId));
-		return response;
+		try {
+			JaxbLongListResponse response = new JaxbLongListResponse();
+			response.setResult(taskService.getTasksByProcessInstanceId(processInstanceId));
+			return response;
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbTaskSummaryListResponse getTasksByStatusByProcessInstanceId(long processInstanceId, List<Status> status, String language) {
-		JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-		response.setResult(taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
-		return response;
+		try {
+			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
+			response.setResult(taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
+			return response;
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbContent getContentById(long contentId) {
-		return new JaxbContent(taskService.getContentById(contentId));
+		try {
+			return new JaxbContent(taskService.getContentById(contentId));
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbAttachment getAttachmentById(long attachId) {
-		return new JaxbAttachment(taskService.getAttachmentById(attachId));
+		try {
+			return new JaxbAttachment(taskService.getAttachmentById(attachId));
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 

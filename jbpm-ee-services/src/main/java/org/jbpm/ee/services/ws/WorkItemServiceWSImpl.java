@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
+import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.kie.services.client.serialization.jaxb.impl.JaxbWorkItem;
 
@@ -15,17 +16,32 @@ public class WorkItemServiceWSImpl implements WorkItemServiceWS {
 	
 	@Override
 	public void completeWorkItem(long id, JaxbMapRequest results) {
-		this.workItemManager.completeWorkItem(id, results.getMap());
+		try {
+			this.workItemManager.completeWorkItem(id, results.getMap());
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public void abortWorkItem(long id) {
-		this.workItemManager.abortWorkItem(id);
+		try {
+			this.workItemManager.abortWorkItem(id);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
 	public JaxbWorkItem getWorkItem(long id) {
-		return new JaxbWorkItem(this.workItemManager.getWorkItem(id));
+		try {
+			return new JaxbWorkItem(this.workItemManager.getWorkItem(id));
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 }
