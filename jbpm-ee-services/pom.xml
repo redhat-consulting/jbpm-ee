@@ -18,7 +18,7 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-			<plugin>
+			<plugin> 
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
@@ -26,8 +26,8 @@
 					<warName>jbpm-ee-services</warName>
 					<archive>
 						<manifestEntries>
-			                <Dependencies>org.hornetq</Dependencies>
-			            </manifestEntries>
+							<Dependencies>org.hornetq</Dependencies>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
@@ -208,6 +208,14 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.kie.remote</groupId>
+			<artifactId>kie-services-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging>
 

@@ -1,43 +1,76 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.jbpm.jbpm-ee</groupId>
-    <artifactId>jbpm-ee-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>jbpm-ee-ws-client</artifactId>
-  <packaging>jar</packaging>
-  <dependencies>
-  	<dependency>
-  		<groupId>org.jbpm.jbpm-ee</groupId>
-  		<artifactId>jbpm-ee-client</artifactId>
-  		<version>1.0.0-SNAPSHOT</version>
-  		
-  	</dependency>
-  			<!-- Various specs and utilities -->
-				<!-- Arquillian and JUnit -->
-<dependency>
-	<groupId>org.jboss.resteasy</groupId>
-	<artifactId>resteasy-client</artifactId>
-	<version>3.0.5.Final</version>
-</dependency>
-            
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jbpm.jbpm-ee</groupId>
+		<artifactId>jbpm-ee-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>jbpm-ee-ws-client</artifactId>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 
+		</dependency>
+		<!-- Various specs and utilities -->
+		<!-- Arquillian and JUnit -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-client</artifactId>
+			<version>3.0.5.Final</version>
+		</dependency>
 
-		<!-- JUnit -->
 		<dependency>
 			<groupId>org.kie.remote</groupId>
 			<artifactId>kie-services-client</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.jbpm</groupId>
-					<artifactId>jbpm-shared-services</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-  </dependencies>
-  <build>
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-human-task-core</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactSet>
+						<includes>
+							<include>org.kie.remote:kie-services-client</include>
+							<include>org.jbpm:jbpm-human-task-core</include>
+						</includes>
+					</artifactSet>
+					<filters>
+						<filter>
+							<artifact>org.jbpm:jbpm-human-task-core</artifact>
+							<includes>
+								<include>org/jbpm/services/task/impl/model/xml/**</include>
+								<include>org/jbpm/services/task/impl/model/xml/adapter/**</include>
+								<include>org/jbpm/services/task/query/TaskSummaryImpl*</include>
+							</includes>
+						</filter>
+						<filter>
+							<artifact>org.kie.remote:kie-services-client</artifact>
+							<includes>
+								<include>org/kie/services/client/serialization/jaxb/**</include>
+							</includes>
+						</filter>
+					</filters>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>

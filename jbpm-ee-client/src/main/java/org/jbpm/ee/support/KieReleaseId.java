@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.drools.compiler.kproject.ReleaseIdImpl;
 import org.kie.api.builder.ReleaseId;
 
 /**
@@ -133,12 +132,4 @@ public class KieReleaseId implements ReleaseId, Serializable {
 		return groupId + ":" + artifactId + ":" + version;
 	}
 	
-	/**
-	 * Returns the ReleaseIdImpl for times when BRMS expects it
-	 * @return
-	 */
-	public ReleaseIdImpl toReleaseIdImpl() {
-		return new ReleaseIdImpl(groupId, artifactId, version);
-	}
-
 }

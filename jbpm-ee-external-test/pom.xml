@@ -28,17 +28,17 @@
   	  		<groupId>org.jbpm.jbpm-ee</groupId>
   	  		<artifactId>jbpm-ee-ws-client</artifactId>
   	  		<version>1.0.0-SNAPSHOT</version>
-  	  		  <exclusions>
-  	  			<exclusion>
-  	  				<groupId>org.jbpm</groupId>
-  	  				<artifactId>jbpm-shared-services</artifactId>
-  	  			</exclusion>
-  	  			 <exclusion>
-  	  				<groupId>org.jbpm</groupId>
-  	  				<artifactId>jbpm-human-task-core</artifactId>
-  	  			</exclusion>
-  	  		</exclusions>
   	  	</dependency>
+  	  	<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-api</artifactId>
+			<scope>provided</scope>
+  	  	</dependency>
+			<dependency>
+			<groupId>org.kie.remote</groupId>
+			<artifactId>kie-services-client</artifactId>
+			<scope>provided</scope>
+			</dependency>
   </dependencies>
     	<build>
 		<plugins>

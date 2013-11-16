@@ -12,7 +12,6 @@ public class EJBInjectTest {
 	@EJB(lookup = "java:global/jbpm-ee-services/ProcessServiceBean!org.jbpm.ee.services.ejb.remote.ProcessServiceRemote")
 	ProcessServiceRemote processService;
 	
-	
 	private static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
 	
 	private static final String processId = "testProj.testProcess";

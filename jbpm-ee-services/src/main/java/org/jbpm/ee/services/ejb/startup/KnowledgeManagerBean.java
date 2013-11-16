@@ -14,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.drools.compiler.kproject.ReleaseIdImpl;
 import org.hibernate.SessionException;
 import org.jbpm.ee.config.Configuration;
 import org.jbpm.ee.exception.InactiveProcessInstance;
@@ -112,7 +113,9 @@ public class KnowledgeManagerBean {
 		
 		if(!containers.containsKey(resourceKey)) {
 			//create a new container.
-			KieContainer kieContainer = kieServices.newKieContainer(resourceKey.toReleaseIdImpl());
+			
+			ReleaseIdImpl releaseID = new ReleaseIdImpl(resourceKey.getGroupId(), resourceKey.getArtifactId(), resourceKey.getVersion());
+			KieContainer kieContainer = kieServices.newKieContainer(releaseID);
 			KieScanner kieScanner = kieServices.newKieScanner(kieContainer);
 			kieScanner.start(scannerPollFrequency);
 			

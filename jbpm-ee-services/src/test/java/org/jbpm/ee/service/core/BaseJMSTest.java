@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
+import org.drools.compiler.kproject.ReleaseIdImpl;
 import org.drools.core.command.runtime.process.StartProcessCommand;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
@@ -41,7 +42,8 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 		KieServices ks = KieServices.Factory.get();
         List<String> processes = new ArrayList<String>();
         processes.add("src/test/resources/kjar/testProcess.bpmn2");
-        InternalKieModule kjar = createKieJar(ks, kri.toReleaseIdImpl(), processes);
+        ReleaseIdImpl releaseID = new ReleaseIdImpl(kri.getGroupId(), kri.getArtifactId(), kri.getVersion());
+        InternalKieModule kjar = createKieJar(ks, releaseID, processes);
         File pom = new File("target/kmodule", "pom.xml");
         pom.getParentFile().mkdir();
         try {
@@ -52,7 +54,7 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
             
         }
         MavenRepository repository = getMavenRepository();
-        repository.deployArtifact(kri.toReleaseIdImpl(), kjar, pom);
+        repository.deployArtifact(releaseID, kjar, pom);
     }
 	
 	@Test
