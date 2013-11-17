@@ -8,7 +8,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.jbpm.ee.services.ProcessService;
