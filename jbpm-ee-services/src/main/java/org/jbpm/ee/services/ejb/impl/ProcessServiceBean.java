@@ -12,8 +12,8 @@ import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
 import org.jbpm.ee.services.ejb.remote.ProcessServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
-import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
+import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.slf4j.Logger;
@@ -34,21 +34,21 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 	public ProcessInstance startProcess(KieReleaseId releaseId, String processId) {
 		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
 		session.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
-		return session.startProcess(processId);
+		return new org.jbpm.ee.services.ejb.model.process.ProcessInstance(session.startProcess(processId));
 	}
 
 	@Override
 	public ProcessInstance startProcess(KieReleaseId releaseId, String processId, Map<String, Object> parameters) {
 		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
 		session.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
-		return session.startProcess(processId, parameters);
+		return new org.jbpm.ee.services.ejb.model.process.ProcessInstance(session.startProcess(processId, parameters));
 	}
 
 	@Override
 	public ProcessInstance createProcessInstance(KieReleaseId releaseId, String processId, Map<String, Object> parameters) {
 		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
 		session.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
-		return session.createProcessInstance(processId, parameters);
+		return new org.jbpm.ee.services.ejb.model.process.ProcessInstance(session.createProcessInstance(processId, parameters));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 	@Override
 	public ProcessInstance getProcessInstance(long processInstanceId) {
 		try {
-			return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId, true);
+			return new org.jbpm.ee.services.ejb.model.process.ProcessInstance(knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId, true));
 		} 
 		catch(InactiveProcessInstance e) {
 			return null;
@@ -73,7 +73,7 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 
 	@Override
 	public ProcessInstance startProcessInstance(long processInstanceId) {		
-		return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().startProcessInstance(processInstanceId);
+		return new org.jbpm.ee.services.ejb.model.process.ProcessInstance(knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().startProcessInstance(processInstanceId));
 	}
 
 	

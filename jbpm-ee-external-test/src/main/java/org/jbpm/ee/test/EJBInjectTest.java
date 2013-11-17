@@ -1,22 +1,71 @@
 package org.jbpm.ee.test;
 
 import javax.ejb.EJB;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
+import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.ejb.remote.ProcessServiceRemote;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
+import org.jbpm.ee.test.exception.TestRuntimeException;
+import org.slf4j.Logger;
 
 @WebService(targetNamespace="http://jbpm.org/v6/EJBInjectTest/wsdl", serviceName="EJBInjectTest")
-public class EJBInjectTest {
+@LocalBean
+@Stateless
+public class EJBInjectTest extends BaseTest {
 
+	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(EJBInjectTest.class);
+
+	@Inject
+	private UserTransaction tx;
+	
 	@EJB(lookup = "java:global/jbpm-ee-services/ProcessServiceBean!org.jbpm.ee.services.ejb.remote.ProcessServiceRemote")
-	ProcessServiceRemote processService;
+	private ProcessServiceRemote processService;
 	
-	private static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
+	@EJB(lookup = "java:global/jbpm-ee-services/TaskServiceBean!org.jbpm.ee.services.ejb.remote.TaskServiceRemote")
+	private TaskServiceRemote taskService;
 	
-	private static final String processId = "testProj.testProcess";
+	@Override
+	protected ProcessService getProcessService() {
+		return processService;
+	}
+
+	@Override
+	protected TaskService getTaskService() {
+		return taskService;
+	}
 	
-	public Long startProcess() {
-		return processService.startProcess(kri, processId).getId();
+	/**
+	 * List number of tasks; creates a new process; rolls back.
+	 * Number of tasks should remain consistent.
+	 */
+	@WebMethod
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void completeThenRollback() {
+		int taskCountBefore = taskCount();
+		LOG.info("Tasks Before: "+taskCountBefore);
+		try {
+			Long id = this.startProcess();
+			LOG.info("Created process: "+id);
+			generateException();
+		}
+		catch(RuntimeException e) {
+			int taskCountAfter = taskCount();
+			LOG.info("Tasks After: "+taskCountAfter);
+			throw e;
+		}
+	}
+	
+	private void generateException() {
+		throw new TestRuntimeException("Exception to show rollback.");
 	}
 }

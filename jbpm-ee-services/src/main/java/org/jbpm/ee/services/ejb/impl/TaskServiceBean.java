@@ -13,6 +13,9 @@ import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
 import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
+import org.jbpm.services.task.impl.model.xml.JaxbAttachment;
+import org.jbpm.services.task.impl.model.xml.JaxbContent;
+import org.jbpm.services.task.impl.model.xml.JaxbTask;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
 import org.kie.api.task.model.OrganizationalEntity;
@@ -125,13 +128,12 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public Task getTaskByWorkItemId(long workItemId) {
-		return taskQueryService.getTaskByWorkItemId(workItemId);
+		return new JaxbTask(taskQueryService.getTaskByWorkItemId(workItemId));
 	}
 
 	@Override
 	public Task getTaskById(long taskId) {
-		
-		return knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().getTaskById(taskId);
+		return new JaxbTask(knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().getTaskById(taskId));
 	}
 
 	@Override
@@ -211,9 +213,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public void suspend(long taskId, String userId) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().suspend(taskId, userId);
-
 	}
 
 	@Override
@@ -225,14 +225,12 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public Content getContentById(long contentId) {
-		
-		return taskContentService.getContentById(contentId);
+		return new JaxbContent(taskContentService.getContentById(contentId));
 	}
 
 	@Override
 	public Attachment getAttachmentById(long attachId) {
-		
-		return taskAttachmentService.getAttachmentById(attachId);
+		return new JaxbAttachment(taskAttachmentService.getAttachmentById(attachId));
 	}
 	
 	

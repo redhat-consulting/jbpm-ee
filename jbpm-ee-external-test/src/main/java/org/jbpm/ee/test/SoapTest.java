@@ -1,79 +1,49 @@
 package org.jbpm.ee.test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.jws.WebService;
 
 import org.jbpm.ee.client.ClientException;
 import org.jbpm.ee.client.SoapClientFactory;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
-import org.jbpm.ee.support.KieReleaseId;
-import org.kie.api.task.model.TaskSummary;
 
 @WebService(targetNamespace="http://jbpm.org/v6/SoapTest/wsdl", serviceName="SOAPTest")
-public class SoapTest {
+public class SoapTest extends BaseTest {
 
+	private TaskService cachedTaskService = null;
+	private ProcessService cachedProcessService = null;
 	
-	private static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
-	private static final String processId = "testProj.testProcess";
-	public Long startProcess() {
-
-		ProcessService processService;
-		try {
-			processService = SoapClientFactory.getProcessService("http://localhost:8080/jbpm-ee-services/ProcessService?wsdl");
-			return processService.startProcess(kri, processId).getId();
-		} catch (ClientException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0L;
-	}
+	private static final String PROCESS_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/ProcessService?wsdl";
+	private static final String TASK_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/TaskService?wsdl"; 
 	
-	public String listTasks() {
-
-		TaskService service;
-		try {
-			service = SoapClientFactory.getTaskService("http://localhost:8080/jbpm-ee-services/TaskService?wsdl");
-			List<TaskSummary> tasks = service.getTasksAssignedAsPotentialOwner("abaxter", "en-UK");
-			
-			StringBuilder builder = new StringBuilder();
-			for(TaskSummary summary : tasks) {
-				builder.append("Task: "+summary.getId()+", "+summary.getName()+", "+summary.getStatus());
+	/**
+	 * Creates the ProcessService & caches the instance for reuse.  
+	 */
+	@Override
+	protected ProcessService getProcessService() {
+		if(cachedProcessService == null) {
+			try {
+				cachedProcessService = SoapClientFactory.getProcessService(PROCESS_SERVICE_URL); 
+			} catch (ClientException e) {
+				throw new RuntimeException("Unable to create process service from ["+PROCESS_SERVICE_URL+"]. Please validate URL.", e);
 			}
-			
-			return builder.toString();
-		} catch (ClientException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		return null;
+		return cachedProcessService;
+		
 	}
-	
-	public String completeTasks() {
 
-		TaskService service;
-		try {
-			service = SoapClientFactory.getTaskService("http://localhost:8080/jbpm-ee-services/TaskService?wsdl");
-			List<TaskSummary> tasks = service.getTasksAssignedAsPotentialOwner("abaxter", "en-UK");
-			
-			int i=0;
-			for(TaskSummary summary : tasks) {
-				service.claim(summary.getId(), "abaxter");
-				service.start(summary.getId(), "abaxter");
-				
-				Map<String,Object> testResults = new HashMap<String,Object>();
-				service.complete(summary.getId(), "abaxter", testResults);
-				i++;
+	/**
+	 * Creates the TaskService & caches the instance for reuse.  
+	 */
+	@Override
+	protected TaskService getTaskService() {
+		if(cachedTaskService == null) {
+			try {
+				cachedTaskService = SoapClientFactory.getTaskService(TASK_SERVICE_URL);
+			} catch (ClientException e) {
+				throw new RuntimeException("Unable to create TaskService from ["+TASK_SERVICE_URL+"]. Please validate URL.", e);
 			}
-			
-			return "Completed: "+i;
-		} catch (ClientException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		return null;
+		return cachedTaskService;
 	}
 }
