@@ -211,6 +211,12 @@
 		<dependency>
 			<groupId>org.kie.remote</groupId>
 			<artifactId>kie-services-client</artifactId>
+			<exclusions>	
+				<exclusion>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxrs</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.drools</groupId>
