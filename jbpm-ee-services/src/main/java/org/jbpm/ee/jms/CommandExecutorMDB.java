@@ -157,6 +157,8 @@ public class CommandExecutorMDB implements MessageListener {
 					responseMessage.setJMSCorrelationID(correlation);
 					LOG.info("Sending message");
 					producer.send(responseMessage);
+					producer.close();
+					session.close();
 				} 
 				else {
 					LOG.warn("Response from Command Object, but no ReplyTo and Coorelation: " + ReflectionToStringBuilder.toString(commandResponse));
