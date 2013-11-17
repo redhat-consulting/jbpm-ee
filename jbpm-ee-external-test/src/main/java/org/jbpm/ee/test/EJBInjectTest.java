@@ -50,7 +50,7 @@ public class EJBInjectTest extends BaseTest {
 	 */
 	@WebMethod
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void completeThenRollback() {
+	public void startProcessThenRollback() {
 		int taskCountBefore = taskCount();
 		LOG.info("Tasks Before: "+taskCountBefore);
 		try {
