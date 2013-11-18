@@ -18,7 +18,12 @@ import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.kie.api.task.model.OrganizationalEntity;
 import org.kie.api.task.model.User;
 
-
+/**
+ * PeopleAssignments implementation that supports JAXB.
+ * @see org.kie.api.task.model.PeopleAssignments
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="people-assignments")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PeopleAssignments implements Initializable<org.kie.api.task.model.PeopleAssignments>, org.kie.api.task.model.PeopleAssignments, Serializable  {

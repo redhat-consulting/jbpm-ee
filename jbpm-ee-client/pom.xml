@@ -58,18 +58,11 @@
 					<artifactSet>
 						<includes>
 							<include>org.kie:kie-api</include>
-							<include>org.kie:kie-internal</include>
 							<include>org.kie.remote:kie-services-client</include>
 							<include>org.jbpm:jbpm-human-task-core</include>
 						</includes>
 					</artifactSet>
 					<filters>
-						<filter>
-							<artifact>org.kie:kie-internal</artifact>
-							<includes>
-								<include>org/kie/internal/task/api/model/*</include>
-							</includes>
-						</filter>
 						<filter>
 							<artifact>org.kie:kie-api</artifact>
 							<includes>
@@ -86,10 +79,8 @@
 						<filter>
 							<artifact>org.jbpm:jbpm-human-task-core</artifact>
 							<includes>
-								<include>org/jbpm/services/task/impl/model/xml/**</include>
 								<include>org/jbpm/services/task/impl/model/xml/adapter/**</include>
-								<include>org/jbpm/services/task/query/TaskSummaryImpl*</include>
-							</includes>
+ 							</includes>
 						</filter>
 						<filter>
 							<artifact>org.kie.remote:kie-services-client</artifact>

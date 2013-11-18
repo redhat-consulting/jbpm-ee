@@ -12,7 +12,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jbpm.services.task.impl.model.xml.adapter.StringObjectMapXmlAdapter;
 
-
+/**
+ * WorkItem implementation that supports JAXB.
+ * @see org.kie.api.runtime.process.WorkItem
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="work-item")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WorkItem implements org.kie.api.runtime.process.WorkItem, Serializable {

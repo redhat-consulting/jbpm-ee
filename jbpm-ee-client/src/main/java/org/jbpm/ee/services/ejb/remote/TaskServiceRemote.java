@@ -5,6 +5,7 @@ import javax.ejb.Remote;
 import org.jbpm.ee.services.TaskService;
 
 /**
+ * Remote EJB interface for TaskService.
  * 
  * @author bdavis, abaxter
  *

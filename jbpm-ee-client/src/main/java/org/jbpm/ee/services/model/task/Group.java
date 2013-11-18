@@ -13,6 +13,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jbpm.ee.services.model.adapter.Initializable;
 import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 
+/**
+ * Task Group implementation that supports JAXB.
+ * @see org.kie.api.task.model.Group
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="group")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Group extends OrganizationalEntity implements Initializable<org.kie.api.task.model.Group>, org.kie.api.task.model.Group, Serializable {

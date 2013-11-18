@@ -4,8 +4,8 @@ import javax.ejb.Local;
 
 import org.jbpm.ee.services.RuleService;
 
-
 /**
+ * Local EJB interface for RuleService.
  * 
  * @author bdavis, abaxter
  *

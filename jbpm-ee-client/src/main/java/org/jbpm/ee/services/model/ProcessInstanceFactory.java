@@ -3,6 +3,12 @@ package org.jbpm.ee.services.model;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
 
+/**
+ * Factory methods for ensuring that the implementation type is JAX friendly.
+ * 
+ * @author bradsdavis
+ *
+ */
 public class ProcessInstanceFactory {
 
 	private ProcessInstanceFactory() {

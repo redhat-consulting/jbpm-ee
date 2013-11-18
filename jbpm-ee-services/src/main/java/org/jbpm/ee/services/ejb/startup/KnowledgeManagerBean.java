@@ -190,20 +190,20 @@ public class KnowledgeManagerBean {
 	 * @return
 	 */
 	public RuntimeEngine getRuntimeEngineByProcessId(Long processInstanceId) {
-		LOG.info("Loading instance: "+processInstanceId);
+		LOG.debug("Loading instance: "+processInstanceId);
 		ProcessInstanceIdContext context = ProcessInstanceIdContext.get(processInstanceId);
 		
-		LOG.info("Context: "+context);
+		LOG.debug("Context: "+context);
 		KieReleaseId releaseId = getReleaseIdByProcessId(processInstanceId);
 		if(releaseId == null) {
 			throw new InactiveProcessInstance(processInstanceId);
 		}
-		LOG.info("Kie Release: "+releaseId);
+		LOG.debug("Kie Release: "+releaseId);
 		
 		RuntimeManager manager = getRuntimeManager(releaseId);
 		if(!hasDisposalListener(manager, processInstanceId)) {
 			//add the listener.
-			LOG.info("Adding the disposal listener to existing runtime for process ID: "+processInstanceId);
+			LOG.debug("Adding the disposal listener to existing runtime for process ID: "+processInstanceId);
 			manager.getRuntimeEngine(context).getKieSession().addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, em));
 		}
 		return manager.getRuntimeEngine(context);

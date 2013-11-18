@@ -20,7 +20,13 @@ import org.kie.api.task.model.Comment;
 import org.kie.api.task.model.Status;
 import org.kie.api.task.model.User;
 
-
+/**
+ * TaskData implementation that supports JAXB.
+ * @see org.kie.api.task.model.TaskData
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="task-data")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TaskData implements Initializable<org.kie.api.task.model.TaskData>, org.kie.api.task.model.TaskData, Serializable {

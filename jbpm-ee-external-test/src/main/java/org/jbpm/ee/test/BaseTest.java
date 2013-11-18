@@ -103,24 +103,5 @@ public abstract class BaseTest {
 		return builder.toString();
 	}
 	
-	@WebMethod
-	public String completeTaskViaWorkItem() {
-		TaskService service = getTaskService();
-		List<TaskSummary> tasks = service.getTasksAssignedAsPotentialOwner("abaxter", "en-UK");
-		
-		int i=0;
-		for(TaskSummary taskSummary : tasks) {
-			Task task = service.getTaskById(taskSummary.getId());
-			TaskData data = task.getTaskData();
-			
-			WorkItem workItem = getWorkItemService().getWorkItem(data.getWorkItemId());
-			
-			Map<String, Object> map = new HashMap<String, Object>();
-			getWorkItemService().completeWorkItem(workItem.getId(), map);
-			i++;
-		}
-		
-		return "Completed: "+i+" WorkItems.";
-	}
 	
 }

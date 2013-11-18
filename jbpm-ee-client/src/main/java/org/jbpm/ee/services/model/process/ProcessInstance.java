@@ -12,7 +12,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kie.api.definition.process.Process;
 
-
+/**
+ * ProcessInstance implementation that supports JAXB.
+ * @see org.kie.api.runtime.process.ProcessInstance
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="process-instance")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProcessInstance implements org.kie.api.runtime.process.ProcessInstance, Serializable {

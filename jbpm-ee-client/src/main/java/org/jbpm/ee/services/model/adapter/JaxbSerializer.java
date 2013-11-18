@@ -11,6 +11,13 @@ import javax.xml.bind.JAXBContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * It would be better to drop the Externalizable interface from the base model types, 
+ * so that the EJB layer can leverage the default Java serialization instead.
+ * 
+ * @author bradsdavis
+ *
+ */
 public class JaxbSerializer {
 	private static Logger LOG = LoggerFactory.getLogger(JaxbSerializer.class);
 	

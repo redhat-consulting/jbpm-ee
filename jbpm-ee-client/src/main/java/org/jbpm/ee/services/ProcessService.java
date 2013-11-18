@@ -7,9 +7,7 @@ import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * 
- * @author bdavis, abaxter
- *
- * Interface to BRMS process runtime. 
+ * @author bdavis, abaxter 
  * 
  * For starting, creating, and aborting processes and signaling events to a process
  */

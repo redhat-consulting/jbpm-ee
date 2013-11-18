@@ -5,6 +5,7 @@ import javax.ejb.Remote;
 import org.jbpm.ee.services.ProcessService;
 
 /**
+ * Remote EJB interface for ProcessService.
  * 
  * @author bdavis, abaxter
  *

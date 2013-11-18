@@ -6,6 +6,7 @@ import org.jbpm.ee.services.RuleService;
 
 
 /**
+ * Remote EJB interface for RuleService.
  * 
  * @author bdavis, abaxter
  *

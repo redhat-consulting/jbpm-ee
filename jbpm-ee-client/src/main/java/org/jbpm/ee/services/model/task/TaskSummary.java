@@ -18,6 +18,13 @@ import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.kie.api.task.model.Status;
 import org.kie.api.task.model.User;
 
+/**
+ * TaskSummary implementation that supports JAXB.
+ * @see org.kie.api.task.model.TaskSummary
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="task-summary")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TaskSummary implements Initializable<org.kie.api.task.model.TaskSummary>, org.kie.api.task.model.TaskSummary, Serializable 

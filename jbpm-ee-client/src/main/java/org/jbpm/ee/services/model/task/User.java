@@ -13,7 +13,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jbpm.ee.services.model.adapter.Initializable;
 import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 
-
+/**
+ * User implementation that supports JAXB.
+ * @see org.kie.api.task.model.User
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="user")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User implements Initializable<org.kie.api.task.model.User>, org.kie.api.task.model.User, Serializable {

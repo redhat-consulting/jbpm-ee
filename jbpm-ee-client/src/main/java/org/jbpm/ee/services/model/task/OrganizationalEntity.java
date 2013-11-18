@@ -8,6 +8,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+/**
+ * OrganizationEntity implementation that supports JAXB.
+ * @see org.kie.api.task.model.OrganizationalEntity
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="organizational-entity")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({User.class, Group.class})

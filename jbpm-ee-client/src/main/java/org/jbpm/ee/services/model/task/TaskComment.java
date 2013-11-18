@@ -16,6 +16,13 @@ import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.kie.api.task.model.Comment;
 import org.kie.api.task.model.User;
 
+/**
+ * Task Comment implementation that supports JAXB.
+ * @see Comment
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="comment")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TaskComment implements Initializable<Comment>, Comment, Serializable {

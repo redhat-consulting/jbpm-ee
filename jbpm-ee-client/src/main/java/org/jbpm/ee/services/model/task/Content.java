@@ -17,6 +17,13 @@ import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.jbpm.services.task.impl.model.xml.adapter.StringObjectMapXmlAdapter;
 import org.jbpm.services.task.utils.ContentMarshallerHelper;
 
+/**
+ * Task Content implementation that supports JAXB.
+ * @see org.kie.api.task.model.Content
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="content")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Content implements Initializable<org.kie.api.task.model.Content>, org.kie.api.task.model.Content {

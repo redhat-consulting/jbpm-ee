@@ -14,6 +14,7 @@ import org.kie.api.task.model.TaskSummary;
  * 
  * @author bdavis, abaxter
  *
+ * Interface for interacting with Tasks to the BPMS system.
  */
 public interface TaskService {
 

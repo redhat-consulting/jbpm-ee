@@ -47,7 +47,7 @@ public class KieReleaseIdXProcessInstanceListener implements ProcessEventListene
 		
 		entityManager.persist(kbx);
 		
-		LOG.info("Created KieBaseXProcessInstance for Process Instance ID: "+kbx.getKieProcessInstanceId());
+		LOG.debug("Created KieBaseXProcessInstance for Process Instance ID: "+kbx.getKieProcessInstanceId());
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class KieReleaseIdXProcessInstanceListener implements ProcessEventListene
 		try {
 			KieBaseXProcessInstance xref = (KieBaseXProcessInstance)q.getSingleResult();
 			entityManager.remove(xref);
-			LOG.info("Deleted KieBaseXProcessInstance for Process Instance ID: "+event.getProcessInstance().getId());
+			LOG.debug("Deleted KieBaseXProcessInstance for Process Instance ID: "+event.getProcessInstance().getId());
 		}
 		catch(NoResultException e) {
 			LOG.warn("No result found for ProcessInstance: "+processInstanceId, e);

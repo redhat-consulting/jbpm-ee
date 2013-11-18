@@ -18,6 +18,13 @@ import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.kie.api.task.model.PeopleAssignments;
 import org.kie.api.task.model.TaskData;
 
+/**
+ * Task implementation that supports JAXB.
+ * @see org.kie.api.task.model.Task
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="task")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Task implements Initializable<org.kie.api.task.model.Task>, org.kie.api.task.model.Task, Serializable {

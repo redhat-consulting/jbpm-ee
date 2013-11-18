@@ -13,6 +13,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jbpm.ee.services.model.adapter.Initializable;
 import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 
+/**
+ * I18NText implementation that supports JAXB.
+ * @see org.kie.api.task.model.I18NText
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="text")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class I18NText implements Initializable<org.kie.api.task.model.I18NText>, org.kie.api.task.model.I18NText, Serializable {

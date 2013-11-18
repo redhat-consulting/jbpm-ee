@@ -5,6 +5,7 @@ import javax.ejb.Local;
 import org.jbpm.ee.services.TaskService;
 
 /**
+ * Local EJB interface for TaskService.
  * 
  * @author bdavis, abaxter
  *

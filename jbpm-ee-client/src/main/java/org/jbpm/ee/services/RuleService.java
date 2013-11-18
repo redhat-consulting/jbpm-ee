@@ -5,7 +5,6 @@ package org.jbpm.ee.services;
  * 
  * @author bdavis, abaxter
  * 
- * Interface for BRMS rules runtime
  *
  * For inserting facts and firing rules.
  * 

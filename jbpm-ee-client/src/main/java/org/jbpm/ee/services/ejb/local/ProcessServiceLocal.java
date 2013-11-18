@@ -5,6 +5,7 @@ import javax.ejb.Local;
 import org.jbpm.ee.services.ProcessService;
 
 /**
+ * Local EJB interface for ProcessService.
  * 
  * @author bdavis, abaxter
  *

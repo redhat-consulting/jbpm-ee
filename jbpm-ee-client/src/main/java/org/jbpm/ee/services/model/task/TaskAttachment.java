@@ -17,6 +17,13 @@ import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.User;
 
+/**
+ * TaskAttachment implementation that supports JAXB.
+ * @see Attachment
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement(name="attachment")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TaskAttachment implements Initializable<Attachment>, Attachment, Serializable {

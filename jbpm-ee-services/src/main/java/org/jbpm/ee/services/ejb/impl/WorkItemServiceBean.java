@@ -3,7 +3,7 @@ package org.jbpm.ee.services.ejb.impl;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -16,11 +16,19 @@ import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.support.KieReleaseId;
+import org.kie.api.runtime.manager.RuntimeEngine;
+import org.kie.api.runtime.process.WorkItem;
 import org.kie.internal.runtime.manager.RuntimeEnvironment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Stateful
+import com.sun.tools.javac.util.Log;
+
+@Stateless
 public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLocal, WorkItemServiceRemote {
 
+	private static final Logger LOG = LoggerFactory.getLogger(WorkItemServiceBean.class);
+	
 	@Inject
 	private EntityManager entityManager;
 	
@@ -46,7 +54,9 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 		query.setParameter("workItemId", id);
 		WorkItemInfo info = (WorkItemInfo)query.getSingleResult();
 		
-		return ProcessInstanceFactory.convert(info.getWorkItem(environment.getEnvironment(), (InternalRuleBase)environment.getKieBase()));
+		RuntimeEngine engine = knowledgeManager.getRuntimeEngineByProcessId(info.getProcessInstanceId());
+		org.drools.core.process.instance.WorkItemManager wim = (org.drools.core.process.instance.WorkItemManager)(engine.getKieSession().getWorkItemManager());
+		return ProcessInstanceFactory.convert(wim.getWorkItem(id));
 	}
 	
 

@@ -19,6 +19,12 @@ import org.kie.api.task.model.TaskSummary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Factory methods for ensuring that the implementation type is JAX friendly.
+ * 
+ * @author bradsdavis
+ *
+ */
 public class TaskFactory {
 	private static final Logger LOG = LoggerFactory.getLogger(TaskFactory.class);
 
@@ -35,7 +41,7 @@ public class TaskFactory {
 		if(summary == null) {
 			return null;
 		}
-		LOG.info("Converting task summary: "+summary.toString());
+		LOG.debug("Converting task summary: "+summary.toString());
 		return new org.jbpm.ee.services.model.task.TaskSummary(summary);
 	}
 	
@@ -47,7 +53,6 @@ public class TaskFactory {
 		List<TaskSummary> result = new LinkedList<TaskSummary>();
 		for(TaskSummary summary : summaries) {
 			TaskSummary s = convert(summary);
-			LOG.info("Convered: "+s);
 			result.add(s);
 		}
 		

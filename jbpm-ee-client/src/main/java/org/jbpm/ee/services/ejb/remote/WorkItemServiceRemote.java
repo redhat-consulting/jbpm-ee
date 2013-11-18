@@ -5,6 +5,7 @@ import javax.ejb.Remote;
 import org.jbpm.ee.services.WorkItemService;
 
 /**
+ * Remote EJB interface for WorkItemService.
  * 
  * @author bdavis, abaxter
  *

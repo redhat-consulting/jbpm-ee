@@ -5,6 +5,7 @@ import javax.ejb.Local;
 import org.jbpm.ee.services.WorkItemService;
 
 /**
+ * Local EJB interface for WorkItemService.
  * 
  * @author bdavis, abaxter
  *
