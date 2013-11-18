@@ -1,6 +1,8 @@
 package org.jbpm.ee.services.ws;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,8 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.ejb.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
-import org.kie.services.client.serialization.jaxb.impl.JaxbProcessInstanceResponse;
 
 /**
  * Rest interface equivalent to {@link ProcessService}.  Returns JAXB types.
@@ -29,38 +31,58 @@ import org.kie.services.client.serialization.jaxb.impl.JaxbProcessInstanceRespon
 public interface ProcessServiceWS {
 
 	@WebMethod
-    @POST
-    @Path("/{processId}/start")
-    JaxbProcessInstanceResponse startProcess(@PathParam("processId") String processId, JaxbInitializeProcessRequest request);
-    
-
-	@WebMethod
-    @POST
-    @Path("/{processId}")
-    @Produces({ "application/xml" })
-    JaxbProcessInstanceResponse createProcessInstance(@PathParam("processId") String processId, JaxbInitializeProcessRequest request);
+	@POST
+	@Path("/{processId}/start")
+	@WebResult(name="process-instance") 
+	ProcessInstance startProcess(
+	    @WebParam(name="processId") @PathParam("processId") String processId, 
+	    @WebParam(name="request") JaxbInitializeProcessRequest request
+	);
 
 
 	@WebMethod
-    @PUT
-    @Path("/instance/{processInstanceId}/start")
-    JaxbProcessInstanceResponse startProcessInstance(@PathParam("processInstanceId") long processInstanceId);
+	@POST
+	@Path("/{processId}")
+	@Produces({ "application/xml" })
+	@WebResult(name="process-instance") 
+	ProcessInstance createProcessInstance(
+	    @WebParam(name="processId") @PathParam("processId") String processId,
+	    @WebParam(name="request") JaxbInitializeProcessRequest request
+	);
 
 
 	@WebMethod
-    @PUT
-    @Path("instance/{processInstanceId}/event/signal")
-    void signalEvent(String type, Object event, @PathParam("processInstanceId") long processInstanceId);
+	@PUT
+	@Path("/instance/{processInstanceId}/start")
+	@WebResult(name="process-instance") 
+	ProcessInstance startProcessInstance(
+	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId
+	);
 
 
-    @GET
-    @Path("instance/{processInstanceId}")
-    JaxbProcessInstanceResponse getProcessInstance(@PathParam("processInstanceId") long processInstanceId);
+	@WebMethod
+	@PUT
+	@Path("instance/{processInstanceId}/event/signal")
+	void signalEvent(
+	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId,
+	    @WebParam(name="type") String type,
+	    @WebParam(name="event") Object event
+	);
 
 
-    @WebMethod
-    @PUT
-    @Path("instance/{processInstanceId}/abort")
-    void abortProcessInstance(@PathParam("processInstanceId") long processInstanceId);
+	@GET
+	@Path("instance/{processInstanceId}")
+	@WebResult(name="process-instance") 
+	ProcessInstance getProcessInstance(
+	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId
+	);
+
+
+	@WebMethod
+	@PUT
+	@Path("instance/{processInstanceId}/abort")
+	void abortProcessInstance(
+	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId
+	);
 
 }

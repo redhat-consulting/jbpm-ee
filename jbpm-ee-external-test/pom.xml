@@ -45,6 +45,10 @@
 				<version>1</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+			</dependency>
   </dependencies>
     	<build>
 		<plugins>

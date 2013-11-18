@@ -5,6 +5,7 @@ import javax.jws.WebService;
 import org.jbpm.ee.client.RestClientFactory;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
+import org.jbpm.ee.services.WorkItemService;
 
 @WebService(targetNamespace="http://jbpm.org/v6/RestTest/wsdl", serviceName="RestTest")
 public class RestTest extends BaseTest {
@@ -13,6 +14,7 @@ public class RestTest extends BaseTest {
 	
 	protected ProcessService cachedProcessService = null;
 	protected TaskService cachedTaskService = null;
+	protected WorkItemService cachedWorkItemService = null;
 	
 
 	/**
@@ -37,5 +39,15 @@ public class RestTest extends BaseTest {
 		}
 		
 		return cachedTaskService;
+	}
+
+
+	@Override
+	protected WorkItemService getWorkItemService() {
+		if(cachedWorkItemService == null) {
+			cachedWorkItemService = RestClientFactory.getWorkItemService(REST_URL);
+		}
+		
+		return cachedWorkItemService;
 	}
 }

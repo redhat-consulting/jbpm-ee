@@ -1,5 +1,6 @@
 package org.jbpm.ee.services.ws;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -7,16 +8,16 @@ import javax.jws.WebService;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
+import org.jbpm.ee.services.ejb.model.TaskFactory;
+import org.jbpm.ee.services.ejb.model.task.Content;
+import org.jbpm.ee.services.ejb.model.task.Task;
+import org.jbpm.ee.services.ejb.model.task.TaskAttachment;
+import org.jbpm.ee.services.ejb.model.task.TaskSummary;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
-import org.jbpm.services.task.impl.model.xml.JaxbAttachment;
-import org.jbpm.services.task.impl.model.xml.JaxbContent;
-import org.jbpm.services.task.impl.model.xml.JaxbTask;
 import org.jbpm.services.task.impl.model.xml.adapter.OrganizationalEntityXmlAdapter;
 import org.kie.api.task.model.OrganizationalEntity;
 import org.kie.api.task.model.Status;
-import org.kie.services.client.serialization.jaxb.impl.JaxbLongListResponse;
-import org.kie.services.client.serialization.jaxb.impl.JaxbTaskSummaryListResponse;
 
 @WebService(targetNamespace="http://jbpm.org/v6/TaskService/wsdl", serviceName="TaskService", endpointInterface="org.jbpm.ee.services.ws.TaskServiceWS")
 public class TaskServiceWSImpl implements TaskServiceWS {
@@ -176,9 +177,9 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbTask getTaskByWorkItemId(long workItemId) {
+	public Task getTaskByWorkItemId(long workItemId) {
 		try {
-			return new JaxbTask(taskService.getTaskByWorkItemId(workItemId));
+			return (Task)taskService.getTaskByWorkItemId(workItemId);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -186,9 +187,9 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbTask getTaskById(long taskId) {
+	public Task getTaskById(long taskId) {
 		try {
-			return new JaxbTask(taskService.getTaskById(taskId));
+			return (Task)taskService.getTaskById(taskId);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -196,11 +197,10 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbTaskSummaryListResponse getTasksAssignedAsBusinessAdministrator(String userId, String language) {
+	public List<TaskSummary> getTasksAssignedAsBusinessAdministrator(String userId, String language) {
 		try {
-			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-			response.setResult(taskService.getTasksAssignedAsBusinessAdministrator(userId, language));
-			return response;
+			List<org.kie.api.task.model.TaskSummary> summaries = (TaskFactory.convertTaskSummaries(taskService.getTasksAssignedAsBusinessAdministrator(userId, language)));
+			return toTaskSummaryList(summaries);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -208,11 +208,10 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbTaskSummaryListResponse getTasksAssignedAsPotentialOwner(String userId, String language) {
+	public List<TaskSummary> getTasksAssignedAsPotentialOwner(String userId, String language) {
 		try {
-			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-			response.setResult(taskService.getTasksAssignedAsPotentialOwner(userId, language));
-			return response;
+			List<org.kie.api.task.model.TaskSummary> summaries = (taskService.getTasksAssignedAsPotentialOwner(userId, language));
+			return toTaskSummaryList(summaries);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -220,11 +219,10 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbTaskSummaryListResponse getTasksAssignedAsPotentialOwnerByStatus(String userId, List<Status> status, String language) {
+	public List<TaskSummary> getTasksAssignedAsPotentialOwnerByStatus(String userId, List<Status> status, String language) {
 		try {
-			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-			response.setResult(taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
-			return response;
+			List<org.kie.api.task.model.TaskSummary> summaries = (taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
+			return toTaskSummaryList(summaries);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -232,11 +230,10 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbTaskSummaryListResponse getTasksOwned(String userId, String language) {
+	public List<TaskSummary> getTasksOwned(String userId, String language) {
 		try {
-			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-			response.setResult(taskService.getTasksOwned(userId, language));
-			return response;
+			List<org.kie.api.task.model.TaskSummary> summaries = (taskService.getTasksOwned(userId, language));
+			return toTaskSummaryList(summaries);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -244,11 +241,10 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 	
 	@Override
-	public JaxbTaskSummaryListResponse getTasksOwnedByStatus(String userId, List<Status> status, String language) {
+	public List<TaskSummary> getTasksOwnedByStatus(String userId, List<Status> status, String language) {
 		try {
-			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-			response.setResult(taskService.getTasksOwnedByStatus(userId, status, language));
-			return response;
+			List<org.kie.api.task.model.TaskSummary> summaries = taskService.getTasksOwnedByStatus(userId, status, language);
+			return toTaskSummaryList(summaries);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -256,11 +252,9 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbLongListResponse getTasksByProcessInstanceId(long processInstanceId) {
+	public List<Long> getTasksByProcessInstanceId(long processInstanceId) {
 		try {
-			JaxbLongListResponse response = new JaxbLongListResponse();
-			response.setResult(taskService.getTasksByProcessInstanceId(processInstanceId));
-			return response;
+			return (taskService.getTasksByProcessInstanceId(processInstanceId));
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -268,11 +262,10 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbTaskSummaryListResponse getTasksByStatusByProcessInstanceId(long processInstanceId, List<Status> status, String language) {
+	public List<TaskSummary> getTasksByStatusByProcessInstanceId(long processInstanceId, List<Status> status, String language) {
 		try {
-			JaxbTaskSummaryListResponse response = new JaxbTaskSummaryListResponse();
-			response.setResult(taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
-			return response;
+			List<org.kie.api.task.model.TaskSummary> summaries = (taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
+			return toTaskSummaryList(summaries);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -280,9 +273,9 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbContent getContentById(long contentId) {
+	public Content getContentById(long contentId) {
 		try {
-			return new JaxbContent(taskService.getContentById(contentId));
+			return (Content)TaskFactory.convert(taskService.getContentById(contentId));
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -290,9 +283,9 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 	@Override
-	public JaxbAttachment getAttachmentById(long attachId) {
+	public TaskAttachment getAttachmentById(long attachId) {
 		try {
-			return new JaxbAttachment(taskService.getAttachmentById(attachId));
+			return (TaskAttachment)TaskFactory.convert(taskService.getAttachmentById(attachId));
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -300,4 +293,13 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	}
 
 
+	protected List<TaskSummary> toTaskSummaryList(List<org.kie.api.task.model.TaskSummary> summaries) {
+		List<TaskSummary> results = new LinkedList<TaskSummary>();
+		for(org.kie.api.task.model.TaskSummary summary : summaries) {
+			results.add((TaskSummary)summary);
+		}
+		
+		return results;
+		
+	}
 }

@@ -70,8 +70,8 @@ public class ProcessServiceAdapter implements ProcessService {
 	}
 
 	@Override
-	public void signalEvent(String type, Object event, long processInstanceId) {
-		this.restService.signalEvent(type, event, processInstanceId);
+	public void signalEvent(long processInstanceId, String type, Object event) {
+		this.restService.signalEvent(processInstanceId, type, event);
 	}
 
 	@Override

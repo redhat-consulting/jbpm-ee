@@ -2,12 +2,13 @@
 package org.jbpm.ee.services.ws;
 
 import javax.ejb.EJB;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
+import org.jbpm.ee.services.ejb.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
-import org.kie.services.client.serialization.jaxb.impl.JaxbProcessInstanceResponse;
 
 @WebService(targetNamespace="http://jbpm.org/v6/ProcessService/wsdl", serviceName="ProcessService", endpointInterface="org.jbpm.ee.services.ws.ProcessServiceWS")
 public class ProcessServiceWSImpl implements ProcessServiceWS {
@@ -16,13 +17,13 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 	private ProcessServiceLocal processRuntimeService;
 	
 	@Override
-	public JaxbProcessInstanceResponse startProcess(String processId, JaxbInitializeProcessRequest request) {
+	public ProcessInstance startProcess(String processId, JaxbInitializeProcessRequest request) {
 		try {
 			if(request.getVariables() == null) {
-				return new JaxbProcessInstanceResponse(processRuntimeService.startProcess(request.getReleaseId(), processId));
+				return (ProcessInstance)processRuntimeService.startProcess(request.getReleaseId(), processId);
 			}
 			else {
-				return new JaxbProcessInstanceResponse(processRuntimeService.startProcess(request.getReleaseId(), processId, request.getVariables()));
+				return (ProcessInstance)processRuntimeService.startProcess(request.getReleaseId(), processId, request.getVariables());
 			}
 			
 		} catch (Exception e) {
@@ -31,18 +32,18 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 	}
 
 	@Override
-	public JaxbProcessInstanceResponse createProcessInstance(String processId, JaxbInitializeProcessRequest request) {
+	public ProcessInstance createProcessInstance(String processId, JaxbInitializeProcessRequest request) {
 		try {
-			return new JaxbProcessInstanceResponse(processRuntimeService.createProcessInstance(request.getReleaseId(), processId, request.getVariables()));
+			return (ProcessInstance)processRuntimeService.createProcessInstance(request.getReleaseId(), processId, request.getVariables());
 		} catch (Exception e) {
 			throw new RemoteServiceException(e);
 		}
 	}
 
 	@Override
-	public JaxbProcessInstanceResponse startProcessInstance(long processInstanceId) {
+	public ProcessInstance startProcessInstance(long processInstanceId) {
 		try {
-			return new JaxbProcessInstanceResponse(processRuntimeService.startProcessInstance(processInstanceId));
+			return (ProcessInstance)processRuntimeService.startProcessInstance(processInstanceId);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -50,9 +51,9 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 	}
 
 	@Override
-	public void signalEvent(String type, Object event, long processInstanceId) {
+	public void signalEvent(long processInstanceId, String type, Object event) {
 		try {
-			this.processRuntimeService.signalEvent(type, event, processInstanceId);
+			this.processRuntimeService.signalEvent(processInstanceId, type, event);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
@@ -60,16 +61,9 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 	}
 
 	@Override
-	public JaxbProcessInstanceResponse getProcessInstance(long processInstanceId) {
+	public ProcessInstance getProcessInstance(long processInstanceId) {
 		try {
-			org.kie.api.runtime.process.ProcessInstance instance = processRuntimeService.getProcessInstance(processInstanceId);
-			
-			if(instance != null) {
-				return new JaxbProcessInstanceResponse(instance);
-			}
-			else {
-				return null;
-			}
+			return (ProcessInstance)processRuntimeService.getProcessInstance(processInstanceId);
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);

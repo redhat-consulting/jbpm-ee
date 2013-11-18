@@ -269,7 +269,7 @@ public class KnowledgeManagerBean {
 	 * @return
 	 */
 	public Long getProcessInstanceIdByWorkItemId(Long workItemId) {
-		Query q = em.createQuery("select processInstanceId from WorkItemInfo wii where kb.workItemId=:workItemId");
+		Query q = em.createQuery("select processInstanceId from WorkItemInfo wii where wii.workItemId=:workItemId");
 		q.setParameter("workItemId", workItemId);
 		Long processInstanceId = (Long)q.getSingleResult();
 		
@@ -323,7 +323,7 @@ public class KnowledgeManagerBean {
 	 * @return
 	 */
 	public KieReleaseId getReleaseIdByWorkItemId(Long workItemId) {
-		Query q = em.createQuery("select processInstanceId from WorkItemInfo wii where kb.workItemId=:workItemId");
+		Query q = em.createQuery("select processInstanceId from WorkItemInfo wii where wii.workItemId=:workItemId");
 		q.setParameter("workItemId", workItemId);
 		Long processInstanceId = (Long)q.getSingleResult();
 		

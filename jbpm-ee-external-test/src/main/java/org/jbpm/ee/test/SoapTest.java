@@ -1,3 +1,4 @@
+
 package org.jbpm.ee.test;
 
 import javax.jws.WebService;
@@ -6,15 +7,18 @@ import org.jbpm.ee.client.ClientException;
 import org.jbpm.ee.client.SoapClientFactory;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
+import org.jbpm.ee.services.WorkItemService;
 
 @WebService(targetNamespace="http://jbpm.org/v6/SoapTest/wsdl", serviceName="SOAPTest")
 public class SoapTest extends BaseTest {
 
 	private TaskService cachedTaskService = null;
 	private ProcessService cachedProcessService = null;
+	private WorkItemService cachedWorkItemService = null;
 	
 	private static final String PROCESS_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/ProcessService?wsdl";
 	private static final String TASK_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/TaskService?wsdl"; 
+	private static final String WORK_ITEM_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/WorkItemService?wsdl"; 
 	
 	/**
 	 * Creates the ProcessService & caches the instance for reuse.  
@@ -45,5 +49,17 @@ public class SoapTest extends BaseTest {
 			}
 		}
 		return cachedTaskService;
+	}
+
+	@Override
+	protected WorkItemService getWorkItemService() {
+		if(cachedWorkItemService == null) {
+			try {
+				cachedWorkItemService = SoapClientFactory.getWorkItemService(WORK_ITEM_SERVICE_URL);
+			} catch (ClientException e) {
+				throw new RuntimeException("Unable to create WorkItemService from ["+WORK_ITEM_SERVICE_URL+"]. Please validate URL.", e);
+			}
+		}
+		return cachedWorkItemService;
 	}
 }

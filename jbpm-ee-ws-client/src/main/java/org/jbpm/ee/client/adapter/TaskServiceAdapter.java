@@ -1,5 +1,6 @@
 package org.jbpm.ee.client.adapter;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -108,37 +109,55 @@ public class TaskServiceAdapter implements TaskService {
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsBusinessAdministrator(String userId, String language) {
-		return this.taskService.getTasksAssignedAsBusinessAdministrator(userId, language).getResult();
+		List<TaskSummary> results = new LinkedList<TaskSummary>();
+		results.addAll(this.taskService.getTasksAssignedAsBusinessAdministrator(userId, language));
+		
+		return results;
 	}
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsPotentialOwner(String userId, String language) {
-		return this.taskService.getTasksAssignedAsPotentialOwner(userId, language).getResult();
+		List<TaskSummary> results = new LinkedList<TaskSummary>();
+		results.addAll(taskService.getTasksAssignedAsPotentialOwner(userId, language));
+		
+		return results;
 	}
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsPotentialOwnerByStatus(String userId, List<Status> status, String language) {
-		return this.taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language).getResult();
+		List<TaskSummary> results = new LinkedList<TaskSummary>();
+		results.addAll(this.taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
+		
+		return results;
 	}
 
 	@Override
 	public List<TaskSummary> getTasksOwned(String userId, String language) {
-			return this.taskService.getTasksOwned(userId, language).getResult();
+		List<TaskSummary> results = new LinkedList<TaskSummary>();
+		results.addAll(this.taskService.getTasksOwned(userId, language));
+		
+		return results;
 	}
 
 	@Override
 	public List<TaskSummary> getTasksOwnedByStatus(String userId, List<Status> status, String language) {
-		return this.taskService.getTasksOwnedByStatus(userId, status, language).getResult();
+		List<TaskSummary> results = new LinkedList<TaskSummary>();
+		results.addAll(this.taskService.getTasksOwnedByStatus(userId, status, language));
+		
+		return results;
 	}
 
 	@Override
 	public List<Long> getTasksByProcessInstanceId(long processInstanceId) {
-		return this.taskService.getTasksByProcessInstanceId(processInstanceId).getResult();
+		return this.taskService.getTasksByProcessInstanceId(processInstanceId);
 	}
 
 	@Override
 	public List<TaskSummary> getTasksByStatusByProcessInstanceId(long processInstanceId, List<Status> status, String language) {
-		return this.taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language).getResult();
+		List<TaskSummary> results = new LinkedList<TaskSummary>();
+		results.addAll(this.taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
+		
+		return results;
 	}
 
 	@Override

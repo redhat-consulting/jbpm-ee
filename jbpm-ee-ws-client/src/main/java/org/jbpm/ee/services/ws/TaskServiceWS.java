@@ -3,6 +3,8 @@ package org.jbpm.ee.services.ws;
 import java.util.List;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,15 +17,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jbpm.ee.services.ejb.model.task.Content;
+import org.jbpm.ee.services.ejb.model.task.Task;
+import org.jbpm.ee.services.ejb.model.task.TaskAttachment;
+import org.jbpm.ee.services.ejb.model.task.TaskSummary;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
-import org.jbpm.services.task.impl.model.xml.JaxbAttachment;
-import org.jbpm.services.task.impl.model.xml.JaxbContent;
-import org.jbpm.services.task.impl.model.xml.JaxbTask;
 import org.jbpm.services.task.impl.model.xml.adapter.OrganizationalEntityXmlAdapter;
 import org.kie.api.task.model.OrganizationalEntity;
 import org.kie.api.task.model.Status;
-import org.kie.services.client.serialization.jaxb.impl.JaxbLongListResponse;
-import org.kie.services.client.serialization.jaxb.impl.JaxbTaskSummaryListResponse;
 
 /**
  * Rest interface equivalent to {@link TaskServiceWS}.  Returns JAXB types.
@@ -41,131 +42,221 @@ public interface TaskServiceWS {
 	@WebMethod
     @PUT
     @Path("{taskId}/activate")
-    void activate(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
+    void activate(
+    		@PathParam("taskId") @WebParam(name="taskId") long taskId, 
+    		@QueryParam("userId") @WebParam(name="userId") String userId
+    );
 
 	@WebMethod
     @PUT
     @Path("{taskId}/claim")
-    void claim(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
+    void claim(
+    		@WebParam(name="taskId") @PathParam("taskId") long taskId, 
+    		@WebParam(name="userId") @QueryParam("userId") String userId
+    );
 
 	@WebMethod
     @PUT
     @Path("claim/next")
-    void claimNextAvailable(@QueryParam("userId") String userId, @QueryParam("lang") String language);
+    void claimNextAvailable(
+    		@WebParam(name="userId") @QueryParam("userId") String userId, 
+    		@WebParam(name="language") @QueryParam("lang") String language
+    );
 
 	@WebMethod
     @PUT
     @Path("{taskId}/complete")
-    void complete(@PathParam("taskId") long taskId, @QueryParam("userId") String userId, JaxbMapRequest data);
+    void complete(
+    		@WebParam(name="taskId") @PathParam("taskId") long taskId, 
+    		@WebParam(name="userId") @QueryParam("userId") String userId, 
+    		@WebParam(name="taskData") JaxbMapRequest data
+    );
 
 	@WebMethod
     @PUT
     @Path("{taskId}/delegate")
-    void delegate(@PathParam("taskId") long taskId, @QueryParam("userId") String userId, String targetUserId);
-
+    void delegate(
+    		@WebParam(name="taskId") @PathParam("taskId") long taskId, 
+    		@WebParam(name="userId") @QueryParam("userId") String userId, 
+    		@WebParam(name="targetUserId") String targetUserId
+    );
+	
 	@WebMethod
-    @POST
-    @Path("{taskId}/exit")
-    void exit(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
-
+	@POST
+	@Path("{taskId}/exit")
+	void exit(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/fail")
-    void fail(@PathParam("taskId") long taskId, @QueryParam("userId") String userId, JaxbMapRequest faultData);
-
+	@PUT
+	@Path("{taskId}/fail")
+	void fail(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId, 
+	    @WebParam(name="faultData") JaxbMapRequest faultData
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/forward")
-    void forward(@PathParam("taskId") long taskId, @QueryParam("userId") String userId, String targetEntityId);
-
+	@PUT
+	@Path("{taskId}/forward")
+	void forward(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId, 
+	    @WebParam(name="targetEntityId") String targetEntityId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/release")
-    void release(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
-
+	@PUT
+	@Path("{taskId}/release")
+	void release(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/resume")
-    void resume(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
-
+	@PUT
+	@Path("{taskId}/resume")
+	void resume(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/skip")
-    void skip(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
-
+	@PUT
+	@Path("{taskId}/skip")
+	void skip(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/start")
-    void start(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
-
+	@PUT
+	@Path("{taskId}/start")
+	void start(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/stop")
-    void stop(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
-
+	@PUT
+	@Path("{taskId}/stop")
+	void stop(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/suspend")
-    void suspend(@PathParam("taskId") long taskId, @QueryParam("userId") String userId);
-
+	@PUT
+	@Path("{taskId}/suspend")
+	void suspend(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("{taskId}/nominate")
-    void nominate(@PathParam("taskId") long taskId, @QueryParam("userId") String userId, @XmlJavaTypeAdapter(OrganizationalEntityXmlAdapter.class)List<OrganizationalEntity> potentialOwners);
-
+	@PUT
+	@Path("{taskId}/nominate")
+	void nominate(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId, 
+	    @WebParam(name="userId") @QueryParam("userId") String userId, 
+	    @WebParam(name="potentialOwners") @XmlJavaTypeAdapter(OrganizationalEntityXmlAdapter.class)List<OrganizationalEntity> potentialOwners
+	);
+	
 	@WebMethod
-    @GET
-    @Path("/workitem/{workItemId}/task")
-    JaxbTask getTaskByWorkItemId(@PathParam("workItemId") long workItemId);
-
+	@GET
+	@Path("/workitem/{workItemId}/task")
+	@WebResult(name="task")
+	Task getTaskByWorkItemId(
+	    @WebParam(name="workItemId") @PathParam("workItemId") long workItemId
+	);
+	
 	@WebMethod
-    @GET
-    @Path("{taskId}")
-    JaxbTask getTaskById(@PathParam("taskId") long taskId);
-
+	@GET
+	@Path("{taskId}")
+	@WebResult(name="task")
+	Task getTaskById(
+	    @WebParam(name="taskId") @PathParam("taskId") long taskId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("assigned/{userId}/administrator")
-    JaxbTaskSummaryListResponse getTasksAssignedAsBusinessAdministrator(@PathParam("userId") String userId, @QueryParam("lang") String language);
-
+	@PUT
+	@Path("assigned/{userId}/administrator")
+	@WebResult(name="task-summaries")
+	List<TaskSummary> getTasksAssignedAsBusinessAdministrator(
+	    @WebParam(name="userId") @PathParam("userId") String userId, 
+	    @WebParam(name="language") @QueryParam("lang") String language
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("assigned/{userId}/potential/all")
-    JaxbTaskSummaryListResponse getTasksAssignedAsPotentialOwner(@PathParam("userId") String userId, @QueryParam("lang") String language);
-
+	@PUT
+	@Path("assigned/{userId}/potential/all")
+	@WebResult(name="task-summaries")
+	List<TaskSummary> getTasksAssignedAsPotentialOwner(
+	    @WebParam(name="userId") @PathParam("userId") String userId, 
+	    @WebParam(name="language") @QueryParam("lang") String language
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("assigned/{userId}/potential/status")
-    JaxbTaskSummaryListResponse getTasksAssignedAsPotentialOwnerByStatus(@PathParam("userId") String userId, List<Status> status, @QueryParam("lang") String language);
-
+	@PUT
+	@Path("assigned/{userId}/potential/status")
+	@WebResult(name="task-summaries")
+	List<TaskSummary> getTasksAssignedAsPotentialOwnerByStatus(
+	    @WebParam(name="userId") @PathParam("userId") String userId, 
+	    List<Status> status, 
+	    @WebParam(name="language") @QueryParam("lang") String language
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("assigned/{userId}/owner/all")
-    JaxbTaskSummaryListResponse getTasksOwned(@PathParam("userId") String userId, @QueryParam("lang") String language);
-
+	@PUT
+	@Path("assigned/{userId}/owner/all")
+	@WebResult(name="task-summaries")
+	List<TaskSummary> getTasksOwned(
+	    @WebParam(name="userId") @PathParam("userId") String userId, 
+	    @WebParam(name="language") @QueryParam("lang") String language
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("assigned/{userId}/owner/status")
-    JaxbTaskSummaryListResponse getTasksOwnedByStatus(@PathParam("userId") String userId, List<Status> status, @QueryParam("lang") String language);
-
+	@PUT
+	@Path("assigned/{userId}/owner/status")
+	@WebResult(name="task-summaries")
+	List<TaskSummary> getTasksOwnedByStatus(
+	    @WebParam(name="userId") @PathParam("userId") String userId, 
+	    @WebParam(name="status") List<Status> status, 
+	    @WebParam(name="language") @QueryParam("lang") String language
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("/process/instance/{processInstanceId}/tasks/all")
-    JaxbLongListResponse getTasksByProcessInstanceId(@PathParam("processInstanceId") long processInstanceId);
-
+	@PUT
+	@Path("/process/instance/{processInstanceId}/tasks/all")
+	@WebResult(name="task-summaries")
+	List<Long> getTasksByProcessInstanceId(
+	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId
+	);
+	
 	@WebMethod
-    @PUT
-    @Path("/process/instance/{processInstanceId}/tasks/status")
-    JaxbTaskSummaryListResponse getTasksByStatusByProcessInstanceId(@PathParam("processInstanceId") long processInstanceId, List<Status> status, @QueryParam("lang") String language);
-
+	@PUT
+	@Path("/process/instance/{processInstanceId}/tasks/status")
+	@WebResult(name="task-summaries")
+	List<TaskSummary> getTasksByStatusByProcessInstanceId(
+	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId, 
+	    List<Status> status, 
+	    @WebParam(name="language") @QueryParam("lang") String language
+	);
+	
 	@WebMethod
-    @GET
-    @Path("/content/{contentId}")
-    JaxbContent getContentById(@PathParam("contentId") long contentId);
-
+	@GET
+	@Path("/content/{contentId}")
+	Content getContentById(
+	    @WebParam(name="contentId") @PathParam("contentId") long contentId
+	);
+	
 	@WebMethod
-    @GET
-    @Path("/attachment/{attachId}")
-    JaxbAttachment getAttachmentById(@PathParam("attachId") long attachId);
-    
+	@GET
+	@Path("/attachment/{attachId}")
+	TaskAttachment getAttachmentById(
+	    @WebParam(name="attachId") @PathParam("attachId") long attachId
+	);
+
 }

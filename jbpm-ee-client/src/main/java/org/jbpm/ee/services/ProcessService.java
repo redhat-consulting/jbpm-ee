@@ -59,7 +59,7 @@ public interface ProcessService {
 	 * @param event The event object to be passed in with the event
 	 * @param processInstanceId The process instance's unique identifier
 	 */
-	void signalEvent(String type, Object event, long processInstanceId);
+	void signalEvent(long processInstanceId, String type, Object event);
 	
 	
 	/**

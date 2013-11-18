@@ -9,10 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.drools.core.common.InternalRuleBase;
-import org.drools.core.process.instance.WorkItem;
 import org.drools.persistence.info.WorkItemInfo;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
+import org.jbpm.ee.services.ejb.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.support.KieReleaseId;
@@ -38,7 +38,7 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 	}
 
 	@Override
-	public WorkItem getWorkItem(long id) {
+	public org.kie.api.runtime.process.WorkItem getWorkItem(long id) {
 		KieReleaseId releaseId = knowledgeManager.getReleaseIdByWorkItemId(id);
 		RuntimeEnvironment environment = knowledgeManager.getRuntimeEnvironment(releaseId);
 		
@@ -46,7 +46,7 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 		query.setParameter("workItemId", id);
 		WorkItemInfo info = (WorkItemInfo)query.getSingleResult();
 		
-		return info.getWorkItem(environment.getEnvironment(), (InternalRuleBase)environment.getKieBase());
+		return ProcessInstanceFactory.convert(info.getWorkItem(environment.getEnvironment(), (InternalRuleBase)environment.getKieBase()));
 	}
 	
 

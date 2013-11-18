@@ -1,6 +1,7 @@
 package org.jbpm.ee.services.ws;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -11,8 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.jbpm.ee.services.WorkItemService;
+import org.jbpm.ee.services.ejb.model.process.WorkItem;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
-import org.kie.services.client.serialization.jaxb.impl.JaxbWorkItem;
 
 /**
  * Rest interface equivalent to {@link WorkItemService}.  Returns JAXB types.
@@ -30,16 +31,25 @@ public interface WorkItemServiceWS {
 	@WebMethod
     @PUT
     @Path("{id}/complete")
-    void completeWorkItem(@PathParam("id") long id, JaxbMapRequest results);
+    void completeWorkItem(
+    		@WebParam(name="id") @PathParam("id") long id, 
+    		@WebParam(name="request") JaxbMapRequest results
+    );
 
+	
 	@WebMethod
     @PUT
     @Path("{id}/abort")
-    void abortWorkItem(@PathParam("id") long id);
+    void abortWorkItem(
+    		@WebParam(name="id") @PathParam("id") long id
+    );
     
+	
 	@WebMethod
     @GET
     @Path("{id}")
-    JaxbWorkItem getWorkItem(@PathParam("id") long id);
+    WorkItem getWorkItem(
+    		@WebParam(name="id") @PathParam("id") long id
+    );
 
 }

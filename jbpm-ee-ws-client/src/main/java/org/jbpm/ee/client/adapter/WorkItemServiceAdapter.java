@@ -2,10 +2,10 @@ package org.jbpm.ee.client.adapter;
 
 import java.util.Map;
 
-import org.drools.core.process.instance.WorkItem;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.ws.WorkItemServiceWS;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
+import org.kie.api.runtime.process.WorkItem;
 
 public class WorkItemServiceAdapter implements WorkItemService {
 

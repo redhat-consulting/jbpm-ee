@@ -11,11 +11,11 @@ import javax.inject.Inject;
 
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
+import org.jbpm.ee.services.ejb.model.TaskFactory;
 import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.services.task.impl.model.xml.JaxbAttachment;
 import org.jbpm.services.task.impl.model.xml.JaxbContent;
-import org.jbpm.services.task.impl.model.xml.JaxbTask;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
 import org.kie.api.task.model.OrganizationalEntity;
@@ -93,87 +93,71 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public void complete(long taskId, String userId, Map<String, Object> data) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().complete(taskId, userId, data);
-
 	}
 
 	@Override
 	public void delegate(long taskId, String userId, String targetUserId) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().delegate(taskId, userId, targetUserId);
-
 	}
 
 	@Override
 	public void exit(long taskId, String userId) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().exit(taskId, userId);
-
 	}
 
 	@Override
 	public void fail(long taskId, String userId, Map<String, Object> faultData) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().fail(taskId, userId, faultData);
-
 	}
 
 	@Override
 	public void forward(long taskId, String userId, String targetEntityId) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().forward(taskId, userId, targetEntityId);
-
 	}
 
 	@Override
 	public Task getTaskByWorkItemId(long workItemId) {
-		return new JaxbTask(taskQueryService.getTaskByWorkItemId(workItemId));
+		return TaskFactory.convert(taskQueryService.getTaskByWorkItemId(workItemId));
 	}
 
 	@Override
 	public Task getTaskById(long taskId) {
-		return new JaxbTask(knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().getTaskById(taskId));
+		return TaskFactory.convert(knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().getTaskById(taskId));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsBusinessAdministrator(String userId, String language) {
-		return taskQueryService.getTasksAssignedAsBusinessAdministrator(userId, language);
+		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksAssignedAsBusinessAdministrator(userId, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsPotentialOwner(String userId, String language) {
-		
-		return taskQueryService.getTasksAssignedAsPotentialOwner(userId, language);
+		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksAssignedAsPotentialOwner(userId, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsPotentialOwnerByStatus(String userId, List<Status> status, String language) {
-		
-		return taskQueryService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language);
+		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksOwned(String userId, String language) {
-		
-		return taskQueryService.getTasksOwned(userId, language);
+		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksOwned(userId, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksOwnedByStatus(String userId, List<Status> status, String language) {
-		
-		return taskQueryService.getTasksOwnedByStatus(userId, status, language);
+		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksOwnedByStatus(userId, status, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksByStatusByProcessInstanceId(long processInstanceId, List<Status> status, String language) {
-		
-		return taskQueryService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language);
+		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
 	}
 
 	@Override
 	public List<Long> getTasksByProcessInstanceId(long processInstanceId) {
-		
 		return taskQueryService.getTasksByProcessInstanceId(processInstanceId);
 	}
 
@@ -185,30 +169,22 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public void resume(long taskId, String userId) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().resume(taskId, userId);
-
 	}
 
 	@Override
 	public void skip(long taskId, String userId) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().skip(taskId, userId);
-
 	}
 
 	@Override
 	public void start(long taskId, String userId) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().start(taskId, userId);
-
 	}
 
 	@Override
 	public void stop(long taskId, String userId) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().stop(taskId, userId);
-
 	}
 
 	@Override
@@ -218,9 +194,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public void nominate(long taskId, String userId, List<OrganizationalEntity> potentialOwners) {
-		
 		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().nominate(taskId, userId, potentialOwners);
-
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package org.jbpm.ee.services;
 
 import java.util.Map;
 
-import org.drools.core.process.instance.WorkItem;
+import org.kie.api.runtime.process.WorkItem;
 
 /**
  * 
