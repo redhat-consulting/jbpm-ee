@@ -39,6 +39,12 @@
 			<artifactId>kie-services-client</artifactId>
 			<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+				<scope>provided</scope>
+			</dependency>
   </dependencies>
     	<build>
 		<plugins>
