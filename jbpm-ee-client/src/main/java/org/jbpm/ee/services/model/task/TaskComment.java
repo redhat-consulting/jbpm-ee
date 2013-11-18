@@ -1,4 +1,4 @@
-package org.jbpm.ee.services.ejb.model.task;
+package org.jbpm.ee.services.model.task;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -11,8 +11,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.jbpm.ee.services.ejb.model.adapter.Initializable;
-import org.jbpm.ee.services.ejb.model.adapter.JaxbSerializer;
+import org.jbpm.ee.services.model.adapter.Initializable;
+import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.kie.api.task.model.Comment;
 import org.kie.api.task.model.User;
 
@@ -26,7 +26,7 @@ public class TaskComment implements Initializable<Comment>, Comment, Serializabl
     @XmlElement
     private String text;
     
-    @XmlElement(name="added-by", type=org.jbpm.ee.services.ejb.model.task.User.class)
+    @XmlElement(name="added-by", type=org.jbpm.ee.services.model.task.User.class)
     private User addedBy;
     
     @XmlElement(name="added-at")

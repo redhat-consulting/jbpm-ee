@@ -1,4 +1,4 @@
-package org.jbpm.ee.services.ejb.model.task;
+package org.jbpm.ee.services.model.task;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jbpm.ee.services.ejb.model.adapter.Initializable;
-import org.jbpm.ee.services.ejb.model.adapter.JaxbSerializer;
+import org.jbpm.ee.services.model.adapter.Initializable;
+import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.jbpm.services.task.impl.model.xml.adapter.StringObjectMapXmlAdapter;
 import org.jbpm.services.task.utils.ContentMarshallerHelper;
 

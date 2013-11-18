@@ -1,15 +1,15 @@
-package org.jbpm.ee.services.ejb.model;
+package org.jbpm.ee.services.model;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jbpm.ee.services.ejb.model.task.Group;
-import org.jbpm.ee.services.ejb.model.task.PeopleAssignments;
-import org.jbpm.ee.services.ejb.model.task.TaskAttachment;
-import org.jbpm.ee.services.ejb.model.task.TaskComment;
-import org.jbpm.ee.services.ejb.model.task.TaskData;
-import org.jbpm.ee.services.ejb.model.task.User;
+import org.jbpm.ee.services.model.task.Group;
+import org.jbpm.ee.services.model.task.PeopleAssignments;
+import org.jbpm.ee.services.model.task.TaskAttachment;
+import org.jbpm.ee.services.model.task.TaskComment;
+import org.jbpm.ee.services.model.task.TaskData;
+import org.jbpm.ee.services.model.task.User;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Comment;
 import org.kie.api.task.model.Content;
@@ -27,7 +27,7 @@ public class TaskFactory {
 			return null;
 		}
 		
-		return new org.jbpm.ee.services.ejb.model.task.Content(content);
+		return new org.jbpm.ee.services.model.task.Content(content);
 	}
 	
 	
@@ -36,7 +36,7 @@ public class TaskFactory {
 			return null;
 		}
 		LOG.info("Converting task summary: "+summary.toString());
-		return new org.jbpm.ee.services.ejb.model.task.TaskSummary(summary);
+		return new org.jbpm.ee.services.model.task.TaskSummary(summary);
 	}
 	
 	public static List<TaskSummary> convertTaskSummaries(List<TaskSummary> summaries) {
@@ -59,7 +59,7 @@ public class TaskFactory {
 			return null;
 		}
 		
-		return new org.jbpm.ee.services.ejb.model.task.Task(task);
+		return new org.jbpm.ee.services.model.task.Task(task);
 	}
 	
 
@@ -81,11 +81,11 @@ public class TaskFactory {
 		return new User(user);
 	}
 	
-	public static org.jbpm.ee.services.ejb.model.task.I18NText convert(I18NText original) {
+	public static org.jbpm.ee.services.model.task.I18NText convert(I18NText original) {
 		if(original == null) {
 			return null;
 		}
-		return new org.jbpm.ee.services.ejb.model.task.I18NText(original);
+		return new org.jbpm.ee.services.model.task.I18NText(original);
 	}
 
 	public static org.kie.api.task.model.TaskData convert(org.kie.api.task.model.TaskData original) {

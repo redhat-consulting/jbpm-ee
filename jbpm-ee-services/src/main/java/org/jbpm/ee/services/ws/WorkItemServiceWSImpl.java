@@ -6,7 +6,7 @@ import javax.ejb.EJB;
 import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
-import org.jbpm.ee.services.ejb.model.process.WorkItem;
+import org.jbpm.ee.services.model.process.WorkItem;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 

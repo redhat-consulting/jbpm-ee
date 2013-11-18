@@ -17,10 +17,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jbpm.ee.services.ejb.model.task.Content;
-import org.jbpm.ee.services.ejb.model.task.Task;
-import org.jbpm.ee.services.ejb.model.task.TaskAttachment;
-import org.jbpm.ee.services.ejb.model.task.TaskSummary;
+import org.jbpm.ee.services.model.task.Content;
+import org.jbpm.ee.services.model.task.Task;
+import org.jbpm.ee.services.model.task.TaskAttachment;
+import org.jbpm.ee.services.model.task.TaskSummary;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.jbpm.services.task.impl.model.xml.adapter.OrganizationalEntityXmlAdapter;
 import org.kie.api.task.model.OrganizationalEntity;

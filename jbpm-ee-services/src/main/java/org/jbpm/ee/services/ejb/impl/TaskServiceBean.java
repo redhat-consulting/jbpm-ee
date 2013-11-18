@@ -11,9 +11,9 @@ import javax.inject.Inject;
 
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
-import org.jbpm.ee.services.ejb.model.TaskFactory;
 import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
+import org.jbpm.ee.services.model.TaskFactory;
 import org.jbpm.services.task.impl.model.xml.JaxbAttachment;
 import org.jbpm.services.task.impl.model.xml.JaxbContent;
 import org.kie.api.task.model.Attachment;

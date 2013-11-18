@@ -1,4 +1,4 @@
-package org.jbpm.ee.services.ejb.model.task;
+package org.jbpm.ee.services.model.task;
 
 import java.io.Serializable;
 

@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.jbpm.ee.services.WorkItemService;
-import org.jbpm.ee.services.ejb.model.process.WorkItem;
+import org.jbpm.ee.services.model.process.WorkItem;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 
 /**

@@ -1,4 +1,4 @@
-package org.jbpm.ee.services.ejb.model.process;
+package org.jbpm.ee.services.model.process;
 
 import java.io.Serializable;
 import java.util.Arrays;

@@ -8,11 +8,11 @@ import javax.jws.WebService;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
-import org.jbpm.ee.services.ejb.model.TaskFactory;
-import org.jbpm.ee.services.ejb.model.task.Content;
-import org.jbpm.ee.services.ejb.model.task.Task;
-import org.jbpm.ee.services.ejb.model.task.TaskAttachment;
-import org.jbpm.ee.services.ejb.model.task.TaskSummary;
+import org.jbpm.ee.services.model.TaskFactory;
+import org.jbpm.ee.services.model.task.Content;
+import org.jbpm.ee.services.model.task.Task;
+import org.jbpm.ee.services.model.task.TaskAttachment;
+import org.jbpm.ee.services.model.task.TaskSummary;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.jbpm.services.task.impl.model.xml.adapter.OrganizationalEntityXmlAdapter;

@@ -1,4 +1,4 @@
-package org.jbpm.ee.services.ejb.model.adapter;
+package org.jbpm.ee.services.model.adapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

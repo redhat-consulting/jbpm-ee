@@ -14,7 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.jbpm.ee.services.ProcessService;
-import org.jbpm.ee.services.ejb.model.process.ProcessInstance;
+import org.jbpm.ee.services.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 
 /**

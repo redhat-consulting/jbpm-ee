@@ -1,4 +1,4 @@
-package org.jbpm.ee.services.ejb.model.task;
+package org.jbpm.ee.services.model.task;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.jbpm.ee.services.ejb.model.TaskFactory;
-import org.jbpm.ee.services.ejb.model.adapter.Initializable;
-import org.jbpm.ee.services.ejb.model.adapter.JaxbSerializer;
+import org.jbpm.ee.services.model.TaskFactory;
+import org.jbpm.ee.services.model.adapter.Initializable;
+import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.kie.api.task.model.PeopleAssignments;
 import org.kie.api.task.model.TaskData;
 
@@ -40,13 +40,13 @@ public class Task implements Initializable<org.kie.api.task.model.Task>, org.kie
 	@XmlElement(type=I18NText.class)
 	private List<org.kie.api.task.model.I18NText> descriptions;
 	
-	@XmlElement(type=org.jbpm.ee.services.ejb.model.task.PeopleAssignments.class)
+	@XmlElement(type=org.jbpm.ee.services.model.task.PeopleAssignments.class)
 	private PeopleAssignments peopleAssignments;
 	
 	@XmlElement
 	private String taskType;
 	
-	@XmlElement(type=org.jbpm.ee.services.ejb.model.task.TaskData.class)
+	@XmlElement(type=org.jbpm.ee.services.model.task.TaskData.class)
 	private TaskData taskData;
 	
 	public Task() {

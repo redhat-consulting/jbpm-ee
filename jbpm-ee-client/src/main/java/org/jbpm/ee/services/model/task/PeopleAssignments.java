@@ -1,4 +1,4 @@
-package org.jbpm.ee.services.ejb.model.task;
+package org.jbpm.ee.services.model.task;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.jbpm.ee.services.ejb.model.TaskFactory;
-import org.jbpm.ee.services.ejb.model.adapter.Initializable;
-import org.jbpm.ee.services.ejb.model.adapter.JaxbSerializer;
+import org.jbpm.ee.services.model.TaskFactory;
+import org.jbpm.ee.services.model.adapter.Initializable;
+import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.kie.api.task.model.OrganizationalEntity;
 import org.kie.api.task.model.User;
 
@@ -23,15 +23,15 @@ import org.kie.api.task.model.User;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PeopleAssignments implements Initializable<org.kie.api.task.model.PeopleAssignments>, org.kie.api.task.model.PeopleAssignments, Serializable  {
 
-	@XmlElement(type=org.jbpm.ee.services.ejb.model.task.User.class)
+	@XmlElement(type=org.jbpm.ee.services.model.task.User.class)
 	private User taskInitiator;
 	
 	@XmlElementWrapper(name="potential-owners")
-	@XmlElement(type=org.jbpm.ee.services.ejb.model.task.OrganizationalEntity.class)
+	@XmlElement(type=org.jbpm.ee.services.model.task.OrganizationalEntity.class)
 	private List<OrganizationalEntity> potentialOwners;
 	
 	@XmlElementWrapper(name="business-administrators")
-	@XmlElement(type=org.jbpm.ee.services.ejb.model.task.OrganizationalEntity.class)
+	@XmlElement(type=org.jbpm.ee.services.model.task.OrganizationalEntity.class)
 	private List<OrganizationalEntity> businessAdministrators;
 
 	public PeopleAssignments() {

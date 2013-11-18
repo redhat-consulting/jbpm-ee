@@ -12,9 +12,9 @@ import org.drools.core.common.InternalRuleBase;
 import org.drools.persistence.info.WorkItemInfo;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
-import org.jbpm.ee.services.ejb.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
+import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.support.KieReleaseId;
 import org.kie.internal.runtime.manager.RuntimeEnvironment;
 

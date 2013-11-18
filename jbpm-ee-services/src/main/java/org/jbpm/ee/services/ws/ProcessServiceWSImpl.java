@@ -6,7 +6,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
-import org.jbpm.ee.services.ejb.model.process.ProcessInstance;
+import org.jbpm.ee.services.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 
