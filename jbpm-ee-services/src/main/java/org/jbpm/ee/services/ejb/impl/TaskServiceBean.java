@@ -14,8 +14,6 @@ import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
 import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.TaskFactory;
-import org.jbpm.services.task.impl.model.xml.JaxbAttachment;
-import org.jbpm.services.task.impl.model.xml.JaxbContent;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
 import org.kie.api.task.model.OrganizationalEntity;
@@ -199,12 +197,12 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public Content getContentById(long contentId) {
-		return new JaxbContent(taskContentService.getContentById(contentId));
+		return TaskFactory.convert(taskContentService.getContentById(contentId));
 	}
 
 	@Override
 	public Attachment getAttachmentById(long attachId) {
-		return new JaxbAttachment(taskAttachmentService.getAttachmentById(attachId));
+		return TaskFactory.convert(taskAttachmentService.getAttachmentById(attachId));
 	}
 	
 	
