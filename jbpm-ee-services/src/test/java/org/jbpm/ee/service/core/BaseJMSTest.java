@@ -67,7 +67,11 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 		processVariables.put(variableKey, "Initial");
 		
 		StartProcessCommand startProcess = new StartProcessCommand(processString, processVariables);
+		StartProcessCommand startProcess2 = new StartProcessCommand(processString, processVariables);
+		StartProcessCommand startProcess3 = new StartProcessCommand(processString, processVariables);
 		String correlationId = cmdExecutor.execute(kri, startProcess);
+		
+		String correlationId3 = cmdExecutor.execute(kri, startProcess3);
 		ProcessInstance processInstance = null;
 		int count = 0;
 		while (processInstance == null && count < 1) {
@@ -76,5 +80,16 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 		}
 		
 		assertEquals(1, processInstance.getState());
+		String correlationId2 = cmdExecutor.execute(kri, startProcess2);
+		processInstance = null;
+		count = 0;
+		while (processInstance == null && count < 1) {
+			processInstance = (ProcessInstance) cmdExecutor.pollResponse(correlationId2);
+			count += 1;
+		}
+		assertEquals(1, processInstance.getState());
+		//processInstance = (ProcessInstance) cmdExecutor.pollResponse(correlationId3);
+		//assertEquals(1, processInstance.getState());
+		
 	}
 }
