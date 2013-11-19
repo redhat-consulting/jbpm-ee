@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LoanOrder {
 
-	 @XmlElement(name="firstname", required=true)
+	@XmlElement(name="firstname", required=true)
 	 private String firstName;
 	 
 	 @XmlElement(name="lastname", required=true)
@@ -82,4 +82,9 @@ public class LoanOrder {
 		return true;
 	}
 	 
+	@Override
+	public String toString() {
+		return "LoanOrder [firstName=" + firstName + ", lastName=" + lastName
+				+ ", loanAmount=" + loanAmount + "]";
+	}
 }
