@@ -22,11 +22,14 @@ import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jbpm.ee.jms.AsyncCommandExecutorBean;
 import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.services.task.commands.GetTaskAssignedAsBusinessAdminCommand;
+import org.jbpm.services.task.commands.GetTaskAssignedAsPotentialOwnerCommand;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.task.model.TaskSummary;
 import org.kie.scanner.MavenRepository;
 
 @RunWith(Arquillian.class)
@@ -67,11 +70,8 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 		processVariables.put(variableKey, "Initial");
 		
 		StartProcessCommand startProcess = new StartProcessCommand(processString, processVariables);
-		StartProcessCommand startProcess2 = new StartProcessCommand(processString, processVariables);
-		StartProcessCommand startProcess3 = new StartProcessCommand(processString, processVariables);
 		String correlationId = cmdExecutor.execute(kri, startProcess);
 		
-		String correlationId3 = cmdExecutor.execute(kri, startProcess3);
 		ProcessInstance processInstance = null;
 		int count = 0;
 		while (processInstance == null && count < 1) {
@@ -80,16 +80,15 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 		}
 		
 		assertEquals(1, processInstance.getState());
-		String correlationId2 = cmdExecutor.execute(kri, startProcess2);
-		processInstance = null;
+		
+		GetTaskAssignedAsPotentialOwnerCommand getTasks = new GetTaskAssignedAsPotentialOwnerCommand("abaxter", "en-UK");
+		correlationId = cmdExecutor.execute(kri, getTasks);
+		
+		List<TaskSummary> taskSummaries = null;
 		count = 0;
-		while (processInstance == null && count < 1) {
-			processInstance = (ProcessInstance) cmdExecutor.pollResponse(correlationId2);
+		while (taskSummaries == null && count < 1) {
+			taskSummaries = (List<TaskSummary>) cmdExecutor.pollResponse(correlationId);
 			count += 1;
 		}
-		assertEquals(1, processInstance.getState());
-		//processInstance = (ProcessInstance) cmdExecutor.pollResponse(correlationId3);
-		//assertEquals(1, processInstance.getState());
-		
 	}
 }
