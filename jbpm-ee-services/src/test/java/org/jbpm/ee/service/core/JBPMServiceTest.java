@@ -21,6 +21,7 @@ import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.test.LoanOrder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kie.api.KieServices;
@@ -32,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
 	private static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
+	private static final KieReleaseId loanReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-test-kjar", "1.0.0-SNAPSHOT");
 	private static final Logger LOG = LoggerFactory.getLogger(JBPMServiceTest.class);
 	
 	public abstract TaskService getTaskService();
@@ -110,4 +112,23 @@ public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
         processInstance = processService.getProcessInstance(processInstance.getId());
         assertNull(processInstance);
 	}
+	
+	@Test
+	@Transactional(value=TransactionMode.DEFAULT)
+	public void testLoanProcess() throws Exception {
+		final String processString = "ProcessingTest.LoanProcess";
+		final String variableKey = "loanOrder";
+		
+		Map<String, Object> processVariables = new HashMap<String, Object>();
+		LoanOrder order = new LoanOrder();
+		order.setFirstName("Adam");
+		order.setLastName("Baxter");
+		order.setLoanAmount(500000L);
+		processVariables.put(variableKey, order);
+		
+		ProcessService processService = getProcessService();
+		
+		ProcessInstance processInstance = processService.startProcess(loanReleaseId, processString, processVariables);
+	}
+	
 }
