@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task-summary>
+	<id>30</id>
+	<name>String Input</name>
+	<subject></subject>
+	<description></description>
+	<status>Ready</status>
+	<priority>0</priority>
+	<skipable>false</skipable>
+	<created-on>2013-11-18T04:35:08-05:00</created-on>
+	<activation-time>2013-11-18T04:35:08-05:00</activation-time>
+	<process-instance-id>30</process-instance-id>
+	<process-id>testProj.testProcess</process-id>
+	<process-session-id>0</process-session-id>
+</task-summary>

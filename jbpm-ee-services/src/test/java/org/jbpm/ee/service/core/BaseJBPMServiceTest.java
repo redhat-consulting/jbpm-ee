@@ -24,10 +24,10 @@ public class BaseJBPMServiceTest {
 	private static final File PERSISTENCE_REF = new File("src/main/resources/META-INF/persistence.xml");
 	private static final File BEAN_REF = new File("src/main/resources/META-INF/beans.xml");
 	
+	private static final File TEST_XML_REF = new File("src/test/resources/test-classloading.xml");
 	
-	private static final File JMS_REF = new File("src/main/webapp/WEB-INF/hornetq-jms.xml");
+	
 	private static final File WEB_REF = new File("src/main/webapp/WEB-INF/web.xml");
-	private static final File DS_REF = new File("src/main/webapp/WEB-INF/jbossas-ds.xml");
 	
 	@Deployment
 	@OverProtocol("Servlet 3.0")
@@ -36,12 +36,11 @@ public class BaseJBPMServiceTest {
 	
 		PomEquippedResolveStage resolveStage = Maven.resolver().loadPomFromFile("pom.xml");
 		
-		final WebArchive archive = ShrinkWrap.create(WebArchive.class, "jbpm-services.war");
+		final WebArchive archive = ShrinkWrap.create(WebArchive.class, "jbpm-ee-services.war");
 		archive.addAsWebInfResource(ENV_REF, "classes/environment.properties");
 		archive.addAsWebInfResource(USER_REF, "classes/usergroup.properties");
-		archive.addAsWebInfResource(DS_REF, "jbossas-ds.xml");
-		archive.addAsWebInfResource(JMS_REF, "hornetq-jms.xml");
 		archive.addAsWebInfResource(PERSISTENCE_REF, "classes/META-INF/persistence.xml");
+		archive.addAsWebInfResource(TEST_XML_REF, "classes/test-classloading.xml");
 		
 		archive.addAsWebInfResource(BEAN_REF, "beans.xml");
 		archive.addAsWebInfResource(WEB_REF, "web.xml");

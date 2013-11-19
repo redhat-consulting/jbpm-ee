@@ -2,7 +2,6 @@
 package org.jbpm.ee.services.ws;
 
 import javax.ejb.EJB;
-import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;

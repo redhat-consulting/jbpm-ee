@@ -8,6 +8,7 @@ import java.io.ObjectOutput;
 
 import javax.xml.bind.JAXBContext;
 
+import org.kie.internal.builder.JaxbConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,7 @@ public class JaxbSerializer {
 	public static <T> void readExternal(Initializable<T> obj, ObjectInput in) throws IOException {
 	    String inbound = in.readUTF();
 	    if(LOG.isDebugEnabled()) {
-	    	LOG.info("Reading from stream: "+inbound);
+	    	LOG.debug("Reading from stream: "+inbound);
 	    }
 	    try {
 	    	ByteArrayInputStream bais = new ByteArrayInputStream(inbound.getBytes());
