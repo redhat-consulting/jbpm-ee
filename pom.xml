@@ -299,5 +299,8 @@
 		<module>jbpm-ee-ws-client</module>
 		<module>jbpm-ee-external-test</module>
 		<module>jbpm-ee-test-kjar</module>
+		<module>jbpm-ee-external-test-ejb</module>
+		<module>jbpm-ee-external-test-rest</module>
+		<module>jbpm-ee-external-test-soap</module>
 	</modules>
 </project>
