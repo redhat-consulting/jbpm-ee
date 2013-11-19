@@ -22,6 +22,7 @@ import org.jbpm.ee.persistence.KieBaseXProcessInstance;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
 import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.runtime.manager.impl.RuntimeEnvironmentBuilder;
+import org.jbpm.services.task.HumanTaskConfigurator;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.PropertiesConfiguration;
@@ -102,6 +103,10 @@ public class KnowledgeManagerBean {
 		this.scanners = null;
 	}
 
+	public TaskService getKieSessionUnboundTaskService() {
+		return taskService;
+	}
+	
 	/**
 	 * Loads a kjar via the given Release Id (maven deployment information)
 	 * Additionally, sets up scanning to monitor for kjar changes
