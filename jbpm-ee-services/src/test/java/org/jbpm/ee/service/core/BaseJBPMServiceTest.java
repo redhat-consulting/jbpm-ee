@@ -25,9 +25,9 @@ public class BaseJBPMServiceTest {
 	private static final File BEAN_REF = new File("src/main/resources/META-INF/beans.xml");
 	
 	
-	private static final File JMS_REF = new File("src/main/webapp/WEB-INF/hornetq-jms.xml");
+	private static final File JMS_REF = new File("resources/jbpm-ee-jms.xml");
 	private static final File WEB_REF = new File("src/main/webapp/WEB-INF/web.xml");
-	private static final File DS_REF = new File("src/main/webapp/WEB-INF/jbossas-ds.xml");
+	private static final File DS_REF = new File("resources/jbpm-ee-ds.xml");
 	
 	@Deployment
 	@OverProtocol("Servlet 3.0")
