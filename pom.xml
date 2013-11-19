@@ -298,5 +298,6 @@
 		<module>jbpm-ee-services</module>
 		<module>jbpm-ee-ws-client</module>
 		<module>jbpm-ee-external-test</module>
+		<module>jbpm-ee-test-kjar</module>
 	</modules>
 </project>
