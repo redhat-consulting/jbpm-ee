@@ -1,11 +1,10 @@
-package org.jbpm.ee.jms;
+package org.jbpm.ee.services.ejb.impl;
 
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -19,6 +18,9 @@ import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.drools.core.command.impl.GenericCommand;
+import org.jbpm.ee.jms.AcceptedCommandSets;
+import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
+import org.jbpm.ee.services.ejb.remote.AsyncCommandExecutorRemote;
 import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.mvel2.sh.CommandException;
@@ -32,8 +34,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 @Stateless
-@LocalBean
-public class AsyncCommandExecutorBean {
+public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, AsyncCommandExecutorRemote{
 
 	private static final Logger LOG = LoggerFactory.getLogger(AsyncCommandExecutorBean.class);
 	
