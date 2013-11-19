@@ -20,6 +20,7 @@ import javax.jms.Topic;
 
 import org.drools.core.command.impl.GenericCommand;
 import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.services.task.commands.TaskCommand;
 import org.mvel2.sh.CommandException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,12 +86,18 @@ public class AsyncCommandExecutorBean {
 			request.setObject(command);
 			request.setJMSReplyTo(responseQueue);
 			
-			//TODO: throw an exception if release id is required for this command
-			if (kieReleaseId != null) {
+			if (kieReleaseId == null) {
+				if(!TaskCommand.class.isAssignableFrom(command.getClass()) &&
+						(!AcceptedCommandSets.getCommandsWithProcessInstanceId().contains(command.getClass())) &&
+						(!AcceptedCommandSets.getCommandsWithWorkItemid().contains(command.getClass()))) {
+					throw new CommandException("Command Message must include ReleaseId: " + command.getClass().getCanonicalName());
+				} 
+			} else {
 				request.setStringProperty("groupId", kieReleaseId.getGroupId());
 				request.setStringProperty("artifactId", kieReleaseId.getArtifactId());
 				request.setStringProperty("version", kieReleaseId.getVersion());
 			}
+			
 			producer.send(request);
 			
 			return uuid.toString();
