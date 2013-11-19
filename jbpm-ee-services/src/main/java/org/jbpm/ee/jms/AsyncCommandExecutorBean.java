@@ -90,7 +90,7 @@ public class AsyncCommandExecutorBean {
 				if(!TaskCommand.class.isAssignableFrom(command.getClass()) &&
 						(!AcceptedCommandSets.getCommandsWithProcessInstanceId().contains(command.getClass())) &&
 						(!AcceptedCommandSets.getCommandsWithWorkItemid().contains(command.getClass()))) {
-					throw new CommandException("Command Message must include ReleaseId");
+					throw new CommandException("Command Message must include ReleaseId: " + command.getClass().getCanonicalName());
 				} 
 			} else {
 				request.setStringProperty("groupId", kieReleaseId.getGroupId());
