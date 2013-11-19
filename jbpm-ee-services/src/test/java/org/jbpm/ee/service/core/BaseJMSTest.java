@@ -20,9 +20,8 @@ import org.drools.core.command.runtime.process.StartProcessCommand;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
-import org.jbpm.ee.jms.AsyncCommandExecutorBean;
+import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.support.KieReleaseId;
-import org.jbpm.services.task.commands.GetTaskAssignedAsBusinessAdminCommand;
 import org.jbpm.services.task.commands.GetTaskAssignedAsPotentialOwnerCommand;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 	private static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
 	
 	@EJB
-	AsyncCommandExecutorBean cmdExecutor;
+	AsyncCommandExecutorLocal cmdExecutor;
 	
 	@Before
     public void prepare() {
