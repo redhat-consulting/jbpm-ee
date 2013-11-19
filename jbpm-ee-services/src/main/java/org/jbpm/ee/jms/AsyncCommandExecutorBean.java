@@ -85,10 +85,12 @@ public class AsyncCommandExecutorBean {
 			request.setObject(command);
 			request.setJMSReplyTo(responseQueue);
 			
-			request.setStringProperty("groupId", kieReleaseId.getGroupId());
-			request.setStringProperty("artifactId", kieReleaseId.getArtifactId());
-			request.setStringProperty("version", kieReleaseId.getVersion());
-			
+			//TODO: throw an exception if release id is required for this command
+			if (kieReleaseId != null) {
+				request.setStringProperty("groupId", kieReleaseId.getGroupId());
+				request.setStringProperty("artifactId", kieReleaseId.getArtifactId());
+				request.setStringProperty("version", kieReleaseId.getVersion());
+			}
 			producer.send(request);
 			
 			return uuid.toString();
@@ -97,6 +99,10 @@ public class AsyncCommandExecutorBean {
 		}
 	}
 
+	public String execute(GenericCommand<?> command) {
+		return execute(null, command);
+	}
+	
 	/**
 	 * Waits for the response object for a given correlation id.
 	 * 
