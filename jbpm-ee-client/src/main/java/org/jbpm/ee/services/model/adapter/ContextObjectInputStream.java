@@ -5,6 +5,12 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
+/**
+ * Implementation of an object input stream that delegates to a given classloader.
+ * 
+ * @author bradsdavis
+ *
+ */
 public class ContextObjectInputStream extends ObjectInputStream {
 
 	private ClassLoader classloader = null;

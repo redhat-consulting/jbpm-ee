@@ -7,9 +7,11 @@ import java.util.Map;
 import javax.jws.WebMethod;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.jboss.ejb.client.EJBClientContext;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
+import org.jbpm.ee.services.ejb.interceptors.MapSerializationInterceptor;
 import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
@@ -19,6 +21,11 @@ import org.kie.api.task.model.TaskSummary;
 import org.slf4j.Logger;
 
 public abstract class BaseTest {
+	
+	static {
+		EJBClientContext.getCurrent().registerInterceptor(0, new MapSerializationInterceptor());
+	}
+	
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(BaseTest.class);
 	
 	protected abstract ProcessService getProcessService();
@@ -109,7 +116,6 @@ public abstract class BaseTest {
 
 	@WebMethod
 	public Long testLoanProcess() throws Exception {
-		
 		final String variableKey = "loanOrder";
 		
 		Map<String, Object> processVariables = new HashMap<String, Object>();

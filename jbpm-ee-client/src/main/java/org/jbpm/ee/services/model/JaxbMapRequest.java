@@ -1,4 +1,4 @@
-package org.jbpm.ee.services.ws.request;
+package org.jbpm.ee.services.model;
 
 import java.util.HashMap;
 import java.util.Map;

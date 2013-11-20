@@ -33,7 +33,21 @@ public class JaxbSerializer {
 			}
 			out.writeUTF(outbound);
 		} catch (Exception e) {
-			throw new IOException("Exception writing object.");
+			throw new IOException("Exception writing object.", e);
+		}
+	}
+	
+	public static <T> T unmarshall(Class<T> clazz, String inbound) throws IOException {
+		if(LOG.isDebugEnabled()) {
+			LOG.info("Reading from stream: "+inbound);
+		}
+	    try {
+	    	ByteArrayInputStream bais = new ByteArrayInputStream(inbound.getBytes());
+			JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+			T hydrated = (T)jaxbContext.createUnmarshaller().unmarshal(bais);
+			return hydrated;
+		} catch (Exception e) {
+			throw new IOException("Exception reading object.", e);
 		}
 	}
 	

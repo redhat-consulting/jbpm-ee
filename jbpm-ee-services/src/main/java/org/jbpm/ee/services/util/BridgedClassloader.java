@@ -19,7 +19,7 @@ public class BridgedClassloader extends ClassLoader {
 			this.getParent().loadClass(name);
 		}
 		catch(ClassNotFoundException e) {
-			LOG.info("Looking up class["+name+"] in secondary classloader.");
+			LOG.debug("Looking up class["+name+"] in secondary classloader.");
 			return secondary.loadClass(name);
 		}
 		throw new ClassNotFoundException();
@@ -27,12 +27,12 @@ public class BridgedClassloader extends ClassLoader {
 	
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
-		LOG.info("Trying to load class: "+name);
+		LOG.debug("Trying to load class: "+name);
 		try {
 			return this.getParent().loadClass(name);
 		}
 		catch(Exception e) {
-			LOG.info("Looking up class["+name+"] in secondary classloader.");
+			LOG.debug("Looking up class["+name+"] in secondary classloader.");
 			return secondary.loadClass(name);
 		}
 	}

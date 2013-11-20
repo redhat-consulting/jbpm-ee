@@ -5,25 +5,26 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.drools.core.common.InternalRuleBase;
 import org.drools.persistence.info.WorkItemInfo;
 import org.jbpm.ee.services.WorkItemService;
+import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderBinding;
+import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
 import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.runtime.manager.RuntimeEngine;
-import org.kie.api.runtime.process.WorkItem;
 import org.kie.internal.runtime.manager.RuntimeEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.tools.javac.util.Log;
-
+@ClassloaderBinding
+@Interceptors({ClassloaderInterceptor.class})
 @Stateless
 public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLocal, WorkItemServiceRemote {
 

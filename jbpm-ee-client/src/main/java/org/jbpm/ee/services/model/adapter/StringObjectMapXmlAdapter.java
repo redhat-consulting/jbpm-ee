@@ -18,6 +18,10 @@ import org.jbpm.services.task.impl.model.xml.adapter.JaxbStringObjectMapEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Converts a Map to JAXB safe map.  Leverages the classloader previously set. 
+ *
+ */
 public class StringObjectMapXmlAdapter extends XmlAdapter<JaxbStringObjectMap, Map<String, Object>> {
 
     private static final Logger logger = LoggerFactory.getLogger(StringObjectMapXmlAdapter.class);
