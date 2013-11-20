@@ -32,7 +32,7 @@ import org.jbpm.services.task.commands.SuspendTaskCommand;
 
 // should extend org.kie.services.client.api.command.AcceptedCommands once it's available
 @SuppressWarnings("rawtypes")
-public class AcceptedCommandSets {
+public class AcceptedCommands {
 
 	private static Set<Class> commandsWithProcessInstanceId =
 			new HashSet<Class>();
