@@ -25,6 +25,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
+import org.jbpm.ee.services.model.CommandResponse;
 import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.services.task.commands.ClaimTaskCommand;
 import org.jbpm.services.task.commands.CompleteTaskCommand;
@@ -70,18 +71,16 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
         repository.deployArtifact(releaseID, kjar, pom);
     }
 	
-	private Object executeReturnsResponse(KieReleaseId releaseId, GenericCommand<?> command ) {
+	private CommandResponse executeReturnsResponse(KieReleaseId releaseId, GenericCommand<?> command ) {
 		String correlationId = cmdExecutor.execute(releaseId, command);
 		int count = 0;
-		Object response = null;
+		CommandResponse response = null;
 		while (response == null && count < 2) {
 			response = cmdExecutor.pollResponse(correlationId);
 			count += 1;
 		}
-		// A ProcessInstance will be returned null if getProcessInstance(Long) is called and the process is no longer active
-		// This should be sufficient for testing purposes
-		if (response == null && count == 2) {
-			throw new RuntimeException("No response returned");
+		if (response == null) {
+			throw new IllegalStateException("Never received message");
 		}
 		return response;
 	}
@@ -104,16 +103,16 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 		
 		GetTaskAssignedAsPotentialOwnerCommand getTasks = new GetTaskAssignedAsPotentialOwnerCommand("abaxter", "en-UK");
 		
-		List<TaskSummary> tasks = (List<TaskSummary>) executeReturnsResponse(null, getTasks);
+		List<TaskSummary> tasks = (List<TaskSummary>) executeReturnsResponse(null, getTasks).getResponse();
 		
 		int initialCount = tasks.size();
 		LOG.info("Number of tasks: " + initialCount);
 		StartProcessCommand startProcess = new StartProcessCommand(processString, processVariables);
-		ProcessInstance processInstance = (ProcessInstance) executeReturnsResponse(kri, startProcess);
+		ProcessInstance processInstance = (ProcessInstance) executeReturnsResponse(kri, startProcess).getResponse();
 		
 		assertEquals(1, processInstance.getState());
 		
-		tasks = (List<TaskSummary>) executeReturnsResponse(null, getTasks);
+		tasks = (List<TaskSummary>) executeReturnsResponse(null, getTasks).getResponse();
 		assertNotNull(tasks);
         assertEquals(initialCount + 1, tasks.size());
 	
@@ -133,13 +132,13 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
         CompleteTaskCommand completeCommand = new CompleteTaskCommand(taskId, "abaxter", testResults);
         executeNoResponse(null, completeCommand);
         
-        tasks = (List<TaskSummary>) executeReturnsResponse(null, getTasks);
+        tasks = (List<TaskSummary>) executeReturnsResponse(null, getTasks).getResponse();
         assertNotNull(tasks);
         assertEquals(initialCount, tasks.size());
         
         LOG.info("Looking up process instance: "+processInstance.getId());
         GetProcessInstanceCommand getProcessInstance = new GetProcessInstanceCommand(processInstance.getId());
-        processInstance = (ProcessInstance) executeReturnsResponse(null, getProcessInstance);
+        processInstance = (ProcessInstance) executeReturnsResponse(null, getProcessInstance).getResponse();
         LOG.info("Process Instance: "+processInstance);
         assertNull(processInstance);
 	}
