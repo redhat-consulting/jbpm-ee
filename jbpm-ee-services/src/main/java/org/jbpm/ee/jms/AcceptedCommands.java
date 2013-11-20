@@ -12,17 +12,27 @@ import org.drools.core.command.runtime.process.GetWorkItemCommand;
 import org.drools.core.command.runtime.process.SetProcessInstanceVariablesCommand;
 import org.drools.core.command.runtime.process.SignalEventCommand;
 import org.drools.core.command.runtime.process.StartProcessInstanceCommand;
+import org.jbpm.services.task.commands.ActivateTaskCommand;
+import org.jbpm.services.task.commands.ClaimTaskCommand;
 import org.jbpm.services.task.commands.CompleteTaskCommand;
+import org.jbpm.services.task.commands.DelegateTaskCommand;
 import org.jbpm.services.task.commands.ExitTaskCommand;
 import org.jbpm.services.task.commands.FailTaskCommand;
+import org.jbpm.services.task.commands.ForwardTaskCommand;
 import org.jbpm.services.task.commands.GetTaskByWorkItemIdCommand;
+import org.jbpm.services.task.commands.GetTaskCommand;
 import org.jbpm.services.task.commands.GetTasksByProcessInstanceIdCommand;
 import org.jbpm.services.task.commands.GetTasksByStatusByProcessInstanceIdCommand;
+import org.jbpm.services.task.commands.NominateTaskCommand;
+import org.jbpm.services.task.commands.ReleaseTaskCommand;
 import org.jbpm.services.task.commands.SkipTaskCommand;
+import org.jbpm.services.task.commands.StartTaskCommand;
+import org.jbpm.services.task.commands.StopTaskCommand;
+import org.jbpm.services.task.commands.SuspendTaskCommand;
 
 // should extend org.kie.services.client.api.command.AcceptedCommands once it's available
 @SuppressWarnings("rawtypes")
-public class AcceptedCommandSets {
+public class AcceptedCommands {
 
 	private static Set<Class> commandsWithProcessInstanceId =
 			new HashSet<Class>();
@@ -30,6 +40,9 @@ public class AcceptedCommandSets {
 	private static Set<Class> commandsWithWorkItemId =
 			new HashSet<Class>();
 
+	private static Set<Class> commandsWithTaskId =
+			new HashSet<Class>();
+	
 	private static Set<Class> commandsThatInfluenceKieSession =
 			new HashSet<Class>();
 	
@@ -49,25 +62,44 @@ public class AcceptedCommandSets {
 		commandsWithWorkItemId.add(GetTaskByWorkItemIdCommand.class);
 		commandsWithWorkItemId = Collections.unmodifiableSet(commandsWithWorkItemId);
 		
+		commandsWithTaskId.add(ActivateTaskCommand.class);
+		commandsWithTaskId.add(ClaimTaskCommand.class);
+		commandsWithTaskId.add(CompleteTaskCommand.class);
+		commandsWithTaskId.add(DelegateTaskCommand.class);
+		commandsWithTaskId.add(ExitTaskCommand.class);
+		commandsWithTaskId.add(FailTaskCommand.class);
+		commandsWithTaskId.add(ForwardTaskCommand.class);
+		commandsWithTaskId.add(GetTaskCommand.class);
+		commandsWithTaskId.add(NominateTaskCommand.class);
+		commandsWithTaskId.add(ReleaseTaskCommand.class);
+		commandsWithTaskId.add(SkipTaskCommand.class);
+		commandsWithTaskId.add(StartTaskCommand.class);
+		commandsWithTaskId.add(StopTaskCommand.class);
+		commandsWithTaskId.add(SuspendTaskCommand.class);
+		commandsWithTaskId = Collections.unmodifiableSet(commandsWithTaskId);
+		
 		commandsThatInfluenceKieSession.add(CompleteTaskCommand.class);
 		commandsThatInfluenceKieSession.add(ExitTaskCommand.class);
 		commandsThatInfluenceKieSession.add(FailTaskCommand.class);
 		commandsThatInfluenceKieSession.add(SkipTaskCommand.class);
 		commandsThatInfluenceKieSession = Collections.unmodifiableSet(commandsThatInfluenceKieSession);
 	}
-
-	public static Set<Class> getCommandsWithProcessInstanceId() {
-		return commandsWithProcessInstanceId;
-	}
-
-	public static Set<Class> getCommandsWithWorkItemid() {
-		return commandsWithWorkItemId;
+	
+	public static boolean containsProcessInstanceId(Class clz) {
+		return commandsWithProcessInstanceId.contains(clz);
 	}
 	
-	public static Set<Class> getCommandsThatInfluenceKieSession() {
-		return commandsThatInfluenceKieSession;
+	public static boolean containsWorkItemId(Class clz) {
+		return commandsWithWorkItemId.contains(clz);
 	}
 	
+	public static boolean influencesKieSession(Class clz) {
+		return commandsThatInfluenceKieSession.contains(clz);
+	}
+	
+	public static boolean containsTaskId(Class clz) {
+		return commandsWithTaskId.contains(clz);
+	}
 	
 }
 
