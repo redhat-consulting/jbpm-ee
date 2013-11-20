@@ -2,9 +2,11 @@ package org.jbpm.ee.services;
 
 import java.util.Map;
 
+import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
+import org.jbpm.ee.services.ejb.annotations.ReleaseId;
+import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.runtime.process.ProcessInstance;
-
 /**
  * 
  * @author bdavis, abaxter 
@@ -20,7 +22,7 @@ public interface ProcessService {
 	 * @param processId The process's name 
 	 * @return Process instance information
 	 */
-	ProcessInstance startProcess(KieReleaseId releaseId, String processId);
+	ProcessInstance startProcess(@ReleaseId KieReleaseId releaseId, String processId);
 	
 	/**
 	 * Starts a process with provided variables
@@ -30,7 +32,8 @@ public interface ProcessService {
 	 * @param parameters Process variables to start with
 	 * @return Process instance information
 	 */
-	ProcessInstance startProcess(KieReleaseId releaseId, String processId, Map<String, Object> parameters);
+	@PreprocessClassloader
+	ProcessInstance startProcess(@ReleaseId KieReleaseId releaseId, String processId, Map<String, Object> parameters);
 	
 	/**
 	 * Created, but doesn't start, a process with provided variables
@@ -40,7 +43,8 @@ public interface ProcessService {
 	 * @param parameters Process variables to start with
 	 * @return Process instance information
 	 */
-	ProcessInstance createProcessInstance(KieReleaseId releaseId, String processId, Map<String, Object> parameters);
+	@PreprocessClassloader
+	ProcessInstance createProcessInstance(@ReleaseId KieReleaseId releaseId, String processId, Map<String, Object> parameters);
 	
 	/**
 	 * Starts a previously created process
@@ -48,7 +52,7 @@ public interface ProcessService {
 	 * @param processInstanceId The process instance's unique identifier
 	 * @return Process instance information
 	 */
-	ProcessInstance startProcessInstance(long processInstanceId);
+	ProcessInstance startProcessInstance(@ProcessInstanceId long processInstanceId);
 	
 	/**
 	 * Signal an event to a single process
@@ -57,7 +61,7 @@ public interface ProcessService {
 	 * @param event The event object to be passed in with the event
 	 * @param processInstanceId The process instance's unique identifier
 	 */
-	void signalEvent(long processInstanceId, String type, Object event);
+	void signalEvent(@ProcessInstanceId long processInstanceId, String type, Object event);
 	
 	
 	/**
@@ -67,12 +71,12 @@ public interface ProcessService {
 	 * @param processInstanceId The process instance's unique identifier
 	 * @return Process instance information
 	 */
-	ProcessInstance getProcessInstance(long processInstanceId);
+	ProcessInstance getProcessInstance(@ProcessInstanceId long processInstanceId);
 	
 	/**
 	 * Aborts the specified process
 	 * 
 	 * @param processInstanceId The process instance's unique identifier
 	 */
-	void abortProcessInstance(long processInstanceId);
+	void abortProcessInstance(@ProcessInstanceId long processInstanceId);
 }

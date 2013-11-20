@@ -5,26 +5,30 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.jbpm.ee.services.model.adapter.JaxbSerializer;
-import org.jbpm.ee.services.model.adapter.StringObjectMapXmlAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Jaxb, serializable map implementation.
+ * Lazily deserializes values in order to support inte
  * 
  * @author bradsdavis
  *
  */
-public class SerializableStringObjectMap extends HashMap<String, Object> implements Externalizable {
+public class LazyDeserializingMap extends HashMap<String, Object> implements Externalizable {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SerializableStringObjectMap.class);
-	private StringObjectMapXmlAdapter adapter = new StringObjectMapXmlAdapter();
+	private static final Logger LOG = LoggerFactory.getLogger(LazyDeserializingMap.class);
 	private String lazyMap;
 	
-	public SerializableStringObjectMap() throws Exception {
+	public LazyDeserializingMap() throws Exception {
 
+	}
+
+	public LazyDeserializingMap(Map<String, Object> initial) throws Exception {
+		this.putAll(initial);
 	}
 	
 	@Override

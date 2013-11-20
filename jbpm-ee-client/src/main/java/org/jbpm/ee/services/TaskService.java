@@ -3,6 +3,10 @@ package org.jbpm.ee.services;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
+import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
+import org.jbpm.ee.services.ejb.annotations.TaskId;
+import org.jbpm.ee.services.ejb.annotations.WorkItemId;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
 import org.kie.api.task.model.OrganizationalEntity;
@@ -24,7 +28,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void activate(long taskId, String userId);
+	void activate(@TaskId long taskId, String userId);
 
 	/**
 	 * Claim a task for user
@@ -32,7 +36,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void claim(long taskId, String userId);
+	void claim(@TaskId long taskId, String userId);
 
 	/**
 	 * Claim next task user is eligable for
@@ -49,7 +53,8 @@ public interface TaskService {
 	 * @param userId
 	 * @param data
 	 */
-	void complete(long taskId, String userId, Map<String, Object> data);
+	@PreprocessClassloader
+	void complete(@TaskId long taskId, String userId, Map<String, Object> data);
 
 	/**
 	 * 
@@ -59,7 +64,7 @@ public interface TaskService {
 	 * @param userId
 	 * @param targetUserId
 	 */
-	void delegate(long taskId, String userId, String targetUserId);
+	void delegate(@TaskId long taskId, String userId, String targetUserId);
 
 	/**
 	 * Exit a task (?)
@@ -67,7 +72,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void exit(long taskId, String userId);
+	void exit(@TaskId long taskId, String userId);
 
 	/**
 	 * Fail a task with the provided fault data (?)
@@ -76,7 +81,7 @@ public interface TaskService {
 	 * @param userId
 	 * @param faultData
 	 */
-	void fail(long taskId, String userId, Map<String, Object> faultData);
+	void fail(@TaskId long taskId, String userId, Map<String, Object> faultData);
 
 	/**
 	 * Forward a task from userId to target user/organization (?)
@@ -85,7 +90,7 @@ public interface TaskService {
 	 * @param userId
 	 * @param targetEntityId
 	 */
-	void forward(long taskId, String userId, String targetEntityId);
+	void forward(@TaskId long taskId, String userId, String targetEntityId);
 
 	/**
 	 * Release a previously claimed task
@@ -93,7 +98,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void release(long taskId, String userId);
+	void release(@TaskId long taskId, String userId);
 
 	/**
 	 * Resume a previously suspended task (?)
@@ -101,7 +106,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void resume(long taskId, String userId);
+	void resume(@TaskId long taskId, String userId);
 
 	/**
 	 * Skip a claimed task
@@ -109,7 +114,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void skip(long taskId, String userId);
+	void skip(@TaskId long taskId, String userId);
 
 	/**
 	 * Start a claimed task
@@ -117,7 +122,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void start(long taskId, String userId);
+	void start(@TaskId long taskId, String userId);
 
 	/**
 	 * Stop a claimed task (?)
@@ -125,7 +130,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void stop(long taskId, String userId);
+	void stop(@TaskId long taskId, String userId);
 
 	/**
 	 * Suspend a claimed task (?)
@@ -133,7 +138,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @param userId
 	 */
-	void suspend(long taskId, String userId);
+	void suspend(@TaskId long taskId, String userId);
 
 	/**
 	 * Nominate a task to be handled by potentialOwners
@@ -142,7 +147,7 @@ public interface TaskService {
 	 * @param userId
 	 * @param potentialOwners
 	 */
-	void nominate(long taskId, String userId, List<OrganizationalEntity> potentialOwners);
+	void nominate(@TaskId long taskId, String userId, List<OrganizationalEntity> potentialOwners);
 
 	/**
 	 * Return a task by its workItemId 
@@ -150,7 +155,7 @@ public interface TaskService {
 	 * @param workItemId
 	 * @return
 	 */
-	Task getTaskByWorkItemId(long workItemId);
+	Task getTaskByWorkItemId(@WorkItemId long workItemId);
 
 	/**
 	 * Return a task by its taskId
@@ -158,7 +163,7 @@ public interface TaskService {
 	 * @param taskId
 	 * @return
 	 */
-	Task getTaskById(long taskId);
+	Task getTaskById(@TaskId long taskId);
 
 	/**
 	 * Return a list of forwarded tasks (?)
@@ -213,7 +218,7 @@ public interface TaskService {
 	 * @param processInstanceId
 	 * @return
 	 */
-	List<Long> getTasksByProcessInstanceId(long processInstanceId);
+	List<Long> getTasksByProcessInstanceId(@ProcessInstanceId long processInstanceId);
 
 	/**
 	 * Get a list of tasks the Process Instance is waiting on with one of the listed statuses
@@ -223,7 +228,7 @@ public interface TaskService {
 	 * @param language
 	 * @return
 	 */
-	List<TaskSummary> getTasksByStatusByProcessInstanceId(long processInstanceId, List<Status> status, String language);
+	List<TaskSummary> getTasksByStatusByProcessInstanceId(@ProcessInstanceId long processInstanceId, List<Status> status, String language);
 
 	/**
 	 * 
