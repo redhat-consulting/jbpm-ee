@@ -8,8 +8,11 @@ import java.util.TreeSet;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 import org.jbpm.ee.services.TaskService;
+import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderBinding;
+import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
 import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
@@ -24,6 +27,8 @@ import org.kie.internal.task.api.TaskAttachmentService;
 import org.kie.internal.task.api.TaskContentService;
 import org.kie.internal.task.api.TaskQueryService;
 
+@ClassloaderBinding
+@Interceptors({ClassloaderInterceptor.class})
 @Stateless
 public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServiceRemote {
 

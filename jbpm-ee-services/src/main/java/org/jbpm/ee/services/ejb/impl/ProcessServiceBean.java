@@ -5,10 +5,13 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderBinding;
+import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
 import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
 import org.jbpm.ee.services.ejb.remote.ProcessServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
@@ -20,6 +23,8 @@ import org.kie.api.runtime.process.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@ClassloaderBinding
+@Interceptors({ClassloaderInterceptor.class})
 @Stateless
 public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, ProcessServiceRemote {
 	

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kie.api.builder.ReleaseId;
@@ -16,7 +17,7 @@ import org.kie.api.builder.ReleaseId;
  * making ReleaseIdImpl Serializable comes out
  *
  */
-@XmlRootElement
+@XmlRootElement(name="kie-release-id")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class KieReleaseId implements ReleaseId, Serializable {
 
@@ -25,8 +26,13 @@ public class KieReleaseId implements ReleaseId, Serializable {
 	 */
 	private static final long serialVersionUID = -609810880974230932L;
 	
+	@XmlElement(name="group-id")
 	private String groupId;
+	
+	@XmlElement(name="artifact-id")
 	private String artifactId;
+	
+	@XmlElement(name="version")
 	private String version;
 	
 	public KieReleaseId() {
@@ -46,7 +52,6 @@ public class KieReleaseId implements ReleaseId, Serializable {
 		this.version = version;
 	}
 	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -56,8 +61,6 @@ public class KieReleaseId implements ReleaseId, Serializable {
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {

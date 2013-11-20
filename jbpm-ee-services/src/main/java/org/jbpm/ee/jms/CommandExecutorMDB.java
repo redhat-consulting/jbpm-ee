@@ -99,17 +99,17 @@ public class CommandExecutorMDB implements MessageListener {
     public CommandExecutor getCommandExecutor(GenericCommand<?> command) {
     	if(TaskCommand.class.isAssignableFrom(command.getClass())) {
     		TaskCommand<?> taskCommand = (TaskCommand<?>)command;
-    		if (AcceptedCommandSets.getCommandsThatInfluenceKieSession().contains(command.getClass())) {
+    		if (AcceptedCommands.influencesKieSession(command.getClass())) {
     			return knowledgeManager.getRuntimeEngineByTaskId(taskCommand.getTaskId()).getKieSession();
     		} else {
     			return (InternalTaskService) knowledgeManager.getKieSessionUnboundTaskService();
     		}
     	} else {
-    		if (AcceptedCommandSets.getCommandsWithProcessInstanceId().contains(command.getClass())) {
+    		if (AcceptedCommands.containsProcessInstanceId(command.getClass())) {
     			Long processInstanceId = getLongFromCommand("getProcessInstanceId", command);
     			return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
     			
-    		} else if (AcceptedCommandSets.getCommandsWithWorkItemid().contains(command.getClass())) {
+    		} else if (AcceptedCommands.containsWorkItemId(command.getClass())) {
     			Long workItemId = getLongFromCommand("getWorkItemId", command);
     			return knowledgeManager.getRuntimeEngineByWorkItemId(workItemId).getKieSession();
     		}

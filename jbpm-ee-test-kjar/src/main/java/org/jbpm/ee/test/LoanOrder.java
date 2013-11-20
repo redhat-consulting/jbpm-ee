@@ -1,13 +1,15 @@
 package org.jbpm.ee.test;
 
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlAccessType;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class LoanOrder {
+public class LoanOrder implements Serializable {
 
 	@XmlElement(name="firstname", required=true)
 	 private String firstName;
