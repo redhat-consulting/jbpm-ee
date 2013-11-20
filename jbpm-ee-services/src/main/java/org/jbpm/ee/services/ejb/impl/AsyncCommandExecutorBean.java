@@ -18,7 +18,7 @@ import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.drools.core.command.impl.GenericCommand;
-import org.jbpm.ee.jms.AcceptedCommandSets;
+import org.jbpm.ee.jms.AcceptedCommands;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.services.ejb.remote.AsyncCommandExecutorRemote;
 import org.jbpm.ee.support.KieReleaseId;
@@ -89,8 +89,8 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 			
 			if (kieReleaseId == null) {
 				if(!TaskCommand.class.isAssignableFrom(command.getClass()) &&
-						(!AcceptedCommandSets.getCommandsWithProcessInstanceId().contains(command.getClass())) &&
-						(!AcceptedCommandSets.getCommandsWithWorkItemid().contains(command.getClass()))) {
+						(!AcceptedCommands.getCommandsWithProcessInstanceId().contains(command.getClass())) &&
+						(!AcceptedCommands.getCommandsWithWorkItemid().contains(command.getClass()))) {
 					throw new CommandException("Command Message must include ReleaseId: " + command.getClass().getCanonicalName());
 				} 
 			} else {
