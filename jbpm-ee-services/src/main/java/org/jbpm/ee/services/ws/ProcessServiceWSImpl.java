@@ -33,15 +33,6 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 	}
 
 	@Override
-	public ProcessInstance createProcessInstance(String processId, JaxbInitializeProcessRequest request) {
-		try {
-			return (ProcessInstance)processRuntimeService.createProcessInstance(request.getReleaseId(), processId, request.getVariables());
-		} catch (Exception e) {
-			throw new RemoteServiceException(e);
-		}
-	}
-
-	@Override
 	public ProcessInstance startProcessInstance(long processInstanceId) {
 		try {
 			return (ProcessInstance)processRuntimeService.startProcessInstance(processInstanceId);

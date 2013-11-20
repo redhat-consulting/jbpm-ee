@@ -41,17 +41,6 @@ public interface ProcessServiceWS {
 
 
 	@WebMethod
-	@POST
-	@Path("/{processId}")
-	@Produces({ "application/xml" })
-	@WebResult(name="process-instance") 
-	ProcessInstance createProcessInstance(
-	    @WebParam(name="process-id") @PathParam("processId") String processId,
-	    @WebParam(name="request") JaxbInitializeProcessRequest request
-	);
-
-
-	@WebMethod
 	@PUT
 	@Path("/instance/{processInstanceId}/start")
 	@WebResult(name="process-instance") 

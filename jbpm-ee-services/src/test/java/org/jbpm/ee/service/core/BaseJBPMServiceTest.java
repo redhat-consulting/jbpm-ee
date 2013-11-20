@@ -26,6 +26,8 @@ public class BaseJBPMServiceTest {
 	
 	private static final File TEST_XML_REF = new File("src/test/resources/test-classloading.xml");
 	
+	private static final File CONTEXT_HANDLER_REF = new File("src/main/resources/org/jbpm/ee/services/ws/jbpm-context-handler.xml");
+
 	private static final File WEB_REF = new File("src/main/webapp/WEB-INF/web.xml");
 	
 	@Deployment
@@ -38,9 +40,10 @@ public class BaseJBPMServiceTest {
 		final WebArchive archive = ShrinkWrap.create(WebArchive.class, "jbpm-ee-services.war");
 		archive.addAsWebInfResource(ENV_REF, "classes/environment.properties");
 		archive.addAsWebInfResource(USER_REF, "classes/usergroup.properties");
+
 		archive.addAsWebInfResource(PERSISTENCE_REF, "classes/META-INF/persistence.xml");
 		archive.addAsWebInfResource(TEST_XML_REF, "classes/test-classloading.xml");
-		
+		archive.addAsWebInfResource(CONTEXT_HANDLER_REF, "classes/org/jbpm/ee/services/ws/jbpm-context-handler.xml");
 		archive.addAsWebInfResource(BEAN_REF, "beans.xml");
 		archive.addAsWebInfResource(WEB_REF, "web.xml");
 		
