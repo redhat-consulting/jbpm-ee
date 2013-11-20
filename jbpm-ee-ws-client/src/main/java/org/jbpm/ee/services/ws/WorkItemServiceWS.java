@@ -30,26 +30,26 @@ public interface WorkItemServiceWS {
 
 	@WebMethod
     @PUT
-    @Path("{id}/complete")
+    @Path("{workItemId}/complete")
     void completeWorkItem(
-    		@WebParam(name="id") @PathParam("id") long id, 
+    		@WebParam(name="work-item-id") @PathParam("workItemId") long id, 
     		@WebParam(name="request") JaxbMapRequest results
     );
 
 	
 	@WebMethod
     @PUT
-    @Path("{id}/abort")
+    @Path("{workItemId}/abort")
     void abortWorkItem(
-    		@WebParam(name="id") @PathParam("id") long id
+    		@WebParam(name="work-item-id") @PathParam("workItemId") long id
     );
     
 	
 	@WebMethod
     @GET
-    @Path("{id}")
+    @Path("{workItemId}")
     WorkItem getWorkItem(
-    		@WebParam(name="id") @PathParam("id") long id
+    		@WebParam(name="work-item-id") @PathParam("workItemId") long id
     );
 
 }

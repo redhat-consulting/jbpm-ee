@@ -36,4 +36,11 @@ public class BridgedClassloader extends ClassLoader {
 			return secondary.loadClass(name);
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "BridgedClassloader [parent="+getParent()+"], secondary=" + secondary + "]";
+	}
+	
+	
 }

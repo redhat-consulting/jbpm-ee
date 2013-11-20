@@ -8,7 +8,6 @@ import java.io.ObjectOutput;
 
 import javax.xml.bind.JAXBContext;
 
-import org.kie.internal.builder.JaxbConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
