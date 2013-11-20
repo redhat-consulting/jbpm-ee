@@ -30,6 +30,7 @@ import org.jbpm.ee.exception.CommandException;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.CommandResponse;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.kie.api.runtime.CommandExecutor;
@@ -186,9 +187,11 @@ public class CommandExecutorMDB implements MessageListener {
 					MessageProducer producer = session.createProducer(responseQueue);
 			        
 					ObjectMessage responseMessage = session.createObjectMessage();
-					if (commandResponse != null) {
-						responseMessage.setObject((Serializable) commandResponse);
-					}
+					CommandResponse responseObject = new CommandResponse();
+					responseObject.setResponse(commandResponse);
+					responseObject.setCommand(command);
+					
+					responseMessage.setObject(responseObject);
 					responseMessage.setJMSCorrelationID(correlation);
 					LOG.info("Sending message");
 					producer.send(responseMessage);

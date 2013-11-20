@@ -1,6 +1,7 @@
 package org.jbpm.ee.services;
 
 import org.drools.core.command.impl.GenericCommand;
+import org.jbpm.ee.services.model.CommandResponse;
 import org.jbpm.ee.support.KieReleaseId;
 
 public interface AsyncCommandExecutor {
@@ -9,5 +10,5 @@ public interface AsyncCommandExecutor {
 	
 	String execute(GenericCommand<?> command);
 	
-	Object pollResponse(String correlation);
+	CommandResponse pollResponse(String correlation);
 }

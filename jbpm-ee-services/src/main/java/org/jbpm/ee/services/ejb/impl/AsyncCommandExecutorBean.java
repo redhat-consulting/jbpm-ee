@@ -21,6 +21,7 @@ import org.drools.core.command.impl.GenericCommand;
 import org.jbpm.ee.jms.AcceptedCommands;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.services.ejb.remote.AsyncCommandExecutorRemote;
+import org.jbpm.ee.services.model.CommandResponse;
 import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.mvel2.sh.CommandException;
@@ -117,7 +118,7 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 	 * @param correlation
 	 * @return
 	 */
-	public Object pollResponse(String correlation) {
+	public CommandResponse pollResponse(String correlation) {
 		final String correlationSelector = "JMSCorrelationID = '" + correlation + "'";
 
 		try {
@@ -130,7 +131,7 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 			}
 			else {
 				LOG.debug("Recieved message for correlation: "+correlation);
-				return ((ObjectMessage)response).getObject();
+				return (CommandResponse) ((ObjectMessage)response).getObject();
 			}
 		}
 		catch (JMSException e) {
