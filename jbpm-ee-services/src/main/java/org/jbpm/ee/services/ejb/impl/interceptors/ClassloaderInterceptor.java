@@ -46,7 +46,10 @@ public class ClassloaderInterceptor {
 	private void lazyInitializeMaps(Object[] parameters) throws IOException {
 		for(int i=0, j=parameters.length; i<j; i++) {
 			Object parameter = parameters[i];
-			
+			if(parameter == null) {
+				//skip.
+				continue;
+			}
 			if(LazyDeserializingMap.class.isAssignableFrom(parameter.getClass())) {
 				LazyDeserializingMap obj = (LazyDeserializingMap)parameter;
 				obj.initializeLazy();

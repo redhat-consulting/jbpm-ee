@@ -1,5 +1,8 @@
 package org.jbpm.ee.services.ejb.interceptors;
 
+import java.lang.reflect.GenericDeclaration;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import org.jboss.ejb.client.EJBClientInterceptor;
@@ -25,8 +28,17 @@ public class MapSerializationInterceptor implements EJBClientInterceptor {
 		//look for the map objects, and convert them to lazy deserializing map.
 		for(int i=0, j=context.getParameters().length; i<j; i++) {
 			Object parameter = context.getParameters()[i];
-			
+			if(parameter == null) {
+				//skip.
+				continue;
+			}
 			if(Map.class.isAssignableFrom(parameter.getClass())) {
+				if(((Map)parameter).isEmpty())
+				{
+					//skip.
+					continue;
+				}
+				
 				LOG.info("Map found in parameters of method: "+context.getInvokedMethod().getName());
 				LazyDeserializingMap map = new LazyDeserializingMap();
 				map.putAll((Map<String, Object>)parameter);
@@ -38,8 +50,6 @@ public class MapSerializationInterceptor implements EJBClientInterceptor {
 
         context.sendRequest();
 	}
-	
-		
 
 	@Override
 	public Object handleInvocationResult(EJBClientInvocationContext context) throws Exception {
