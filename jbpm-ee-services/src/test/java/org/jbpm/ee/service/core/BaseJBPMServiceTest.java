@@ -26,7 +26,6 @@ public class BaseJBPMServiceTest {
 	
 	private static final File TEST_XML_REF = new File("src/test/resources/test-classloading.xml");
 	
-	
 	private static final File WEB_REF = new File("src/main/webapp/WEB-INF/web.xml");
 	
 	@Deployment

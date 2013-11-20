@@ -84,6 +84,7 @@
 								<include>org/jbpm/services/task/commands/**</include>
 								<include>org/jbpm/services/task/events/**</include>
 								<include>org/jbpm/services/task/exception/**</include>
+								<include>org/jbpm/services/task/impl/model/**</include>
 								<include>org/jbpm/services/task/impl/model/xml/**</include>
 								<include>org/jbpm/services/task/impl/model/xml/adapter/**</include>
 								<include>org/jbpm/services/task/query/TaskSummaryImpl*</include>

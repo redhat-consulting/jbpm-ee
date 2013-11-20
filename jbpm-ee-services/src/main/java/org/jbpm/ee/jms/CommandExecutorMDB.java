@@ -29,8 +29,10 @@ import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
 import org.jbpm.services.task.commands.TaskCommand;
+import org.kie.api.runtime.CommandExecutor;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
+import org.kie.internal.task.api.InternalTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +83,10 @@ public class CommandExecutorMDB implements MessageListener {
 		String artifactId = request.getStringProperty("artifactId");
 		String version = request.getStringProperty("version");
 		
+		if ((groupId == null) || (artifactId == null) || (version == null)) {
+			throw new IllegalStateException("Release Id information must not be null.");
+		}
+		
 		return new KieReleaseId(groupId, artifactId, version);
     }
     
@@ -90,26 +96,32 @@ public class CommandExecutorMDB implements MessageListener {
 		return knowledgeManager.getRuntimeEngine(releaseId);
     }
     
-    public RuntimeEngine getRuntimeEngine(GenericCommand<?> command) {
-		
-		if(TaskCommand.class.isAssignableFrom(command.getClass())) {
-			TaskCommand<?> taskCommand = (TaskCommand<?>)command;
-			return knowledgeManager.getRuntimeEngineByTaskId(taskCommand.getTaskId());
-		}
-		
-		//else, try it by process instance id.
-		Long processInstanceId = getProcessInstanceIdFromCommand(command);
-		if(processInstanceId!=null) {
-			return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId);
-		}
-		
-		//else, try it by work item id.
-		Long workItemId = getWorkItemIdFromCommand(command);
-		if(workItemId != null) {
-			return knowledgeManager.getRuntimeEngineByWorkItemId(workItemId);
-		}
-		
-		return null;
+    public CommandExecutor getCommandExecutor(GenericCommand<?> command) {
+    	if(TaskCommand.class.isAssignableFrom(command.getClass())) {
+    		TaskCommand<?> taskCommand = (TaskCommand<?>)command;
+    		if (AcceptedCommands.influencesKieSession(command.getClass())) {
+    			return knowledgeManager.getRuntimeEngineByTaskId(taskCommand.getTaskId()).getKieSession();
+    		} else {
+    			return (InternalTaskService) knowledgeManager.getKieSessionUnboundTaskService();
+    		}
+    	} else {
+    		if (AcceptedCommands.containsProcessInstanceId(command.getClass())) {
+    			Long processInstanceId = getLongFromCommand("getProcessInstanceId", command);
+    			return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
+    			
+    		} else if (AcceptedCommands.containsWorkItemId(command.getClass())) {
+    			Long workItemId = getLongFromCommand("getWorkItemId", command);
+    			return knowledgeManager.getRuntimeEngineByWorkItemId(workItemId).getKieSession();
+    		}
+    	}
+    	return null;
+    }
+    
+    public CommandExecutor getCommandExecutor(KieReleaseId releaseId) {
+    	RuntimeEngine engine = getRuntimeEngine(releaseId);
+    	KieSession kSession = engine.getKieSession();
+		kSession.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
+		return kSession;
     }
 	
 	@Override
@@ -120,21 +132,17 @@ public class CommandExecutorMDB implements MessageListener {
 			//check the command and lookup the kie session.
 			GenericCommand<?> command = (GenericCommand<?>)objectMessage.getObject();
 			
-			RuntimeEngine engine = getRuntimeEngine(command);
-			KieSession kSession = null;
-			
-			//build it from the message properties...
-			if(engine != null) {
-				kSession = engine.getKieSession();
-			} else {
+			CommandExecutor executor = getCommandExecutor(command);
+			if (executor == null) {
 				KieReleaseId releaseId = getReleaseIdFromMessage(message);
-				engine = getRuntimeEngine(releaseId);
-				kSession = engine.getKieSession();
-				kSession.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
+				executor = getCommandExecutor(releaseId);
+			}
+			// If executor is still null, throw an exception
+			if (executor == null) {
+				throw new IllegalStateException("Unable to determine command runtime executor.");
 			}
 			
-			// this should be the command object.
-			Object commandResponse = kSession.execute(command);
+			Object commandResponse = executor.execute(command);
 
 			if (!(commandResponse instanceof Void)) {
 				// see if there is a correlation and reply to.
@@ -168,25 +176,6 @@ public class CommandExecutorMDB implements MessageListener {
 			throw new CommandException("Exception processing command via JMS.", e);
 		}
 
-	}
-
-
-	private Long getWorkItemIdFromCommand(final GenericCommand<?> command) {
-		if(AcceptedCommandSets.getCommandsWithWorkItemid().contains(command.getClass())) {
-			return getLongFromCommand("getWorkItemId", command);
-		} else {
-			return null;
-		}
-		
-	}
-	
-	private Long getProcessInstanceIdFromCommand(final GenericCommand<?> command) {
-		if(AcceptedCommandSets.getCommandsWithProcessInstanceId().contains(command.getClass())) {
-			return getLongFromCommand("getProcessInstanceId", command);	
-		} else {
-			return null;
-		}
-		
 	}
 	
 	//TODO: Is it better to explicitly look for commands?
