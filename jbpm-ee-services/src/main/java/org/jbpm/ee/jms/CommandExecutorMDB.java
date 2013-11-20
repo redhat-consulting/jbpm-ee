@@ -3,6 +3,7 @@ package org.jbpm.ee.jms;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type; 
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -36,6 +37,7 @@ import org.kie.internal.task.api.InternalTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * Executes a single command and returns a response object
  * 
@@ -61,6 +63,11 @@ public class CommandExecutorMDB implements MessageListener {
 	
 	@Inject
 	private EntityManager entityManager;
+	
+	private static final Class[] executeArgs = new Class[1];
+	static {
+		executeArgs[0] = org.kie.internal.command.Context.class;
+	}
 	
     @PostConstruct
     public void init() throws JMSException {
@@ -123,7 +130,7 @@ public class CommandExecutorMDB implements MessageListener {
 		kSession.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
 		return kSession;
     }
-	
+    
 	@Override
 	public void onMessage(Message message) {
 		ObjectMessage objectMessage = (ObjectMessage) message;
@@ -144,8 +151,11 @@ public class CommandExecutorMDB implements MessageListener {
 			
 			Object commandResponse = executor.execute(command);
 
-			if (!(commandResponse instanceof Void)) {
-				// see if there is a correlation and reply to.
+			Method executeMethod = command.getClass().getMethod("execute", executeArgs);
+			
+			// Check to see if the execute method is supposed to return something
+			if (!((executeMethod.getReturnType()).equals(Void.class))) {
+				// see if there is a correlation and reply to.ok
 
 				
 				String correlation = message.getJMSCorrelationID();
@@ -174,6 +184,12 @@ public class CommandExecutorMDB implements MessageListener {
 			}
 		} catch (JMSException e) {
 			throw new CommandException("Exception processing command via JMS.", e);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

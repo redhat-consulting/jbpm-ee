@@ -107,7 +107,7 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 		List<TaskSummary> tasks = (List<TaskSummary>) executeReturnsResponse(null, getTasks);
 		
 		int initialCount = tasks.size();
-		
+		LOG.info("Number of tasks: " + initialCount);
 		StartProcessCommand startProcess = new StartProcessCommand(processString, processVariables);
 		ProcessInstance processInstance = (ProcessInstance) executeReturnsResponse(kri, startProcess);
 		
@@ -117,6 +117,10 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
 		assertNotNull(tasks);
         assertEquals(initialCount + 1, tasks.size());
 	
+        for(TaskSummary summary : tasks) {
+			LOG.info("Task: " + summary.getId());
+		}
+        
         long taskId = tasks.get(tasks.size()-1).getId();
         
         Map<String,Object> testResults = new HashMap<String,Object>();
