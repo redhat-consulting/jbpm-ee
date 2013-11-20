@@ -13,8 +13,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.sun.tools.javac.util.Log;
-
 public class XmlUtil {
 	private static final XPathFactory factory = XPathFactory.newInstance();
 	private static final Logger LOG = LoggerFactory.getLogger(XmlUtil.class);
