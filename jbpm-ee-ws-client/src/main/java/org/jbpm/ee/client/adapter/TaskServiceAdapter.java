@@ -110,7 +110,11 @@ public class TaskServiceAdapter implements TaskService {
 	@Override
 	public List<TaskSummary> getTasksAssignedAsBusinessAdministrator(String userId, String language) {
 		List<TaskSummary> results = new LinkedList<TaskSummary>();
-		results.addAll(this.taskService.getTasksAssignedAsBusinessAdministrator(userId, language));
+		
+		List<org.jbpm.ee.services.model.task.TaskSummary> summaries = this.taskService.getTasksAssignedAsBusinessAdministrator(userId, language);
+		if(summaries != null) {
+			results.addAll(summaries);
+		}
 		
 		return results;
 	}
@@ -118,7 +122,11 @@ public class TaskServiceAdapter implements TaskService {
 	@Override
 	public List<TaskSummary> getTasksAssignedAsPotentialOwner(String userId, String language) {
 		List<TaskSummary> results = new LinkedList<TaskSummary>();
-		results.addAll(taskService.getTasksAssignedAsPotentialOwner(userId, language));
+		
+		List<org.jbpm.ee.services.model.task.TaskSummary> summaries = taskService.getTasksAssignedAsPotentialOwner(userId, language);
+		if(summaries != null) {
+			results.addAll(summaries);
+		}
 		
 		return results;
 	}
@@ -126,7 +134,11 @@ public class TaskServiceAdapter implements TaskService {
 	@Override
 	public List<TaskSummary> getTasksAssignedAsPotentialOwnerByStatus(String userId, List<Status> status, String language) {
 		List<TaskSummary> results = new LinkedList<TaskSummary>();
-		results.addAll(this.taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
+
+		List<org.jbpm.ee.services.model.task.TaskSummary> summaries = this.taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language);
+		if(summaries != null) {
+			results.addAll(summaries);
+		}
 		
 		return results;
 	}
@@ -134,7 +146,11 @@ public class TaskServiceAdapter implements TaskService {
 	@Override
 	public List<TaskSummary> getTasksOwned(String userId, String language) {
 		List<TaskSummary> results = new LinkedList<TaskSummary>();
-		results.addAll(this.taskService.getTasksOwned(userId, language));
+		
+		List<org.jbpm.ee.services.model.task.TaskSummary> summaries = this.taskService.getTasksOwned(userId, language);
+		if(summaries != null) {
+			results.addAll(summaries);
+		}
 		
 		return results;
 	}
@@ -142,8 +158,12 @@ public class TaskServiceAdapter implements TaskService {
 	@Override
 	public List<TaskSummary> getTasksOwnedByStatus(String userId, List<Status> status, String language) {
 		List<TaskSummary> results = new LinkedList<TaskSummary>();
-		results.addAll(this.taskService.getTasksOwnedByStatus(userId, status, language));
-		
+
+		List<org.jbpm.ee.services.model.task.TaskSummary> summaries = this.taskService.getTasksOwnedByStatus(userId, status, language);
+		if(summaries != null) {
+			results.addAll(summaries);
+		}
+
 		return results;
 	}
 
@@ -155,8 +175,12 @@ public class TaskServiceAdapter implements TaskService {
 	@Override
 	public List<TaskSummary> getTasksByStatusByProcessInstanceId(long processInstanceId, List<Status> status, String language) {
 		List<TaskSummary> results = new LinkedList<TaskSummary>();
-		results.addAll(this.taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
 		
+		List<org.jbpm.ee.services.model.task.TaskSummary> summaries = this.taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language);
+		if(summaries != null) {
+			results.addAll(summaries);
+		}
+
 		return results;
 	}
 
