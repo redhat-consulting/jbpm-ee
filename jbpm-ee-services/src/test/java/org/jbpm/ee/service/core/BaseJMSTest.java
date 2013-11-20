@@ -140,6 +140,7 @@ public class BaseJMSTest extends BaseJBPMServiceTest {
         LOG.info("Looking up process instance: "+processInstance.getId());
         GetProcessInstanceCommand getProcessInstance = new GetProcessInstanceCommand(processInstance.getId());
         processInstance = (ProcessInstance) executeReturnsResponse(null, getProcessInstance);
+        LOG.info("Process Instance: "+processInstance);
         assertNull(processInstance);
 	}
 }

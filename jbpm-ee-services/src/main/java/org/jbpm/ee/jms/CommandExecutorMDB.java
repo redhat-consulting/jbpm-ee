@@ -25,7 +25,9 @@ import javax.persistence.EntityManager;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.drools.core.command.impl.GenericCommand;
+import org.drools.core.command.runtime.process.GetProcessInstanceCommand;
 import org.jbpm.ee.exception.CommandException;
+import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
@@ -131,28 +133,40 @@ public class CommandExecutorMDB implements MessageListener {
 		return kSession;
     }
     
+    public Object executeCommand(GenericCommand<?> command, ObjectMessage objectMessage) throws JMSException {
+    	CommandExecutor executor = null;
+    	try {
+    		executor = getCommandExecutor(command);
+    	} catch (InactiveProcessInstance e) {
+			if (!command.getClass().equals(GetProcessInstanceCommand.class)) {
+				throw new IllegalStateException("Unknown process for command", e);
+			} else {
+				LOG.info("Null process for GetProcessInstance command");
+				return null;
+			}
+		}
+    	if (executor == null) {
+			KieReleaseId releaseId = getReleaseIdFromMessage(objectMessage);
+			executor = getCommandExecutor(releaseId);
+		}
+    	// If executor is still null, throw an exception
+		if (executor == null) {
+			throw new IllegalStateException("Unable to determine runtime executor.");
+		}
+		return executor.execute(command);
+    }
+    
 	@Override
 	public void onMessage(Message message) {
 		ObjectMessage objectMessage = (ObjectMessage) message;
-
+		
 		try {
 			//check the command and lookup the kie session.
 			GenericCommand<?> command = (GenericCommand<?>)objectMessage.getObject();
-			
-			CommandExecutor executor = getCommandExecutor(command);
-			if (executor == null) {
-				KieReleaseId releaseId = getReleaseIdFromMessage(message);
-				executor = getCommandExecutor(releaseId);
-			}
-			// If executor is still null, throw an exception
-			if (executor == null) {
-				throw new IllegalStateException("Unable to determine command runtime executor.");
-			}
-			
-			Object commandResponse = executor.execute(command);
-
 			Method executeMethod = command.getClass().getMethod("execute", executeArgs);
 			
+			Object commandResponse = executeCommand(command, objectMessage);
+						
 			// Check to see if the execute method is supposed to return something
 			if (!((executeMethod.getReturnType()).equals(Void.class))) {
 				// see if there is a correlation and reply to.ok
@@ -163,15 +177,18 @@ public class CommandExecutorMDB implements MessageListener {
 
 				if (responseQueue != null && correlation != null) {
 					
-					if(!Serializable.class.isAssignableFrom(commandResponse.getClass())) {
+					if((commandResponse != null) &&
+							(!Serializable.class.isAssignableFrom(commandResponse.getClass()))) {
 						throw new CommandException("Unable to send response for command, since it is not serializable.");
 					}
 					
 					session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-			        MessageProducer producer = session.createProducer(responseQueue);
+					MessageProducer producer = session.createProducer(responseQueue);
 			        
 					ObjectMessage responseMessage = session.createObjectMessage();
-					responseMessage.setObject((Serializable) commandResponse);
+					if (commandResponse != null) {
+						responseMessage.setObject((Serializable) commandResponse);
+					}
 					responseMessage.setJMSCorrelationID(correlation);
 					LOG.info("Sending message");
 					producer.send(responseMessage);
@@ -182,14 +199,8 @@ public class CommandExecutorMDB implements MessageListener {
 					LOG.warn("Response from Command Object, but no ReplyTo and Coorelation: " + ReflectionToStringBuilder.toString(commandResponse));
 				}
 			}
-		} catch (JMSException e) {
+		} catch (JMSException | NoSuchMethodException | SecurityException e) {
 			throw new CommandException("Exception processing command via JMS.", e);
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 	}
