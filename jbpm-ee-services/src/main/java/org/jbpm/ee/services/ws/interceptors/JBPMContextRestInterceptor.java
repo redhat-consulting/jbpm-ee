@@ -6,8 +6,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import javax.inject.Inject;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -15,7 +13,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -37,7 +34,6 @@ import org.w3c.dom.Element;
 @ServerInterceptor
 public class JBPMContextRestInterceptor implements MessageBodyReaderInterceptor {
 	private static final Logger LOG = LoggerFactory.getLogger(JBPMContextRestInterceptor.class);
-	private static final String CLASSLOADER_SERVICE = "java:global/jbpm-ee-services/BPMClassloaderService!org.jbpm.ee.services.ejb.startup.BPMClassloaderService";
 	
 	@Context HttpServletRequest servletRequest;
 	@Context UriInfo uri;
@@ -104,7 +100,7 @@ public class JBPMContextRestInterceptor implements MessageBodyReaderInterceptor 
 		
 		Long taskId = extractId(uri, "taskId");
 		if(taskId != null) {
-			classloaderService.bridgeClassloaderByTaskId(workItemId);
+			classloaderService.bridgeClassloaderByTaskId(taskId);
 			return context.proceed();
 		}
 		
