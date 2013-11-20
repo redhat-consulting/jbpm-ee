@@ -21,15 +21,14 @@ public class ErrorLogHandler implements WorkItemHandler {
 	
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		// TODO Auto-generated method stub
 		Map<String, Object> parameterMap = workItem.getParameters();
-		LOG.info(parameterMap.toString());
+		LOG.error(parameterMap.toString());
 		manager.completeWorkItem(workItem.getId(), null);
 	}
 
 	@Override
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
-		// TODO Auto-generated method stub
+		// no action necessary
 	}
 
 }
