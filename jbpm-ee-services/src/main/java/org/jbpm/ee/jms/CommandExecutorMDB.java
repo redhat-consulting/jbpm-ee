@@ -100,7 +100,7 @@ public class CommandExecutorMDB implements MessageListener {
     	if(TaskCommand.class.isAssignableFrom(command.getClass())) {
     		TaskCommand<?> taskCommand = (TaskCommand<?>)command;
     		if (AcceptedCommands.influencesKieSession(command.getClass())) {
-    			return knowledgeManager.getRuntimeEngineByTaskId(taskCommand.getTaskId()).getKieSession();
+    			return (InternalTaskService) knowledgeManager.getRuntimeEngineByTaskId(taskCommand.getTaskId()).getTaskService();
     		} else {
     			return (InternalTaskService) knowledgeManager.getKieSessionUnboundTaskService();
     		}
