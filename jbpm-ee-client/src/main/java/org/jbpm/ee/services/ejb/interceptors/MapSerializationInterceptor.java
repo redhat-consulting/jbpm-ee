@@ -14,12 +14,12 @@ public class MapSerializationInterceptor implements EJBClientInterceptor {
 	
 	@Override
 	public void handleInvocation(EJBClientInvocationContext context) throws Exception {
-		if(!InterceptorUtil.requiresClassloaderInterception(context.getInvokedMethod())) {
+		if(!InterceptorUtil.requiresClassloaderInterception(context.getViewClass(), context.getInvokedMethod())) {
 			LOG.info("Method: "+context.getInvokedMethod().getName()+" does not require preprocessing.");
 			context.sendRequest();
 			return;
 		}
-		LOG.info("Method: "+context.getInvokedMethod().getName()+"does require preprocessor.");
+		LOG.info("Method: "+context.getInvokedMethod().getName()+" does require preprocessor; Parameter count: "+context.getParameters().length);
 		
 		
 		//look for the map objects, and convert them to lazy deserializing map.

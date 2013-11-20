@@ -20,29 +20,47 @@ public class InterceptorUtil {
 		// seal
 	}
 	
-	public static boolean requiresClassloaderInterception(Method method) {
-		LOG.info("Present?" + method.isAnnotationPresent(PreprocessClassloader.class));
-		
-		return method.isAnnotationPresent(PreprocessClassloader.class);
+	public static boolean requiresClassloaderInterception(Class clz, Method method) {
+		//recurse.
+		if(method.isAnnotationPresent(PreprocessClassloader.class)) {
+			return true;
+		}
+		else {
+			//check the other interfaces..
+			for(Class clzz : clz.getInterfaces()) {
+				try {
+					Method superInterfaceMethod = clzz.getMethod(method.getName(), method.getParameterTypes());
+					boolean response = requiresClassloaderInterception(clzz, superInterfaceMethod);
+					
+					if(response == true) {
+						return true;
+					}
+				}
+				catch(NoSuchMethodException e) {
+					//do nothing.
+				}
+			}
+		}
+		return false;
 	}
 	
-	public static KieReleaseId extractReleaseId(Method method, Object[] parameters) {
-		return (KieReleaseId)extractMethodParameterValue(method, parameters, ReleaseId.class);
+	public static KieReleaseId extractReleaseId(Class clz, Method method, Object[] parameters) {
+		return (KieReleaseId)extractMethodParameterValue(clz, method, parameters, ReleaseId.class);
 	}
 	
-	public static Long extractProcessInstanceId(Method method, Object[] parameters) {
-		return (Long)extractMethodParameterValue(method, parameters, ProcessInstanceId.class);
+	public static Long extractProcessInstanceId(Class clz, Method method, Object[] parameters) {
+		return (Long)extractMethodParameterValue(clz, method, parameters, ProcessInstanceId.class);
 	}
 	
-	public static Long extractTaskId(Method method, Object[] parameters) {
-		return (Long)extractMethodParameterValue(method, parameters, TaskId.class);
+	public static Long extractTaskId(Class clz, Method method, Object[] parameters) {
+		return (Long)extractMethodParameterValue(clz, method, parameters, TaskId.class);
 	}
 	
-	public static Long extractWorkItemId(Method method, Object[] parameters) {
-		return (Long)extractMethodParameterValue(method, parameters, WorkItemId.class);
+	public static Long extractWorkItemId(Class clz, Method method, Object[] parameters) {
+		return (Long)extractMethodParameterValue(clz, method, parameters, WorkItemId.class);
 	}
 	
-	public static Object extractMethodParameterValue(Method method, Object[] parameters, Class annotation) {
+	public static Object extractMethodParameterValue(Class clz, Method method, Object[] parameters, Class annotation) {
 		//annotations on all parameters
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 
@@ -54,6 +72,22 @@ public class InterceptorUtil {
 				}
 			}
 		}
+		
+		//look to parent.
+		for(Class parent : clz.getInterfaces()) {
+			//get the method for the parent
+			try {
+				Method parentMethod = parent.getMethod(method.getName(), method.getParameterTypes());
+				Object obj = extractMethodParameterValue(parent, parentMethod, parameters, annotation);
+				if(obj != null) {
+					return obj;
+				}
+			}
+			catch(NoSuchMethodException e) {
+				
+			}
+		}
+		
 		return null;
 	}
 }

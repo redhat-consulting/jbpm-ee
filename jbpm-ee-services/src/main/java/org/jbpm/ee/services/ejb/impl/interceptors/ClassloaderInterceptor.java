@@ -25,12 +25,13 @@ public class ClassloaderInterceptor {
 	
 	@AroundInvoke
 	public Object intercept(InvocationContext ctx) throws Exception {
-		if(!InterceptorUtil.requiresClassloaderInterception(ctx.getMethod())) {
-			LOG.info("Interceptor not required for method: "+ctx.getMethod().getName());
+		if(!InterceptorUtil.requiresClassloaderInterception(ctx.getTarget().getClass(), ctx.getMethod())) {
+			LOG.info("Interceptor not required for method: "+ctx.getMethod().getName()+".  Parameter count: "+ctx.getParameters().length);
 			return ctx.proceed();
 		}
+		LOG.info("Method: "+ctx.getMethod().getName()+" does require preprocessor; Parameter count: "+ctx.getParameters().length);
 		
-		setupClassloader(ctx.getMethod(), ctx.getParameters());
+		setupClassloader(ctx.getTarget().getClass(), ctx.getMethod(), ctx.getParameters());
 		
 		try {
 			lazyInitializeMaps(ctx.getParameters());
@@ -61,28 +62,28 @@ public class ClassloaderInterceptor {
 	 * @param method
 	 * @param parameters
 	 */
-	private void setupClassloader(Method method, Object[] parameters) {
+	private void setupClassloader(Class clz, Method method, Object[] parameters) {
 		
 		//setup the classloder..
-		KieReleaseId releaseId = InterceptorUtil.extractReleaseId(method, parameters);
+		KieReleaseId releaseId = InterceptorUtil.extractReleaseId(clz, method, parameters);
 		if(releaseId != null) {
 			classloaderService.bridgeClassloaderByReleaseId(releaseId);
 			return;
 		}
 		
-		Long processInstanceId = InterceptorUtil.extractProcessInstanceId(method, parameters);
+		Long processInstanceId = InterceptorUtil.extractProcessInstanceId(clz, method, parameters);
 		if(processInstanceId != null) {
 			classloaderService.bridgeClassloaderByProcessInstanceId(processInstanceId);
 			return;
 		}
 		
-		Long taskId = InterceptorUtil.extractTaskId(method, parameters);
+		Long taskId = InterceptorUtil.extractTaskId(clz, method, parameters);
 		if(taskId != null) {
 			classloaderService.bridgeClassloaderByTaskId(taskId);
 			return;
 		}
 		
-		Long workItemId = InterceptorUtil.extractWorkItemId(method, parameters);
+		Long workItemId = InterceptorUtil.extractWorkItemId(clz, method, parameters);
 		if(workItemId != null) {
 			classloaderService.bridgeClassloaderByWorkItemId(workItemId);
 			return;
