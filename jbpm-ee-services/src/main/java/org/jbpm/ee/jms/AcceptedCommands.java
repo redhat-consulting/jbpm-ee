@@ -84,21 +84,21 @@ public class AcceptedCommands {
 		commandsThatInfluenceKieSession.add(SkipTaskCommand.class);
 		commandsThatInfluenceKieSession = Collections.unmodifiableSet(commandsThatInfluenceKieSession);
 	}
-
-	public static Set<Class> getCommandsWithProcessInstanceId() {
-		return commandsWithProcessInstanceId;
-	}
-
-	public static Set<Class> getCommandsWithWorkItemid() {
-		return commandsWithWorkItemId;
+	
+	public static boolean containsProcessInstanceId(Class clz) {
+		return commandsWithProcessInstanceId.contains(clz);
 	}
 	
-	public static Set<Class> getCommandsThatInfluenceKieSession() {
-		return commandsThatInfluenceKieSession;
+	public static boolean containsWorkItemId(Class clz) {
+		return commandsWithWorkItemId.contains(clz);
 	}
 	
-	public static Set<Class> getCommandsWithTaskId() {
-		return commandsWithTaskId;
+	public static boolean influencesKieSession(Class clz) {
+		return commandsThatInfluenceKieSession.contains(clz);
+	}
+	
+	public static boolean containsTaskId(Class clz) {
+		return commandsWithTaskId.contains(clz);
 	}
 	
 }

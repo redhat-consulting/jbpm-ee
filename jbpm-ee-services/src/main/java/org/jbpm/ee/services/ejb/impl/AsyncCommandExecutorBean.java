@@ -89,8 +89,8 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 			
 			if (kieReleaseId == null) {
 				if(!TaskCommand.class.isAssignableFrom(command.getClass()) &&
-						(!AcceptedCommands.getCommandsWithProcessInstanceId().contains(command.getClass())) &&
-						(!AcceptedCommands.getCommandsWithWorkItemid().contains(command.getClass()))) {
+						(!AcceptedCommands.containsProcessInstanceId(command.getClass())) &&
+						(!AcceptedCommands.containsWorkItemId(command.getClass()))) {
 					throw new CommandException("Command Message must include ReleaseId: " + command.getClass().getCanonicalName());
 				} 
 			} else {
