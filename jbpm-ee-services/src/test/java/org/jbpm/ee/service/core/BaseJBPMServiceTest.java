@@ -25,9 +25,9 @@ public class BaseJBPMServiceTest {
 	private static final File BEAN_REF = new File("src/main/resources/META-INF/beans.xml");
 	
 	
-	private static final File JMS_REF = new File("resources/jbpm-ee-jms.xml");
+//	private static final File JMS_REF = new File("resources/jbpm-ee-jms.xml");
 	private static final File WEB_REF = new File("src/main/webapp/WEB-INF/web.xml");
-	private static final File DS_REF = new File("resources/jbpm-ee-ds.xml");
+//	private static final File DS_REF = new File("resources/jbpm-ee-ds.xml");
 	
 	@Deployment
 	@OverProtocol("Servlet 3.0")
@@ -39,8 +39,8 @@ public class BaseJBPMServiceTest {
 		final WebArchive archive = ShrinkWrap.create(WebArchive.class, "jbpm-services.war");
 		archive.addAsWebInfResource(ENV_REF, "classes/environment.properties");
 		archive.addAsWebInfResource(USER_REF, "classes/usergroup.properties");
-		archive.addAsWebInfResource(DS_REF, "jbossas-ds.xml");
-		archive.addAsWebInfResource(JMS_REF, "hornetq-jms.xml");
+//		archive.addAsWebInfResource(DS_REF, "jbossas-ds.xml");
+//		archive.addAsWebInfResource(JMS_REF, "hornetq-jms.xml");
 		archive.addAsWebInfResource(PERSISTENCE_REF, "classes/META-INF/persistence.xml");
 		
 		archive.addAsWebInfResource(BEAN_REF, "beans.xml");

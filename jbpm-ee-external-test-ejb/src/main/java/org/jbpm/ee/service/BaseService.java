@@ -1,4 +1,4 @@
-package org.jbpm.ee.test;
+package org.jbpm.ee.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +18,8 @@ import org.kie.api.task.model.TaskData;
 import org.kie.api.task.model.TaskSummary;
 import org.slf4j.Logger;
 
-public abstract class BaseTest {
-	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(BaseTest.class);
+public abstract class BaseService {
+	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(BaseService.class);
 	
 	protected abstract ProcessService getProcessService();
 	protected abstract TaskService getTaskService();

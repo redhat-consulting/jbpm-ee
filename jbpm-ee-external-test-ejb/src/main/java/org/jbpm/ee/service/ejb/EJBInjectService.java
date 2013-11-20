@@ -1,33 +1,29 @@
-package org.jbpm.ee.test;
+package org.jbpm.ee.service.ejb;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.transaction.UserTransaction;
 
+import org.jbpm.ee.service.BaseService;
+import org.jbpm.ee.service.exception.EJBRuntimeException;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.ejb.remote.ProcessServiceRemote;
 import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
-import org.jbpm.ee.test.exception.TestRuntimeException;
 import org.slf4j.Logger;
 
 @WebService(targetNamespace="http://jbpm.org/v6/EJBInjectTest/wsdl", serviceName="EJBInjectTest")
 @LocalBean
 @Stateless
-public class EJBInjectTest extends BaseTest {
+public class EJBInjectService extends BaseService {
 
-	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(EJBInjectTest.class);
-
-	@Inject
-	private UserTransaction tx;
+	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(EJBInjectService.class);
 	
 	@EJB(lookup = "java:global/jbpm-ee-services/ProcessServiceBean!org.jbpm.ee.services.ejb.remote.ProcessServiceRemote")
 	private ProcessServiceRemote processService;
@@ -72,7 +68,7 @@ public class EJBInjectTest extends BaseTest {
 	}
 	
 	private void generateException() {
-		throw new TestRuntimeException("Exception to show rollback.");
+		throw new EJBRuntimeException("Exception to show rollback.");
 	}
 
 }
