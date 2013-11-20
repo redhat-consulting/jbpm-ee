@@ -25,8 +25,11 @@ public abstract class BaseTest {
 	protected abstract TaskService getTaskService();
 	protected abstract WorkItemService getWorkItemService();
 	
-	protected static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
-	protected static final String processId = "testProj.testProcess";
+	protected static final KieReleaseId taskTestReleaseId = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
+	protected static final String taskTestProcessId = "testProj.testProcess";
+	
+	protected static final KieReleaseId loanTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-test-kjar", "1.0.0-SNAPSHOT");
+	protected static final String loadTestProcessId = "testProj.testProcess";
 	
 	@WebMethod
 	public Long startProcess() {
@@ -37,7 +40,7 @@ public abstract class BaseTest {
 		Map<String, Object> processVariables = new HashMap<String, Object>();
 		processVariables.put(variableKey, "Initial");
 		
-		ProcessInstance processInstance = processService.startProcess(kri, processId, processVariables);
+		ProcessInstance processInstance = processService.startProcess(taskTestReleaseId, taskTestProcessId, processVariables);
 		LOG.info("Process Instance: "+processInstance.getId());
 		
 		return processInstance.getId();
@@ -101,6 +104,25 @@ public abstract class BaseTest {
 		}
 		
 		return builder.toString();
+	}
+	
+
+	@WebMethod
+	public Long testLoanProcess() throws Exception {
+		
+		final String variableKey = "loanOrder";
+		
+		Map<String, Object> processVariables = new HashMap<String, Object>();
+		LoanOrder order = new LoanOrder();
+		order.setFirstName("Adam");
+		order.setLastName("Baxter");
+		order.setLoanAmount(500000L);
+		processVariables.put(variableKey, order);
+		
+		ProcessService processService = getProcessService();
+		
+		ProcessInstance processInstance = processService.startProcess(loanTestReleaseId, loadTestProcessId, processVariables);
+		return processInstance.getId();
 	}
 	
 	

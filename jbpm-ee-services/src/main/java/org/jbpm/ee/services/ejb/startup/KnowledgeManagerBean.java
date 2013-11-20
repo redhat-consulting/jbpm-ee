@@ -109,7 +109,7 @@ public class KnowledgeManagerBean {
 	 * @param resourceKey The maven deployment information for the kjar
 	 * @return The in-memory loaded kjar
 	 */
-	protected KieContainer getKieContainer(KieReleaseId resourceKey) {
+	public KieContainer getKieContainer(KieReleaseId resourceKey) {
 		
 		if(!containers.containsKey(resourceKey)) {
 			//create a new container.

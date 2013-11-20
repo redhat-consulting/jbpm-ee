@@ -35,7 +35,7 @@ public interface ProcessServiceWS {
 	@Path("/{processId}/start")
 	@WebResult(name="process-instance") 
 	ProcessInstance startProcess(
-	    @WebParam(name="processId") @PathParam("processId") String processId, 
+	    @WebParam(name="process-id") @PathParam("processId") String processId, 
 	    @WebParam(name="request") JaxbInitializeProcessRequest request
 	);
 
@@ -46,7 +46,7 @@ public interface ProcessServiceWS {
 	@Produces({ "application/xml" })
 	@WebResult(name="process-instance") 
 	ProcessInstance createProcessInstance(
-	    @WebParam(name="processId") @PathParam("processId") String processId,
+	    @WebParam(name="process-id") @PathParam("processId") String processId,
 	    @WebParam(name="request") JaxbInitializeProcessRequest request
 	);
 
@@ -56,7 +56,7 @@ public interface ProcessServiceWS {
 	@Path("/instance/{processInstanceId}/start")
 	@WebResult(name="process-instance") 
 	ProcessInstance startProcessInstance(
-	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId
+	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
 	);
 
 
@@ -64,7 +64,7 @@ public interface ProcessServiceWS {
 	@PUT
 	@Path("instance/{processInstanceId}/event/signal")
 	void signalEvent(
-	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId,
+	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId,
 	    @WebParam(name="type") String type,
 	    @WebParam(name="event") Object event
 	);
@@ -74,7 +74,7 @@ public interface ProcessServiceWS {
 	@Path("instance/{processInstanceId}")
 	@WebResult(name="process-instance") 
 	ProcessInstance getProcessInstance(
-	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId
+	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
 	);
 
 
@@ -82,7 +82,7 @@ public interface ProcessServiceWS {
 	@PUT
 	@Path("instance/{processInstanceId}/abort")
 	void abortProcessInstance(
-	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId
+	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
 	);
 
 }

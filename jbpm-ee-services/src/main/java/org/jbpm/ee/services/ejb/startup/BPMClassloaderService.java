@@ -9,7 +9,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.lang.StringUtils;
-import org.jbpm.ee.services.ws.interceptors.BridgedClassloader;
+import org.jbpm.ee.services.model.adapter.ClassloaderManager;
+import org.jbpm.ee.services.util.BridgedClassloader;
 import org.jbpm.ee.support.KieReleaseId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,9 @@ import org.w3c.dom.NodeList;
 @Startup
 @Singleton
 public class BPMClassloaderService {
+	
+	private static final ThreadLocal<ClassLoader> myThreadLocalInteger = new ThreadLocal<ClassLoader>();
+	
 	private static final Logger LOG = LoggerFactory.getLogger(BPMClassloaderService.class);
 
 	private static final XPathFactory factory = XPathFactory.newInstance();
@@ -73,11 +77,20 @@ public class BPMClassloaderService {
 	protected void bridgeClassloaderByReleaseId(KieReleaseId releaseId) {
 		LOG.info("Bridging by release id: "+releaseId);
 		
-		ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
-		ClassLoader bpmClassloader = knowledgeManager.getRuntimeEnvironment(releaseId).getClassLoader();
+		ClassLoader bpmClassloader = knowledgeManager.getKieContainer(releaseId).getClassLoader();
+		LOG.info("Classloader null: "+(bpmClassloader == null));
+		LOG.info("Retrieved the Classloader from the Runtime Environment: "+bpmClassloader.toString());
 		
+		ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
 		BridgedClassloader bridged = new BridgedClassloader(appLoader, bpmClassloader);
+		LOG.info("BPM Classloader: "+bpmClassloader.toString());
+		LOG.info("Current Classloader: "+appLoader.toString());
+		
 		Thread.currentThread().setContextClassLoader(bridged);
+		
+		ClassloaderManager.set(bridged);
+		LOG.info("Current Classloader: "+Thread.currentThread().getContextClassLoader().toString());
+		
 	}
 	
 	protected KieReleaseId extractReleaseId(Element element) throws XPathExpressionException {
@@ -94,14 +107,15 @@ public class BPMClassloaderService {
 		
 		for(int i=0, j=children.getLength(); i<j; i++) {
 			Node child = children.item(i);
-			if(StringUtils.equals("artifact-id", child.getNodeName())) {
-				releaseId.setArtifactId(child.getNodeValue());
+			LOG.info("Node: "+child);
+			if(StringUtils.equals("group-id", child.getLocalName())) {
+				releaseId.setGroupId(child.getTextContent());
 			}
-			if(StringUtils.equals("group-id", child.getNodeName())) {
-				releaseId.setArtifactId(child.getNodeValue());
+			if(StringUtils.equals("artifact-id", child.getLocalName())) {
+				releaseId.setArtifactId(child.getTextContent());
 			}
-			if(StringUtils.equals("version", child.getNodeName())) {
-				releaseId.setArtifactId(child.getNodeValue());
+			if(StringUtils.equals("version", child.getLocalName())) {
+				releaseId.setVersion(child.getTextContent());
 			}
 		}
 		
