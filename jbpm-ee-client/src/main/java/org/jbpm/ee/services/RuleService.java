@@ -1,5 +1,8 @@
 package org.jbpm.ee.services;
 
+import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
+import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
+
 
 /**
  * 
@@ -21,7 +24,7 @@ public interface RuleService {
 	 * @param processInstanceId The process instance's unique identifier
 	 * @return The number of rules fired
 	 */
-	int fireAllRules(Long processInstanceId);
+	int fireAllRules(@ProcessInstanceId Long processInstanceId);
 	
 
     /**
@@ -31,7 +34,7 @@ public interface RuleService {
      * @param max The maximum number of rules to fire
      * @return The number of rules fired
      */
-	int fireAllRules(Long processInstanceId, int max);
+	int fireAllRules(@ProcessInstanceId Long processInstanceId, int max);
 	
 
     /**
@@ -40,6 +43,7 @@ public interface RuleService {
      * @param processInstanceId The process instance's unique identifier
      * @param object The fact to be inserted
      */
-    void insert(Long processInstanceId, Object object);
+	@PreprocessClassloader
+    void insert(@ProcessInstanceId Long processInstanceId, Object object);
     
 }

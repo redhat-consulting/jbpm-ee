@@ -299,5 +299,8 @@
 		<module>jbpm-ee-ws-client</module>
 		<module>jbpm-ee-external-test</module>
 		<module>jbpm-ee-test-kjar</module>
+		<module>jbpm-ee-external-soap-archetype</module>
+		<module>jbpm-ee-external-ejb-archetype</module>
+		<module>jbpm-ee-external-rest-archetype</module>
 	</modules>
 </project>

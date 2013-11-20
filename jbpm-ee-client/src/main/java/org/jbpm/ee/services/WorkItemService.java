@@ -2,6 +2,8 @@ package org.jbpm.ee.services;
 
 import java.util.Map;
 
+import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
+import org.jbpm.ee.services.ejb.annotations.WorkItemId;
 import org.kie.api.runtime.process.WorkItem;
 
 /**
@@ -18,14 +20,15 @@ public interface WorkItemService {
 	 * @param id WorkItem ID
 	 * @param results Results of the WorkItem
 	 */
-    void completeWorkItem(long id, Map<String, Object> results);
+	@PreprocessClassloader
+    void completeWorkItem(@WorkItemId long id, Map<String, Object> results);
 
     /**
      * Abort the specified WorkItem
      * 
      * @param id WorkItem ID
      */
-    void abortWorkItem(long id);
+    void abortWorkItem(@WorkItemId long id);
     
     /**
      * Returns the specified WorkItem
@@ -33,6 +36,6 @@ public interface WorkItemService {
      * @param id WorkItem ID
      * @return The specified WorkItem
      */
-    WorkItem getWorkItem(long id);
+    WorkItem getWorkItem(@WorkItemId long id);
 
 }
