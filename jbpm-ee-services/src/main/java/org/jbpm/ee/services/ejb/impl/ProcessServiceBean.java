@@ -18,6 +18,7 @@ import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
 import org.jbpm.ee.support.KieReleaseId;
+import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.slf4j.Logger;
@@ -51,13 +52,6 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 	}
 
 	@Override
-	public ProcessInstance createProcessInstance(KieReleaseId releaseId, String processId, Map<String, Object> parameters) {
-		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
-		session.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
-		return ProcessInstanceFactory.convert(session.createProcessInstance(processId, parameters));
-	}
-
-	@Override
 	public void signalEvent(long processInstanceId, String type, Object event) {
 		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().signalEvent(type, event);
 	}
@@ -74,6 +68,13 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 
 	@Override
 	public void abortProcessInstance(long processInstanceId) {
+		KieSession kieSession = knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
+		for(ProcessEventListener listener : kieSession.getProcessEventListeners()) {
+			if(listener.getClass().equals(KieReleaseIdXProcessInstanceListener.class)) {
+				listener.afterProcessCompleted(null);
+				break;
+			}
+		}
 		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().abortProcessInstance(processInstanceId);
 	}
 
