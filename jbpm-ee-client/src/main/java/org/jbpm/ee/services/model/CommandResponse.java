@@ -4,6 +4,13 @@ import java.io.Serializable;
 
 import org.drools.core.command.impl.GenericCommand;
 
+/**
+ * CommandResponse represents the full Command and its response. 
+ * Allows for null responses for commands that allow null as return value
+ * 
+ * @author abaxter
+ *
+ */
 public class CommandResponse implements Serializable {
 
 	/**
