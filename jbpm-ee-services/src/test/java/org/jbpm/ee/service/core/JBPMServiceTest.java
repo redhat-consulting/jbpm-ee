@@ -113,7 +113,7 @@ public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
         assertNull(processInstance);
 	}
 	
-	@Test
+	//@Test
 	@Transactional(value=TransactionMode.DEFAULT)
 	public void testLoanProcess() throws Exception {
 		final String processString = "ProcessingTest.LoanProcess";
