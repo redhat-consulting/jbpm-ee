@@ -41,23 +41,6 @@ public class ProcessServiceAdapter implements ProcessService {
 			
 			return this.restService.startProcess(processId, request);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-
-	@Override
-	public ProcessInstance createProcessInstance(KieReleaseId releaseId, String processId, Map<String, Object> parameters) {
-		try {
-			JaxbInitializeProcessRequest request = new JaxbInitializeProcessRequest();
-			request.setReleaseId(releaseId);
-			request.setVariables(parameters);
-			
-			return this.restService.createProcessInstance(processId, request);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

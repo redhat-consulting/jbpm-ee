@@ -131,5 +131,17 @@ public abstract class BaseTest {
 		return processInstance.getId();
 	}
 	
+
+	
+	@WebMethod
+	public Long startProcessNullValues() {
+		ProcessService processService =  getProcessService();
+		
+		Map<String, Object> processVariables = null;
+		ProcessInstance processInstance = processService.startProcess(taskTestReleaseId, taskTestProcessId, processVariables);
+		LOG.info("Process Instance: "+processInstance.getId());
+		
+		return processInstance.getId();
+	}
 	
 }

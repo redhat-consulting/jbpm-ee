@@ -3,7 +3,6 @@ package org.jbpm.ee.jms;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -33,6 +32,7 @@ import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.model.TaskFactory;
+import org.jbpm.ee.services.model.CommandResponse;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.kie.api.runtime.CommandExecutor;
@@ -47,7 +47,6 @@ import org.slf4j.LoggerFactory;
 
 import antlr.collections.List;
 
-import com.ning.http.client.Response;
 
 /**
  * Executes a single command and returns a response object
@@ -293,32 +292,30 @@ public class CommandExecutorMDB implements MessageListener {
 			if (!(returnType.equals(Void.class))) {
 				// see if there is a correlation and reply to.ok
 
-				Object responseObject = getResponseObjectByReturnTyope(commandResponse, returnType);
+				Object convertedObject = getResponseObjectByReturnTyope(commandResponse, returnType);
 
 				String correlation = message.getJMSCorrelationID();
 				Destination responseQueue = message.getJMSReplyTo();
 
 				if (responseQueue != null && correlation != null) {
 
-					if ((responseObject != null)
+					if ((convertedObject != null)
 							&& (!Serializable.class
-									.isAssignableFrom(responseObject
+									.isAssignableFrom(convertedObject
 											.getClass()))) {
 						throw new CommandException(
 								"Unable to send response for command, since it is not serializable.");
 					}
-
-					session = connection.createSession(true,
-							Session.AUTO_ACKNOWLEDGE);
-					MessageProducer producer = session
-							.createProducer(responseQueue);
-
-					ObjectMessage responseMessage = session
-							.createObjectMessage();
-					if (responseObject != null) {
-						responseMessage
-								.setObject((Serializable) responseObject);
-					}
+					
+					session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+					MessageProducer producer = session.createProducer(responseQueue);
+			        
+					ObjectMessage responseMessage = session.createObjectMessage();
+					CommandResponse responseObject = new CommandResponse();
+					responseObject.setResponse(convertedObject);
+					responseObject.setCommand(command);
+					
+					responseMessage.setObject(responseObject);
 					responseMessage.setJMSCorrelationID(correlation);
 					LOG.info("Sending message");
 					producer.send(responseMessage);
@@ -327,7 +324,7 @@ public class CommandExecutorMDB implements MessageListener {
 				} else {
 					LOG.warn("Response from Command Object, but no ReplyTo and Coorelation: "
 							+ ReflectionToStringBuilder
-									.toString(responseObject));
+									.toString(convertedObject));
 				}
 			}
 		} catch (JMSException | NoSuchMethodException | SecurityException e) {

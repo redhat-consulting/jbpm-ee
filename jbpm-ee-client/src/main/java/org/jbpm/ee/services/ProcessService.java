@@ -36,17 +36,6 @@ public interface ProcessService {
 	ProcessInstance startProcess(@ReleaseId KieReleaseId releaseId, String processId, Map<String, Object> parameters);
 	
 	/**
-	 * Created, but doesn't start, a process with provided variables
-	 * 
-	 * @param releaseId Deployment information for the process's kjar
-	 * @param processId The process's name 
-	 * @param parameters Process variables to start with
-	 * @return Process instance information
-	 */
-	@PreprocessClassloader
-	ProcessInstance createProcessInstance(@ReleaseId KieReleaseId releaseId, String processId, Map<String, Object> parameters);
-	
-	/**
 	 * Starts a previously created process
 	 * 
 	 * @param processInstanceId The process instance's unique identifier
