@@ -182,10 +182,10 @@ public class CommandExecutorMDB implements MessageListener {
 	 * @param returnType
 	 * @return
 	 */
-	private Object getResponseObjectByReturnType(Object commandResponse, Class<?> returnType){
+	private static Object getResponseObjectByReturnType(Object commandResponse, Class<?> returnType){
 		Object response = null;
     	
-    	if(commandResponse==null){
+    	if(commandResponse == null){
     		return null;
     	}else if(commandResponse instanceof Collection<?>){
     		//if commandReponse returns a Collection, retrieve generic type information
