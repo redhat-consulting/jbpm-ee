@@ -182,69 +182,69 @@ public class CommandExecutorMDB implements MessageListener {
 	 * @param returnType
 	 * @return
 	 */
-	private static Object getResponseObjectByReturnType(Object commandResponse, Class<?> returnType){
+	private static Object getResponseObjectFromCommandResponse(Object commandResponse){
 		Object response = null;
     	
-    	if(commandResponse == null){
+    	if(commandResponse==null){
     		return null;
     	}else if(commandResponse instanceof Collection<?>){
     		//if commandReponse returns a Collection, retrieve generic type information
-    		Class<?> genericClassType = getClassFromCollection(commandResponse);
-    		
-    		if(genericClassType.equals(org.kie.api.runtime.process.ProcessInstance.class) && returnType.equals(Collection.class)){
+    		Object collectionObject = getClassFromCollection(commandResponse);
+    		if(collectionObject instanceof org.kie.api.runtime.process.ProcessInstance){
     			
     			response = ProcessInstanceFactory.convertProcessInstances((Collection<org.kie.api.runtime.process.ProcessInstance>)commandResponse);
     			
-    		}else if(genericClassType.equals(Long.class) && returnType.equals(List.class)){
+    		}else if(collectionObject instanceof Long){
     			
     			response = commandResponse;
     			
-    		}else if(genericClassType.equals(org.kie.api.task.model.TaskSummary.class) && returnType.equals(List.class)){
+    		}else if(collectionObject instanceof org.kie.api.task.model.TaskSummary) {
+    				//genericClassType.eq(org.kie.api.task.model.TaskSummary.class) && returnType.isInstance(List.class)){
     			
     			response = TaskFactory.convertTaskSummaries((java.util.List<TaskSummary>)commandResponse);
     			
-    		}else if(genericClassType.equals(String.class) && returnType.equals(List.class)){
+    		}else if(collectionObject instanceof String){
     			
     			response = commandResponse;
     			
     		}else{
     			
-    			throw new IllegalStateException("No converter for class Collection<"+genericClassType.getCanonicalName()+">.");
+    			throw new IllegalStateException("No converter for class Collection<"+collectionObject.getClass().getCanonicalName()+">.");
         		
     		}
     		
     	}else{
     			
-    		if(returnType.equals(org.drools.core.process.instance.WorkItem.class)){
+    		if(commandResponse instanceof org.drools.core.process.instance.WorkItem){
     			
     			response = ProcessInstanceFactory.convert((WorkItem)commandResponse);
     			
-    		}else if(returnType.equals(org.kie.api.task.model.Content.class)){
+    		}else if(commandResponse instanceof org.kie.api.task.model.Content){
     			
     			response = TaskFactory.convert((Content)commandResponse);
     			
-    		}else if(returnType.equals(Long.class)){
+    		}else if(commandResponse instanceof Long){
     			
     			response = commandResponse;
     			
-    		}else  if(returnType.equals(org.kie.api.runtime.process.ProcessInstance.class)){
+    		}else  if(commandResponse instanceof org.kie.api.runtime.process.ProcessInstance){
     			
     			response = ProcessInstanceFactory.convert((org.kie.api.runtime.process.ProcessInstance)commandResponse);
     			
-    		}else if(returnType.equals(org.kie.api.task.model.Attachment.class)){
+    		}else if(commandResponse instanceof org.kie.api.task.model.Attachment){
     			
     			response = TaskFactory.convert((org.kie.api.task.model.Attachment) commandResponse);
     			
-    		}else if(returnType.equals(Integer.class)){
+    		}else if(commandResponse instanceof Integer){
     			
     			response = commandResponse;
     			
-    		}else if(returnType.equals(org.kie.api.task.model.Task.class)){
+    		}else if(commandResponse instanceof org.kie.api.task.model.Task){
     			
     			response = TaskFactory.convert((org.kie.api.task.model.Task) commandResponse);
     			
     		}else{
-    			throw new IllegalStateException("No converter for class "+returnType.getCanonicalName()+".");
+    			throw new IllegalStateException("No converter for class "+commandResponse.getClass().getCanonicalName()+".");
         		
     		}
     		
@@ -259,17 +259,15 @@ public class CommandExecutorMDB implements MessageListener {
 	 * @param commandResponse
 	 * @return returns the generic type of a non-empty Collection
 	 */
-	private static Class<?> getClassFromCollection(Object commandResponse) {
-		Class<?> clazz = null;
-		if (commandResponse instanceof Collection<?>) {
+	private static Object getClassFromCollection(Object commandResponse) {
+		Object obj = null;
 			Collection<?> col = (Collection<?>) commandResponse;
 
 			if (!col.isEmpty()) {
-				clazz = col.toArray()[0].getClass();
+				obj = col.toArray()[0];
 			}
-		}
 
-		return clazz;
+		return obj;
 	}
 
 	@Override
@@ -292,7 +290,7 @@ public class CommandExecutorMDB implements MessageListener {
 			if (!(returnType.equals(Void.class))) {
 				// see if there is a correlation and reply to.ok
 
-				Object convertedObject = getResponseObjectByReturnType(commandResponse, returnType);
+				Object convertedObject = getResponseObjectFromCommandResponse(commandResponse);
 
 				String correlation = message.getJMSCorrelationID();
 				Destination responseQueue = message.getJMSReplyTo();
