@@ -182,7 +182,7 @@ public class CommandExecutorMDB implements MessageListener {
 	 * @param returnType
 	 * @return
 	 */
-	private Object getResponseObjectByReturnTyope(Object commandResponse, Class<?> returnType){
+	private Object getResponseObjectByReturnType(Object commandResponse, Class<?> returnType){
 		Object response = null;
     	
     	if(commandResponse==null){
@@ -292,7 +292,7 @@ public class CommandExecutorMDB implements MessageListener {
 			if (!(returnType.equals(Void.class))) {
 				// see if there is a correlation and reply to.ok
 
-				Object convertedObject = getResponseObjectByReturnTyope(commandResponse, returnType);
+				Object convertedObject = getResponseObjectByReturnType(commandResponse, returnType);
 
 				String correlation = message.getJMSCorrelationID();
 				Destination responseQueue = message.getJMSReplyTo();
