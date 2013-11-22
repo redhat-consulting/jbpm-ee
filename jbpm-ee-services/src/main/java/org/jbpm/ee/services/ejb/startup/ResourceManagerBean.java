@@ -32,9 +32,7 @@ public class ResourceManagerBean {
 	}
 	
 	@Produces
-	public UserGroupCallback getUserGroupCallback() {
-		// will be JAASUserGroupCallbackImpl() once we switch to LDAP
-		// JAASUserGroupCallbackImpl will require a security context, which means changing quite a bit
+	public UserGroupCallback getInternalUserGroupCallback() {
 		return new JBossUserGroupCallbackImpl("classpath:/usergroup.properties");
 	}
 }
