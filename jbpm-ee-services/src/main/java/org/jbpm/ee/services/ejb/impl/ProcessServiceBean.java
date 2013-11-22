@@ -77,11 +77,5 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 		}
 		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().abortProcessInstance(processInstanceId);
 	}
-
-	@Override
-	public ProcessInstance startProcessInstance(long processInstanceId) {		
-		return ProcessInstanceFactory.convert(knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().startProcessInstance(processInstanceId));
-	}
-
 	
 }

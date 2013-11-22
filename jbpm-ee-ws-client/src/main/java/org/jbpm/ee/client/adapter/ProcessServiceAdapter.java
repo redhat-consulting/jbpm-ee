@@ -48,11 +48,6 @@ public class ProcessServiceAdapter implements ProcessService {
 	}
 
 	@Override
-	public ProcessInstance startProcessInstance(long processInstanceId) {
-		return this.restService.startProcessInstance(processInstanceId);
-	}
-
-	@Override
 	public void signalEvent(long processInstanceId, String type, Object event) {
 		this.restService.signalEvent(processInstanceId, type, event);
 	}

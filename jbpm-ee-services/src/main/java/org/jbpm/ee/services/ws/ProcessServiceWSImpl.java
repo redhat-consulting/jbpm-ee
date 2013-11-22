@@ -33,16 +33,6 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 	}
 
 	@Override
-	public ProcessInstance startProcessInstance(long processInstanceId) {
-		try {
-			return (ProcessInstance)processRuntimeService.startProcessInstance(processInstanceId);
-		}
-		catch(Exception e) {
-			throw new RemoteServiceException(e);
-		}
-	}
-
-	@Override
 	public void signalEvent(long processInstanceId, String type, Object event) {
 		try {
 			this.processRuntimeService.signalEvent(processInstanceId, type, event);

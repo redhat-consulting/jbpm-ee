@@ -36,14 +36,6 @@ public interface ProcessService {
 	ProcessInstance startProcess(@ReleaseId KieReleaseId releaseId, String processId, Map<String, Object> parameters);
 	
 	/**
-	 * Starts a previously created process
-	 * 
-	 * @param processInstanceId The process instance's unique identifier
-	 * @return Process instance information
-	 */
-	ProcessInstance startProcessInstance(@ProcessInstanceId long processInstanceId);
-	
-	/**
 	 * Signal an event to a single process
 	 * 
 	 * @param type The event's ID in the process
