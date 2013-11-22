@@ -19,7 +19,7 @@ import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.runtime.manager.RuntimeEngine;
-import org.kie.internal.runtime.manager.RuntimeEnvironment;
+import org.kie.api.runtime.manager.RuntimeEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
