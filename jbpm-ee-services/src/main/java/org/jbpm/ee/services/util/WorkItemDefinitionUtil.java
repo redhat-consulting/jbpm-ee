@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -13,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.jbpm.ee.runtime.KieContainerEE;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.kie.api.builder.ReleaseId;
+import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.scanner.MavenRepository;
@@ -25,7 +27,7 @@ public class WorkItemDefinitionUtil {
 
 	private static final Logger LOG = LoggerFactory.getLogger(WorkItemDefinitionUtil.class);
 	
-	public static void loadWorkItemhandlersToSession(KieContainerEE containerEE, RuntimeEngine engine) {
+	public static void loadWorkItemhandlersToSession(KieContainerEE containerEE, KieSession session) {
 		try {
 			
 			Map<String, String> handlers = containerEE.getWorkItemHandlers();
@@ -34,7 +36,7 @@ public class WorkItemDefinitionUtil {
 					LOG.info("Handler: "+handlerName+" -> "+handlerClassName);
 					Class handlerClass = containerEE.getClassLoader().loadClass(handlerClassName);
 					org.kie.api.runtime.process.WorkItemHandler handlerInstance = (WorkItemHandler)handlerClass.newInstance();
-					engine.getKieSession().getWorkItemManager().registerWorkItemHandler(handlerName, handlerInstance);
+					session.getWorkItemManager().registerWorkItemHandler(handlerName, handlerInstance);
 				}
 			}
 			catch(Exception e) {
@@ -53,20 +55,14 @@ public class WorkItemDefinitionUtil {
 		try {
 			File jar = artifact.getFile();
 			LOG.info("File reference: "+jar.getAbsolutePath());
-			
-			
-			
 			LOG.info("Loading entry: "+pattern);
 	        zip = new ZipFile(jar);
-	        
-	        
-	        
-	        Enumeration<? extends ZipEntry> entries = zip.entries(); 
-	        while(entries.hasMoreElements())
-	        {
-	        	LOG.info("Entry: "+entries.nextElement());
-	        }
 	        ZipEntry entry = zip.getEntry(pattern);
+	        
+	        if(entry == null) {
+	        	LOG.warn("Did not find "+pattern);
+	        	return new LinkedList<Map<String, Object>>();
+	        }
 	        
 	        LOG.info("Found entry: "+entry);
 	        

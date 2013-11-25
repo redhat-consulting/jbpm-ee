@@ -186,7 +186,7 @@ public class KnowledgeManagerBean {
 		RuntimeManager rm = getRuntimeManager(releaseId);
 		RuntimeEngine engine = rm.getRuntimeEngine(ProcessInstanceIdContext.get());
 		KieContainerEE containerEE = getKieContainer(releaseId);
-		WorkItemDefinitionUtil.loadWorkItemhandlersToSession(containerEE, engine);
+		WorkItemDefinitionUtil.loadWorkItemhandlersToSession(containerEE, engine.getKieSession());
 
 		return engine;
 	}
@@ -215,7 +215,7 @@ public class KnowledgeManagerBean {
 
 		
 		KieContainerEE containerEE = getKieContainer(releaseId);
-		WorkItemDefinitionUtil.loadWorkItemhandlersToSession(containerEE, getRuntimeEngine(releaseId));
+		WorkItemDefinitionUtil.loadWorkItemhandlersToSession(containerEE, manager.getRuntimeEngine(context).getKieSession());
 		
 		
 		if(!hasDisposalListener(manager, processInstanceId)) {
