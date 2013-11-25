@@ -58,7 +58,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 	@Override
 	public void claimNextAvailable(String userId, String language) {
 		List<TaskSummary> tasks = taskQueryService.getTasksOwned(userId, language);
-		if(tasks.size() < 1) {
+		if(tasks.isEmpty()) {
 			return;
 		}
 		

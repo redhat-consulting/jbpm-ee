@@ -42,15 +42,6 @@ public interface ProcessServiceWS {
 
 	@WebMethod
 	@PUT
-	@Path("/instance/{processInstanceId}/start")
-	@WebResult(name="process-instance") 
-	ProcessInstance startProcessInstance(
-	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
-	);
-
-
-	@WebMethod
-	@PUT
 	@Path("instance/{processInstanceId}/event/signal")
 	void signalEvent(
 	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId,
@@ -58,7 +49,7 @@ public interface ProcessServiceWS {
 	    @WebParam(name="event") Object event
 	);
 
-
+	@WebMethod
 	@GET
 	@Path("instance/{processInstanceId}")
 	@WebResult(name="process-instance") 

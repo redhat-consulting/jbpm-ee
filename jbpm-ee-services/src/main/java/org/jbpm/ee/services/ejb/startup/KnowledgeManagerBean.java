@@ -141,6 +141,16 @@ public class KnowledgeManagerBean {
 		return getKieContainer(resourceKey).getKieBase();
 	}	
 	
+ 	/**
+	 * Returns the kjar classloader for the given kjar deployment information
+	 * 
+	 * @param resourceKey The maven deployment information for the kjar
+	 * @return
+	 */
+	protected ClassLoader getClasssloader(KieReleaseId releaseId) {
+		return getKieContainer(releaseId).getClassLoader();
+	}
+	
 	/**
 	 * Creates the RuntimeEnvironment for the RuntimeManager to use
 	 * 
@@ -154,7 +164,7 @@ public class KnowledgeManagerBean {
 				.userGroupCallback(userGroupCallback)
 				.knowledgeBase(getKieBase(releaseId))
 				.persistence(true)
-				.classLoader(getKieContainer(releaseId).getClassLoader())
+				.classLoader(getClasssloader(releaseId))
 				.get();
 		return re;
 	}
