@@ -41,6 +41,7 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 	public ProcessInstance startProcess(KieReleaseId releaseId, String processId) {
 		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
 		session.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
+		
 		return ProcessInstanceFactory.convert(session.startProcess(processId));
 	}
 

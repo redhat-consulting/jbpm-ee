@@ -1,158 +1,126 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:g="http://www.jboss.org/drools/flow/gpd" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.omg.org/bpmn20" typeLanguage="http://www.java.com/javaTypes">
-  <bpmn2:itemDefinition id="_processStringItem" structureRef="String"/>
-  <bpmn2:itemDefinition id="ItemDefinition_2" structureRef="org.jbpm.ee.test.LoanOrder"/>
-  <bpmn2:itemDefinition id="_ItemDefinition_55" structureRef="java.lang.String"/>
-  <bpmn2:itemDefinition id="_ItemDefinition_60" structureRef="java.lang.Long"/>
-  <bpmn2:itemDefinition id="_ItemDefinition_62" structureRef="java.lang.Integer"/>
-  <bpmn2:itemDefinition id="_ItemDefinition_64" structureRef="java.lang.Object"/>
-  <bpmn2:itemDefinition id="_ItemDefinition_65" structureRef="java.lang.Boolean"/>
-  <bpmn2:message id="LoanOrder_getFirstName_Result" itemRef="_ItemDefinition_55" name="LoanOrder_getFirstName_Result"/>
-  <bpmn2:message id="LoanOrder_setFirstName_firstName" itemRef="_ItemDefinition_55" name="LoanOrder_setFirstName_firstName"/>
-  <bpmn2:message id="LoanOrder_getLastName_Result" itemRef="_ItemDefinition_55" name="LoanOrder_getLastName_Result"/>
-  <bpmn2:message id="LoanOrder_setLastName_lastName" itemRef="_ItemDefinition_55" name="LoanOrder_setLastName_lastName"/>
-  <bpmn2:message id="LoanOrder_getLoanAmount_Result" itemRef="_ItemDefinition_60" name="LoanOrder_getLoanAmount_Result"/>
-  <bpmn2:message id="LoanOrder_setLoanAmount_loanAmount" itemRef="_ItemDefinition_60" name="LoanOrder_setLoanAmount_loanAmount"/>
-  <bpmn2:message id="LoanOrder_hashCode_Result" itemRef="_ItemDefinition_62" name="LoanOrder_hashCode_Result"/>
-  <bpmn2:message id="LoanOrder_equals_obj" itemRef="_ItemDefinition_64" name="LoanOrder_equals_obj"/>
-  <bpmn2:message id="LoanOrder_equals_Result" itemRef="_ItemDefinition_65" name="LoanOrder_equals_Result"/>
-  <bpmn2:message id="LoanOrder_toString_Result" itemRef="_ItemDefinition_55" name="LoanOrder_toString_Result"/>
-  <bpmn2:interface id="_Interface_2" implementationRef="org.jbpm.ee.test.LoanOrder" name="LoanOrder">
-    <bpmn2:operation id="_Operation_2" implementationRef="getFirstName" name="getFirstName">
-      <bpmn2:outMessageRef>LoanOrder_getFirstName_Result</bpmn2:outMessageRef>
-    </bpmn2:operation>
-    <bpmn2:operation id="_Operation_3" implementationRef="setFirstName" name="setFirstName">
-      <bpmn2:inMessageRef>LoanOrder_setFirstName_firstName</bpmn2:inMessageRef>
-    </bpmn2:operation>
-    <bpmn2:operation id="_Operation_4" implementationRef="getLastName" name="getLastName">
-      <bpmn2:outMessageRef>LoanOrder_getLastName_Result</bpmn2:outMessageRef>
-    </bpmn2:operation>
-    <bpmn2:operation id="_Operation_5" implementationRef="setLastName" name="setLastName">
-      <bpmn2:inMessageRef>LoanOrder_setLastName_lastName</bpmn2:inMessageRef>
-    </bpmn2:operation>
-    <bpmn2:operation id="_Operation_6" implementationRef="getLoanAmount" name="getLoanAmount">
-      <bpmn2:outMessageRef>LoanOrder_getLoanAmount_Result</bpmn2:outMessageRef>
-    </bpmn2:operation>
-    <bpmn2:operation id="_Operation_7" implementationRef="setLoanAmount" name="setLoanAmount">
-      <bpmn2:inMessageRef>LoanOrder_setLoanAmount_loanAmount</bpmn2:inMessageRef>
-    </bpmn2:operation>
-    <bpmn2:operation id="_Operation_8" implementationRef="hashCode" name="hashCode">
-      <bpmn2:outMessageRef>LoanOrder_hashCode_Result</bpmn2:outMessageRef>
-    </bpmn2:operation>
-    <bpmn2:operation id="_Operation_9" implementationRef="equals" name="equals">
-      <bpmn2:inMessageRef>LoanOrder_equals_obj</bpmn2:inMessageRef>
-      <bpmn2:outMessageRef>LoanOrder_equals_Result</bpmn2:outMessageRef>
-    </bpmn2:operation>
-    <bpmn2:operation id="_Operation_10" implementationRef="toString" name="toString">
-      <bpmn2:outMessageRef>LoanOrder_toString_Result</bpmn2:outMessageRef>
-    </bpmn2:operation>
-  </bpmn2:interface>
-  <bpmn2:process id="testProj.testProcess" tns:version="1.0" tns:packageName="org.jbpm" tns:adHoc="false" name="testProcess" isExecutable="true" processType="Private">
-    <bpmn2:extensionElements>
-      <tns:import name="org.jbpm.ee.test.LoanOrder"/>
-      <tns:import name="java.lang.String"/>
-      <tns:import name="java.lang.Long"/>
-      <tns:import name="java.lang.Object"/>
-    </bpmn2:extensionElements>
-    <bpmn2:property id="processString" itemSubjectRef="_processStringItem"/>
-    <bpmn2:property id="loanOrder" itemSubjectRef="ItemDefinition_2"/>
-    <bpmn2:startEvent id="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5" name="">
-      <bpmn2:outgoing>_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269</bpmn2:outgoing>
-    </bpmn2:startEvent>
-    <bpmn2:endEvent id="_9A3B5E49-44DB-404D-8031-60F7C122E745" name="">
-      <bpmn2:incoming>_4-_9A3B5E49-44DB-404D-8031-60F7C122E745</bpmn2:incoming>
-    </bpmn2:endEvent>
-    <bpmn2:userTask id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" name="String Input">
-      <bpmn2:incoming>_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269</bpmn2:incoming>
-      <bpmn2:outgoing>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_4</bpmn2:outgoing>
-      <bpmn2:ioSpecification id="InputOutputSpecification_1">
-        <bpmn2:dataInput id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_SkippableInput" name="Skippable"/>
-        <bpmn2:dataInput id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_TaskNameInput" name="TaskName"/>
-        <bpmn2:dataInput id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_GroupIdInput" name="GroupId"/>
-        <bpmn2:dataInput id="DataInput_6" itemSubjectRef="ItemDefinition_2" name="loan_in"/>
-        <bpmn2:dataOutput id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_taskOutputOutput" name="taskOutput"/>
-        <bpmn2:dataOutput id="DataOutput_1" itemSubjectRef="ItemDefinition_2" name="loan_out"/>
-        <bpmn2:inputSet id="InputSet_1">
-          <bpmn2:dataInputRefs>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_SkippableInput</bpmn2:dataInputRefs>
-          <bpmn2:dataInputRefs>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_TaskNameInput</bpmn2:dataInputRefs>
-          <bpmn2:dataInputRefs>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_GroupIdInput</bpmn2:dataInputRefs>
-          <bpmn2:dataInputRefs>DataInput_6</bpmn2:dataInputRefs>
-        </bpmn2:inputSet>
-        <bpmn2:outputSet id="OutputSet_1">
-          <bpmn2:dataOutputRefs>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_taskOutputOutput</bpmn2:dataOutputRefs>
-          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
-        </bpmn2:outputSet>
-      </bpmn2:ioSpecification>
-      <bpmn2:dataInputAssociation id="DataInputAssociation_1">
-        <bpmn2:targetRef>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_SkippableInput</bpmn2:targetRef>
-        <bpmn2:assignment id="Assignment_1">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1">false</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2">_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_SkippableInput</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataInputAssociation>
-      <bpmn2:dataInputAssociation id="DataInputAssociation_2">
-        <bpmn2:targetRef>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_TaskNameInput</bpmn2:targetRef>
-        <bpmn2:assignment id="Assignment_2">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3">StringInput</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4">_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_TaskNameInput</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataInputAssociation>
-      <bpmn2:dataInputAssociation id="DataInputAssociation_3">
-        <bpmn2:targetRef>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_GroupIdInput</bpmn2:targetRef>
-        <bpmn2:assignment id="Assignment_3">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_5">user</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6">_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_GroupIdInput</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataInputAssociation>
-      <bpmn2:dataInputAssociation id="DataInputAssociation_9">
-        <bpmn2:sourceRef>loanOrder</bpmn2:sourceRef>
-        <bpmn2:targetRef>DataInput_6</bpmn2:targetRef>
-      </bpmn2:dataInputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
-        <bpmn2:sourceRef>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_taskOutputOutput</bpmn2:sourceRef>
-        <bpmn2:targetRef>processString</bpmn2:targetRef>
-      </bpmn2:dataOutputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_2">
-        <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
-        <bpmn2:targetRef>loanOrder</bpmn2:targetRef>
-      </bpmn2:dataOutputAssociation>
-    </bpmn2:userTask>
-    <bpmn2:scriptTask id="_4" name="Script" scriptFormat="http://www.java.com/java">
-      <bpmn2:incoming>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_4</bpmn2:incoming>
-      <bpmn2:outgoing>_4-_9A3B5E49-44DB-404D-8031-60F7C122E745</bpmn2:outgoing>
-      <bpmn2:script>org.jbpm.ee.test.LoanOrder order = (org.jbpm.ee.test.LoanOrder) kcontext.getVariable(&quot;loanOrder&quot;);
-System.out.println(order.toString());</bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:sequenceFlow id="_4-_9A3B5E49-44DB-404D-8031-60F7C122E745" tns:priority="1" name="" sourceRef="_4" targetRef="_9A3B5E49-44DB-404D-8031-60F7C122E745"/>
-    <bpmn2:sequenceFlow id="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" tns:priority="1" name="" sourceRef="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5" targetRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269"/>
-    <bpmn2:sequenceFlow id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_4" tns:priority="1" name="" sourceRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" targetRef="_4"/>
-  </bpmn2:process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_Process_1" bpmnElement="testProj.testProcess">
-      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5">
-        <dc:Bounds height="48.0" width="48.0" x="6.0" y="110.0"/>
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.omg.org/bpmn20"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_processStringItem" structureRef="String" />
+
+  <process processType="Private" isExecutable="true" id="testProj.testProcess" name="testProcess" tns:packageName="org.jbpm" tns:version="1.0" >
+
+    <extensionElements>
+     <tns:import name="org.jbpm.ee.test.LoanOrder" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="processString" itemSubjectRef="_processStringItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5" name=""  isInterrupting="true"/>
+    <endEvent id="_9A3B5E49-44DB-404D-8031-60F7C122E745" name="" />
+    <userTask id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" name="String Input" >
+      <ioSpecification>
+        <dataInput id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_SkippableInput" name="Skippable" />
+        <dataInput id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_TaskNameInput" name="TaskName" />
+        <dataInput id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_GroupIdInput" name="GroupId" />
+        <dataOutput id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_taskOutputOutput" name="taskOutput" />
+        <inputSet>
+          <dataInputRefs>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_SkippableInput</dataInputRefs>
+          <dataInputRefs>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_taskOutputOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">StringInput</from>
+          <to xsi:type="tFormalExpression">_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">user</from>
+          <to xsi:type="tFormalExpression">_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269_taskOutputOutput</sourceRef>
+        <targetRef>processString</targetRef>
+      </dataOutputAssociation>
+    </userTask>
+    <scriptTask id="_4" name="Script" scriptFormat="http://www.java.com/java" >
+      <script>org.jbpm.ee.test.LoanOrder order = (org.jbpm.ee.test.LoanOrder) kcontext.getVariable("loanOrder");
+System.out.println(order.toString());</script>
+    </scriptTask>
+    <task id="_5" name="Test Handler" tns:taskName="TestHandler" >
+      <ioSpecification>
+        <inputSet>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_4-_9A3B5E49-44DB-404D-8031-60F7C122E745" sourceRef="_4" targetRef="_9A3B5E49-44DB-404D-8031-60F7C122E745" />
+    <sequenceFlow id="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" sourceRef="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5" targetRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" />
+    <sequenceFlow id="_5-_4" sourceRef="_5" targetRef="_4" />
+    <sequenceFlow id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_5" sourceRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" targetRef="_5" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="testProj.testProcess" >
+      <bpmndi:BPMNShape bpmnElement="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5" >
+        <dc:Bounds x="6" y="110" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="_9A3B5E49-44DB-404D-8031-60F7C122E745">
-        <dc:Bounds height="48.0" width="48.0" x="259.0" y="109.0"/>
+      <bpmndi:BPMNShape bpmnElement="_9A3B5E49-44DB-404D-8031-60F7C122E745" >
+        <dc:Bounds x="397" y="105" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_1" bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269">
-        <dc:Bounds height="80.0" width="100.0" x="105.0" y="94.0"/>
+      <bpmndi:BPMNShape bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" >
+        <dc:Bounds x="105" y="94" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_1" bpmnElement="_4">
-        <dc:Bounds height="48.0" width="80.0" x="233.0" y="253.0"/>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="233" y="253" width="80" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="_4-_9A3B5E49-44DB-404D-8031-60F7C122E745">
-        <di:waypoint xsi:type="dc:Point" x="273.0" y="277.0"/>
-        <di:waypoint xsi:type="dc:Point" x="283.0" y="133.0"/>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="132" y="340" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_4-_9A3B5E49-44DB-404D-8031-60F7C122E745" >
+        <di:waypoint x="273" y="277" />
+        <di:waypoint x="421" y="129" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269">
-        <di:waypoint xsi:type="dc:Point" x="30.0" y="134.0"/>
-        <di:waypoint xsi:type="dc:Point" x="155.0" y="134.0"/>
+      <bpmndi:BPMNEdge bpmnElement="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" >
+        <di:waypoint x="30" y="134" />
+        <di:waypoint x="155" y="134" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_4">
-        <di:waypoint xsi:type="dc:Point" x="155.0" y="134.0"/>
-        <di:waypoint xsi:type="dc:Point" x="273.0" y="277.0"/>
+      <bpmndi:BPMNEdge bpmnElement="_5-_4" >
+        <di:waypoint x="182" y="364" />
+        <di:waypoint x="273" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_5" >
+        <di:waypoint x="155" y="134" />
+        <di:waypoint x="182" y="364" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
-</bpmn2:definitions>
+
+</definitions>

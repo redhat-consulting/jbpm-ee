@@ -1,5 +1,8 @@
 package org.jbpm.ee.services.ejb.startup;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -41,13 +44,21 @@ public class BPMClassloaderService {
 	}
 	
 	public void bridgeClassloaderByReleaseId(KieReleaseId releaseId) {
-		LOG.debug("Bridging by release id: "+releaseId);
-		
+		LOG.debug("Bridging by release id: " + releaseId);
 		ClassLoader bpmClassloader = knowledgeManager.getKieContainer(releaseId).getClassLoader();
 		ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
-		BridgedClassloader bridged = new BridgedClassloader(appLoader, bpmClassloader);
+		BridgedClassloader bridged = new BridgedClassloader(appLoader,bpmClassloader);
 		ClassloaderManager.set(bridged);
-		LOG.info("Set thread classloader: "+bridged);
+		LOG.info("Set thread classloader: " + bridged);
 	}
-	
+
+	public static void closeQuietly(Closeable c) {
+		try {
+            if (c != null) {
+                c.close();
+            }
+        } catch (IOException ioe) {
+            // ignore
+        }
+	}
 }
