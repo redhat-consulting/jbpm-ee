@@ -147,8 +147,10 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 		BridgedClassloader cl = new BridgedClassloader(delegate.getClassLoader(), this.getClass().getClassLoader());
 		return cl;
 	}
-	
-	
 
+	@Override
+	public KieSession newKieSession(Environment env, KieSessionConfiguration conf) {
+		return delegate.newKieSession(env, conf);
+	}
 	
 }
