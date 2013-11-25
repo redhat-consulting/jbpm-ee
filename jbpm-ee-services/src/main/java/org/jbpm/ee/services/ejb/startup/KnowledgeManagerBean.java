@@ -19,16 +19,16 @@ import org.hibernate.SessionException;
 import org.jbpm.ee.config.Configuration;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.persistence.KieBaseXProcessInstance;
+import org.jbpm.ee.runtime.KieContainerEE;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
+import org.jbpm.ee.services.util.WorkItemDefinitionUtil;
 import org.jbpm.ee.support.KieReleaseId;
 import org.jbpm.runtime.manager.impl.RuntimeEnvironmentBuilder;
-import org.jbpm.services.task.HumanTaskConfigurator;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.PropertiesConfiguration;
 import org.kie.api.builder.KieScanner;
 import org.kie.api.event.process.ProcessEventListener;
-import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
 import org.kie.api.task.TaskService;
@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
 public class KnowledgeManagerBean {
 	private static final Logger LOG = LoggerFactory.getLogger(KnowledgeManagerBean.class);
 	
-	protected Map<KieReleaseId, KieContainer> containers;
+	protected Map<KieReleaseId, KieContainerEE> containers;
 	protected Map<KieReleaseId, KieScanner> scanners;
 	
 	protected Map<KieReleaseId, RuntimeManager> runtimeManagers;
@@ -81,11 +81,10 @@ public class KnowledgeManagerBean {
 	@Inject
 	protected TaskService taskService;
 	
-	
 	@PostConstruct
 	private void setup() {
 		 kieServices = KieServices.Factory.get();
-		 containers = new ConcurrentHashMap<KieReleaseId, KieContainer>();
+		 containers = new ConcurrentHashMap<KieReleaseId, KieContainerEE>();
 		 scanners = new ConcurrentHashMap<KieReleaseId, KieScanner>();
 		 
 		 runtimeManagers = new ConcurrentHashMap<KieReleaseId, RuntimeManager>();
@@ -114,13 +113,13 @@ public class KnowledgeManagerBean {
 	 * @param resourceKey The maven deployment information for the kjar
 	 * @return The in-memory loaded kjar
 	 */
-	public KieContainer getKieContainer(KieReleaseId resourceKey) {
+	public KieContainerEE getKieContainer(KieReleaseId resourceKey) {
 		
 		if(!containers.containsKey(resourceKey)) {
 			//create a new container.
 			
 			ReleaseIdImpl releaseID = new ReleaseIdImpl(resourceKey.getGroupId(), resourceKey.getArtifactId(), resourceKey.getVersion());
-			KieContainer kieContainer = kieServices.newKieContainer(releaseID);
+			KieContainerEE kieContainer = new KieContainerEE(kieServices.newKieContainer(releaseID));
 			KieScanner kieScanner = kieServices.newKieScanner(kieContainer);
 			kieScanner.start(scannerPollFrequency);
 			
@@ -130,6 +129,7 @@ public class KnowledgeManagerBean {
 		}
 		return this.containers.get(resourceKey);
 	}
+	
 	
 	/**
 	 * Returns the kjar resources for the given kjar deployment information
@@ -153,6 +153,7 @@ public class KnowledgeManagerBean {
 				.userGroupCallback(userGroupCallback)
 				.knowledgeBase(getKieBase(releaseId))
 				.persistence(true)
+				.classLoader(getKieContainer(releaseId).getClassLoader())
 				.get();
 		return re;
 	}
@@ -182,7 +183,11 @@ public class KnowledgeManagerBean {
 	 */
 	public RuntimeEngine getRuntimeEngine(KieReleaseId releaseId) {
 		RuntimeManager rm = getRuntimeManager(releaseId);
-		return rm.getRuntimeEngine(ProcessInstanceIdContext.get());
+		RuntimeEngine engine = rm.getRuntimeEngine(ProcessInstanceIdContext.get());
+		KieContainerEE containerEE = getKieContainer(releaseId);
+		WorkItemDefinitionUtil.loadWorkItemhandlersToSession(containerEE, engine);
+
+		return engine;
 	}
 	
 	/**
@@ -206,11 +211,18 @@ public class KnowledgeManagerBean {
 		LOG.debug("Kie Release: "+releaseId);
 		
 		RuntimeManager manager = getRuntimeManager(releaseId);
+
+		
+		KieContainerEE containerEE = getKieContainer(releaseId);
+		WorkItemDefinitionUtil.loadWorkItemhandlersToSession(containerEE, getRuntimeEngine(releaseId));
+		
+		
 		if(!hasDisposalListener(manager, processInstanceId)) {
 			//add the listener.
 			LOG.debug("Adding the disposal listener to existing runtime for process ID: "+processInstanceId);
 			manager.getRuntimeEngine(context).getKieSession().addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, em));
 		}
+		
 		return manager.getRuntimeEngine(context);
 	}
 	
@@ -335,7 +347,7 @@ public class KnowledgeManagerBean {
 		return this.getReleaseIdByProcessId(processInstanceId);
 	}
 	
-	
+
 	private static void setDefaultingProperty(String name, String val, PropertiesConfiguration config) {
 		if(val == null) return;
 

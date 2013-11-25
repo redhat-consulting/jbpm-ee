@@ -1,5 +1,6 @@
 package org.jbpm.ee.services.util;
 
+import org.apache.commons.discovery.resource.ClassLoaders;
 import org.slf4j.Logger;
 
 
@@ -7,10 +8,14 @@ public class BridgedClassloader extends ClassLoader {
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(BridgedClassloader.class);
 	
 	private final ClassLoader secondary;
+	private final ClassLoaders classloaders;
 
-	public BridgedClassloader(ClassLoader primary, ClassLoader secondary) { 
+	public BridgedClassloader(ClassLoader primary, ClassLoader secondary) {
 	    super(primary);
 	    this.secondary = secondary;
+	    this.classloaders = new ClassLoaders();
+	    this.classloaders.put(primary);
+	    this.classloaders.put(secondary);
 	}
 
 	@Override
@@ -36,7 +41,7 @@ public class BridgedClassloader extends ClassLoader {
 			return secondary.loadClass(name);
 		}
 	}
-
+	
 	@Override
 	public String toString() {
 		return "BridgedClassloader [parent="+getParent()+"], secondary=" + secondary + "]";
