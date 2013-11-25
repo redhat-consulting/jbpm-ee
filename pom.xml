@@ -312,5 +312,6 @@
 		<module>jbpm-ee-external-soap-archetype</module>
 		<module>jbpm-ee-external-ejb-archetype</module>
 		<module>jbpm-ee-external-rest-archetype</module>
+		<module>jbpm-ee-external-ear</module>
 	</modules>
 </project>

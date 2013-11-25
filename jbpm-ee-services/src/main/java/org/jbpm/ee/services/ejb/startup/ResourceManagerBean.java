@@ -1,11 +1,15 @@
 package org.jbpm.ee.services.ejb.startup;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+
 import org.jbpm.services.task.identity.JBossUserGroupCallbackImpl;
 import org.kie.internal.task.api.UserGroupCallback;
 
@@ -32,7 +36,14 @@ public class ResourceManagerBean {
 	}
 	
 	@Produces
-	public UserGroupCallback getInternalUserGroupCallback() {
-		return new JBossUserGroupCallbackImpl("classpath:/usergroup.properties");
+	public UserGroupCallback getUserGroupCallback() throws IOException {
+		// will be JAASUserGroupCallbackImpl() once we switch to LDAP
+		// JAASUserGroupCallbackImpl will require a security context, which means changing quite a bit
+		
+		Properties prop = new Properties();
+		
+		prop.load(getClass().getClassLoader().getResourceAsStream("usergroup.properties"));
+		
+		return new JBossUserGroupCallbackImpl(prop);
 	}
 }
