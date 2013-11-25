@@ -33,8 +33,8 @@ import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Task;
-import org.kie.internal.runtime.manager.RuntimeEnvironment;
-import org.kie.internal.runtime.manager.RuntimeManagerFactory;
+import org.kie.api.runtime.manager.RuntimeEnvironment;
+import org.kie.api.runtime.manager.RuntimeManagerFactory;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 import org.kie.internal.task.api.UserGroupCallback;
 import org.slf4j.Logger;
@@ -148,7 +148,8 @@ public class KnowledgeManagerBean {
 	 * @return
 	 */
 	public RuntimeEnvironment getRuntimeEnvironment(KieReleaseId releaseId) {
-		RuntimeEnvironment re = RuntimeEnvironmentBuilder.getDefault()
+		
+		RuntimeEnvironment re = RuntimeEnvironmentBuilder.Factory.get().newDefaultBuilder()
 				.entityManagerFactory(emf)
 				.userGroupCallback(userGroupCallback)
 				.knowledgeBase(getKieBase(releaseId))
