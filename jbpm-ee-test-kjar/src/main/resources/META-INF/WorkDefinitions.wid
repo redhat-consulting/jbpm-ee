@@ -1,0 +1,9 @@
+[
+  [
+    "name" : "TestHandler",
+    "displayName" : "Test Handler",
+    "defaultHandler" : "org.jbpm.ee.test.TestHandler",
+    "dependencies" : [
+    ]
+  ]
+]

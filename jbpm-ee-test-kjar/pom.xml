@@ -13,5 +13,10 @@
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
+  		<dependency>
+  			<groupId>org.kie</groupId>
+  			<artifactId>kie-api</artifactId>
+  			<scope>provided</scope>
+  		</dependency>
   </dependencies>
 </project>
