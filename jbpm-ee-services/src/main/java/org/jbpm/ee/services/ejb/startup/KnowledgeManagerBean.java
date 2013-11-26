@@ -106,6 +106,17 @@ public class KnowledgeManagerBean {
 		return taskService;
 	}
 	
+	private static boolean isReleaseIdValid(KieReleaseId releaseId) {
+		if ((releaseId != null) &&
+				(releaseId.getGroupId() != null) &&
+				(releaseId.getArtifactId() != null) &&
+				(releaseId.getVersion() != null)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * Loads a kjar via the given Release Id (maven deployment information)
 	 * Additionally, sets up scanning to monitor for kjar changes
@@ -114,6 +125,10 @@ public class KnowledgeManagerBean {
 	 * @return The in-memory loaded kjar
 	 */
 	public KieContainerEE getKieContainer(KieReleaseId resourceKey) {
+		
+		if (!isReleaseIdValid(resourceKey)) {
+			throw new IllegalArgumentException("ReleaseId invalid: " + resourceKey);
+		}
 		
 		if(!containers.containsKey(resourceKey)) {
 			//create a new container.

@@ -45,11 +45,18 @@ public class BPMClassloaderService {
 	
 	public void bridgeClassloaderByReleaseId(KieReleaseId releaseId) {
 		LOG.debug("Bridging by release id: " + releaseId);
-		ClassLoader bpmClassloader = knowledgeManager.getKieContainer(releaseId).getClassLoader();
+		
 		ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
-		BridgedClassloader bridged = new BridgedClassloader(appLoader,bpmClassloader);
-		ClassloaderManager.set(bridged);
-		LOG.info("Set thread classloader: " + bridged);
+		if (releaseId != null) {
+			ClassLoader bpmClassloader = knowledgeManager.getKieContainer(releaseId).getClassLoader();
+			BridgedClassloader bridged = new BridgedClassloader(appLoader,bpmClassloader);
+			ClassloaderManager.set(bridged);
+			LOG.info("Set thread classloader: " + bridged);
+		} else {
+			ClassloaderManager.set(appLoader);
+			LOG.info("Set thread classloader: " + appLoader);
+		}
+		
 	}
 
 	public static void closeQuietly(Closeable c) {
