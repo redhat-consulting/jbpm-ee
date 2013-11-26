@@ -35,26 +35,6 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<!-- Client Library -->
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>servlet-api</artifactId>
-					<groupId>javax.servlet</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>resteasy-jaxb-provider</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jboss-servlet-api_3.0_spec</artifactId>
-					<groupId>org.jboss.spec.javax.servlet</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-ws-client</artifactId>

@@ -3,11 +3,6 @@
   <artifactId>jbpm-ee-external-test</artifactId>
   <packaging>war</packaging>
   <dependencies>
-  	<dependency>
-  		<groupId>org.jbpm.jbpm-ee</groupId>
-  		<artifactId>jbpm-ee-client</artifactId>
-  		<version>1.0.0-SNAPSHOT</version>
-  	</dependency>
   	  	<dependency>
   		<groupId>org.jboss.spec</groupId>
   		<artifactId>jboss-javaee-web-6.0</artifactId>
@@ -28,6 +23,7 @@
   	  		<groupId>org.jbpm.jbpm-ee</groupId>
   	  		<artifactId>jbpm-ee-ws-client</artifactId>
   	  		<version>1.0.0-SNAPSHOT</version>
+  	  		<scope>provided</scope>
   	  	</dependency>
   	  	<dependency>
 			<groupId>org.kie</groupId>
@@ -59,6 +55,12 @@
 	            <artifactId>jboss-ejb-client</artifactId>
 	            <version>1.0.0.Final</version>
 	            <scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jbpm.jbpm-ee</groupId>
+				<artifactId>jbpm-ee-client-local</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<scope>provided</scope>
 			</dependency>
   </dependencies>
     	<build>

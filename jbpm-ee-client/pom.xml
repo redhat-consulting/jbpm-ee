@@ -12,5 +12,6 @@
 		<module>jbpm-ee-client-local</module>
 		<module>jbpm-ee-client-remote</module>
 		<module>jbpm-ee-client-common</module>
+		<module>jbpm-ee-client-remote-ext</module>
 	</modules>
 </project>

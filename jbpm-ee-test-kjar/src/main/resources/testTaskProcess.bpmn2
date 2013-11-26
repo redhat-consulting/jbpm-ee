@@ -14,7 +14,7 @@
 
   <itemDefinition id="_processStringItem" structureRef="String" />
 
-  <process processType="Private" isExecutable="true" id="testProj.testProcess" name="testProcess" tns:packageName="org.jbpm" tns:version="1.0" >
+  <process processType="Private" isExecutable="true" id="testTaskProcess.bpmn2" name="testTaskProcess" tns:packageName="org.jbpm" tns:version="1.0" >
 
     <extensionElements>
      <tns:import name="org.jbpm.ee.test.LoanOrder" />
@@ -66,29 +66,15 @@
         <targetRef>processString</targetRef>
       </dataOutputAssociation>
     </userTask>
-    <scriptTask id="_4" name="Script" scriptFormat="http://www.java.com/java" >
-      <script>org.jbpm.ee.test.LoanOrder order = (org.jbpm.ee.test.LoanOrder) kcontext.getVariable("loanOrder");
-System.out.println(order.toString());</script>
-    </scriptTask>
-    <task id="_5" name="Test Handler" tns:taskName="TestHandler" >
-      <ioSpecification>
-        <inputSet>
-        </inputSet>
-        <outputSet>
-        </outputSet>
-      </ioSpecification>
-    </task>
 
     <!-- connections -->
-    <sequenceFlow id="_4-_9A3B5E49-44DB-404D-8031-60F7C122E745" sourceRef="_4" targetRef="_9A3B5E49-44DB-404D-8031-60F7C122E745" />
+    <sequenceFlow id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_9A3B5E49-44DB-404D-8031-60F7C122E745" sourceRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" targetRef="_9A3B5E49-44DB-404D-8031-60F7C122E745" />
     <sequenceFlow id="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" sourceRef="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5" targetRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" />
-    <sequenceFlow id="_5-_4" sourceRef="_5" targetRef="_4" />
-    <sequenceFlow id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_5" sourceRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" targetRef="_5" />
 
   </process>
 
   <bpmndi:BPMNDiagram>
-    <bpmndi:BPMNPlane bpmnElement="testProj.testProcess" >
+    <bpmndi:BPMNPlane bpmnElement="testTaskProcess.bpmn2" >
       <bpmndi:BPMNShape bpmnElement="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5" >
         <dc:Bounds x="6" y="110" width="48" height="48" />
       </bpmndi:BPMNShape>
@@ -98,27 +84,13 @@ System.out.println(order.toString());</script>
       <bpmndi:BPMNShape bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" >
         <dc:Bounds x="105" y="94" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_4" >
-        <dc:Bounds x="233" y="253" width="80" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_5" >
-        <dc:Bounds x="132" y="340" width="100" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_4-_9A3B5E49-44DB-404D-8031-60F7C122E745" >
-        <di:waypoint x="273" y="277" />
+      <bpmndi:BPMNEdge bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_9A3B5E49-44DB-404D-8031-60F7C122E745" >
+        <di:waypoint x="155" y="134" />
         <di:waypoint x="421" y="129" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" >
         <di:waypoint x="30" y="134" />
         <di:waypoint x="155" y="134" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_5-_4" >
-        <di:waypoint x="182" y="364" />
-        <di:waypoint x="273" y="277" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_5" >
-        <di:waypoint x="155" y="134" />
-        <di:waypoint x="182" y="364" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

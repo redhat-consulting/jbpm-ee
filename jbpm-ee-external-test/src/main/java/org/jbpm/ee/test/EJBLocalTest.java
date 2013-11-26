@@ -11,27 +11,28 @@ import javax.jws.WebService;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
-import org.jbpm.ee.services.ejb.remote.ProcessServiceRemote;
-import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
-import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
+import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
+import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
+import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
 import org.jbpm.ee.test.exception.TestRuntimeException;
 import org.slf4j.Logger;
 
-@WebService(targetNamespace="http://jbpm.org/v6/EJBInjectTest/wsdl", serviceName="EJBInjectTest")
+@WebService(targetNamespace="http://jbpm.org/v6/EJBLocalTest/wsdl", serviceName="EJBLocalTest")
 @LocalBean
 @Stateless
-public class EJBInjectTest extends BaseTest {
+public class EJBLocalTest extends BaseTest {
 
-	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(EJBInjectTest.class);
+	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(EJBLocalTest.class);
 
-	@EJB(lookup = "java:global/jbpm-ee-services/ProcessServiceBean!org.jbpm.ee.services.ejb.remote.ProcessServiceRemote")
-	private ProcessServiceRemote processService;
 	
-	@EJB(lookup = "java:global/jbpm-ee-services/TaskServiceBean!org.jbpm.ee.services.ejb.remote.TaskServiceRemote")
-	private TaskServiceRemote taskService;
+	@EJB
+	private ProcessServiceLocal processService;
 	
-	@EJB(lookup = "java:global/jbpm-ee-services/WorkItemServiceBean!org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote")
-	private WorkItemServiceRemote workItemService;
+	@EJB
+	private TaskServiceLocal taskService;
+
+	@EJB
+	private WorkItemServiceLocal workItemService;
 	
 	
 	@Override

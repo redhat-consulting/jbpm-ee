@@ -9,35 +9,41 @@
 	<artifactId>jbpm-ee-external-ear</artifactId>
 	<packaging>ear</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-services</artifactId>
-			<scope>provided</scope>
-			<type>war</type>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-external-test</artifactId>
-			<scope>provided</scope>
-			<type>war</type>
-			<version>${project.version}</version>
-		</dependency>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<skinnyWars>true</skinnyWars>
+                	<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<modules>
+						<webModule>
+							<groupId>org.jbpm.jbpm-ee</groupId>
+							<artifactId>jbpm-ee-services</artifactId>
+							<contextRoot>/jbpm-ee-services</contextRoot>
+						</webModule>
+						<webModule>
+							<groupId>org.jbpm.jbpm-ee</groupId>
+							<artifactId>jbpm-ee-external-test</artifactId>
+							<contextRoot>/jbpm-ee-external-test</contextRoot>
+						</webModule>
+					</modules>
+				</configuration>
 
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-ws-client</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
-					<artifactId>resteasy-jaxrs</artifactId>
 					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxrs</artifactId>
 				</exclusion>
 				<exclusion>
 					<artifactId>resteasy-client</artifactId>
@@ -45,36 +51,80 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-services</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-external-test</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client-local</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client-remote</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-ws-client</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxrs</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>resteasy-client</artifactId>
+					<groupId>org.jboss.resteasy</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Various specs and utilities -->
+		<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-web-6.0</artifactId>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.2.6.Final</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-compiler</artifactId>
-			<version>${drools.version}</version>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
 		</dependency>
+		<!-- BRMS Dependencies -->
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-flow</artifactId>
-			<version>${jbpm.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-bpmn2</artifactId>
-			<version>${jbpm.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-flow-builder</artifactId>
-			<version>${jbpm.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-runtime-manager</artifactId>
-			<version>${jbpm.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>weld-spi</artifactId>
@@ -97,12 +147,10 @@
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-persistence-jpa</artifactId>
-			<version>${jbpm.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-human-task-core</artifactId>
-			<version>${jbpm.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>activation</artifactId>
@@ -123,40 +171,29 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-shared-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
-		</dependency>
-
-		<!-- Java EE6 stack -->
-		<dependency>
-			<groupId>org.jboss.spec</groupId>
-			<artifactId>jboss-javaee-web-6.0</artifactId>
-			<version>3.0.1.Final</version>
-			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<groupId>xalan</groupId>
-					<artifactId>xalan</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>javax.inject</artifactId>
-					<groupId>javax.inject</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<!-- Arquillian and JUnit -->
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
 			<artifactId>arquillian-junit-container</artifactId>
-			<version>${version.arquillian_core}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.arquillian.extension</groupId>
 			<artifactId>arquillian-persistence-impl</artifactId>
-			<version>1.0.0.Alpha6</version>
+			<scope>test</scope>
 			<exclusions>
 				<exclusion>
 					<artifactId>jackson-core-asl</artifactId>
@@ -164,79 +201,54 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.shrinkwrap.resolver</groupId>
+			<artifactId>shrinkwrap-resolver-depchain</artifactId>
+			<scope>test</scope>
+			<type>pom</type>
+		</dependency>
 
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>2.3.6.Final</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${version.junit}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-cdi</artifactId>
-			<version>${camel.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>jaxb-impl</artifactId>
-					<groupId>com.sun.xml.bind</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>deltaspike-cdictrl-api</artifactId>
-					<groupId>org.apache.deltaspike.cdictrl</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>deltaspike-core-api</artifactId>
-					<groupId>org.apache.deltaspike.core</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>deltaspike-core-impl</artifactId>
-					<groupId>org.apache.deltaspike.core</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.jms</groupId>
-			<artifactId>javax.jms-api</artifactId>
-			<version>2.0</version>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-test-kjar</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jboss.solder</groupId>
-			<artifactId>solder-impl</artifactId>
-			<version>3.2.0.Final</version>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.deltaspike.core</groupId>
-			<artifactId>deltaspike-core-api</artifactId>
-			<version>${deltaspike.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.deltaspike.core</groupId>
-			<artifactId>deltaspike-core-impl</artifactId>
-			<version>${deltaspike.version}</version>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-api</artifactId>
-			<version>${jbpm.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protobuf-java</artifactId>
-			<version>2.5.0</version>
+			<groupId>commons-discovery</groupId>
+			<artifactId>commons-discovery</artifactId>
+			<version>0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.kie</groupId>
 			<artifactId>kie-ci</artifactId>
-			<version>${jbpm.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>javax.inject</artifactId>
@@ -245,69 +257,20 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.jboss.shrinkwrap.resolver</groupId>
-			<artifactId>shrinkwrap-resolver-depchain</artifactId>
-			<version>2.0.0</version>
-			<type>pom</type>
-		</dependency>
-
-		<dependency>
-			<groupId>org.kie.remote</groupId>
-			<artifactId>kie-services-client</artifactId>
-			<version>${jbpm.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>jaxrs-api</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jaxb-impl</artifactId>
-					<groupId>com.sun.xml.bind</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jaxrs-api</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>resteasy-jaxrs</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>resteasy-client</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-shared-services</artifactId>
-			<version>${jbpm.version}</version>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client-remote</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client-local</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-ear-plugin</artifactId>
-				<version>2.8</version>
-				<configuration>
-					<defaultJavaBundleDir>lib/</defaultJavaBundleDir>
-					<skinnyWars>true</skinnyWars>
-					<modules>
-						<webModule>
-							<groupId>org.jbpm.jbpm-ee</groupId>
-							<artifactId>jbpm-ee-services</artifactId>
-							<contextRoot>/jbpm-ee-services</contextRoot>
-						</webModule>
-						<webModule>
-							<groupId>org.jbpm.jbpm-ee</groupId>
-							<artifactId>jbpm-ee-external-test</artifactId>
-							<contextRoot>/jbpm-ee-external-test</contextRoot>
-						</webModule>
-					</modules>
-				</configuration>
-
-			</plugin>
-		</plugins>
-	</build>
-
 </project>

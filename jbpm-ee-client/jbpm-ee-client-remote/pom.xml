@@ -48,65 +48,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.1</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<artifactSet>
-
-						<includes>
-							<include>org.kie:kie-api</include>
-							<include>org.jbpm.ee:jbpm-ee-client-remote</include>
-							<include>org.kie.remote:kie-services-client</include>
-							<include>org.jbpm:jbpm-human-task-core</include>
-						</includes>
-					</artifactSet>
-					<filters>
-						<filter>
-							<artifact>org.kie:kie-api</artifact>
-							<includes>
-								<include>org/kie/api/task/model/**</include>
-								<include>org/kie/api/builder/ReleaseId*</include>
-								<include>org/kie/api/runtime/process/ProcessInstance*</include>
-								<include>org/kie/api/runtime/process/WorkItem*</include>
-								<include>org/kie/api/runtime/process/EventListener*</include>
-								<include>org/kie/api/command/Command*</include>
-								<include>org/kie/api/definition/process/Process*</include>
-								<include>org/kie/api/definition/**</include>
-							</includes>
-						</filter>
-						<filter>
-							<artifact>org.jbpm:jbpm-human-task-core</artifact>
-							<includes>
-								<include>org/jbpm/services/task/impl/model/xml/adapter/**</include>
-								<include>org/jbpm/services/task/commands/**</include>
-								<include>org/jbpm/services/task/events/**</include>
-								<include>org/jbpm/services/task/exception/**</include>
-								<include>org/jbpm/services/task/impl/model/**</include>
-								<include>org/jbpm/services/task/impl/model/xml/**</include>
-								<include>org/jbpm/services/task/impl/model/xml/adapter/**</include>
-								<include>org/jbpm/services/task/query/TaskSummaryImpl*</include>
-								<include>org/jbpm/services/task/utils/**</include>
-							</includes>
-						</filter>
-						<filter>
-							<artifact>org.kie.remote:kie-services-client</artifact>
-							<includes>
-								<include>org/kie/services/client/serialization/jaxb/**</include>
-							</includes>
-						</filter>
-					</filters>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>

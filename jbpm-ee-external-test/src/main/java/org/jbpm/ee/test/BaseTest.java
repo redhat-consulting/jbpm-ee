@@ -32,11 +32,11 @@ public abstract class BaseTest {
 	protected abstract TaskService getTaskService();
 	protected abstract WorkItemService getWorkItemService();
 	
-	protected static final KieReleaseId taskTestReleaseId = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
-	protected static final String taskTestProcessId = "testProj.testProcess";
+	protected static final KieReleaseId taskTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-test-kjar", "1.0.0-SNAPSHOT");
+	protected static final String taskTestProcessId = "testTaskProcess.bpmn2";
 	
 	protected static final KieReleaseId loanTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-test-kjar", "1.0.0-SNAPSHOT");
-	protected static final String loadTestProcessId = "testProj.testProcess";
+	protected static final String loadTestProcessId = "testWorkItemProcess.bpmn2";
 	
 	@WebMethod
 	public Long startProcess() {
