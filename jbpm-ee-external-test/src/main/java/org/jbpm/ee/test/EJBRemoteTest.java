@@ -25,13 +25,13 @@ public class EJBRemoteTest extends BaseTest {
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(EJBRemoteTest.class);
 
 	
-	@EJB(lookup = "java:app/jbpm-ee-services-1.0.0-SNAPSHOT/ProcessServiceBean!org.jbpm.ee.services.ejb.remote.ProcessServiceRemote")
+	@EJB(lookup = "java:app/jbpm-ee-services/ProcessServiceBean!org.jbpm.ee.services.ejb.remote.ProcessServiceRemote")
 	private ProcessServiceRemote processService;
 	
-	@EJB(lookup = "java:app/jbpm-ee-services-1.0.0-SNAPSHOT/TaskServiceBean!org.jbpm.ee.services.ejb.remote.TaskServiceRemote")
+	@EJB(lookup = "java:app/jbpm-ee-services/TaskServiceBean!org.jbpm.ee.services.ejb.remote.TaskServiceRemote")
 	private TaskServiceRemote taskService;
 
-	@EJB(lookup = "java:app/jbpm-ee-services-1.0.0-SNAPSHOT/WorkItemServiceBean!org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote")
+	@EJB(lookup = "java:app/jbpm-ee-services/WorkItemServiceBean!org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote")
 	private WorkItemServiceRemote workItemService;
 	
 	

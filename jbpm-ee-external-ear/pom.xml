@@ -14,19 +14,24 @@
 			<plugin>
 				<artifactId>maven-ear-plugin</artifactId>
 				<version>2.8</version>
+				
 				<configuration>
+					<packagingExcludes>WEB-INF/lib/jms-1.1.jar</packagingExcludes>
 					<skinnyWars>true</skinnyWars>
-                	<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<finalName>jbpm-ee-external-ear</finalName>
 					<modules>
 						<webModule>
 							<groupId>org.jbpm.jbpm-ee</groupId>
 							<artifactId>jbpm-ee-services</artifactId>
 							<contextRoot>/jbpm-ee-services</contextRoot>
+							<bundleFileName>jbpm-ee-services.war</bundleFileName>							
 						</webModule>
 						<webModule>
 							<groupId>org.jbpm.jbpm-ee</groupId>
 							<artifactId>jbpm-ee-external-test</artifactId>
 							<contextRoot>/jbpm-ee-external-test</contextRoot>
+							<bundleFileName>jbpm-ee-external-test.war</bundleFileName>
 						</webModule>
 					</modules>
 				</configuration>
@@ -72,8 +77,38 @@
 			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-client-remote</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-core-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>resteasy-jaxb-provider</artifactId>
+					<groupId>org.jboss.resteasy</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jms</artifactId>
+					<groupId>javax.jms</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-jaxrs</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-xc</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-mapper-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-<dependency>
+		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-ws-client</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
@@ -95,6 +130,16 @@
 			<artifactId>jboss-javaee-web-6.0</artifactId>
 			<type>pom</type>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cdi-api</artifactId>
+					<groupId>javax.enterprise</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -104,6 +149,20 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>org.javassist</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>dom4j</artifactId>
+					<groupId>dom4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
@@ -113,10 +172,22 @@
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-flow</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-bpmn2</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
@@ -142,11 +213,37 @@
 					<artifactId>jackson-core-asl</artifactId>
 					<groupId>org.codehaus.jackson</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jta</artifactId>
+					<groupId>javax.transaction</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>org.javassist</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>dom4j</artifactId>
+					<groupId>dom4j</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-persistence-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
@@ -168,19 +265,73 @@
 					<artifactId>javax.inject</artifactId>
 					<groupId>javax.inject</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>org.javassist</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cdi-api</artifactId>
+					<groupId>javax.enterprise</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>dom4j</artifactId>
+					<groupId>dom4j</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-shared-services</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-ext</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>weld-api</artifactId>
+					<groupId>org.jboss.weld</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>weld-core</artifactId>
+					<groupId>org.jboss.weld</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jta</artifactId>
+					<groupId>javax.transaction</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.kie</groupId>
 			<artifactId>kie-api</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Arquillian and JUnit -->
@@ -197,6 +348,18 @@
 			<exclusions>
 				<exclusion>
 					<artifactId>jackson-core-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-mapper-asl</artifactId>
 					<groupId>org.codehaus.jackson</groupId>
 				</exclusion>
 			</exclusions>
@@ -225,6 +388,12 @@
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-compiler</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
@@ -254,6 +423,18 @@
 					<artifactId>javax.inject</artifactId>
 					<groupId>javax.inject</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>netty</artifactId>
+					<groupId>org.jboss.netty</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cdi-api</artifactId>
+					<groupId>javax.enterprise</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -261,6 +442,16 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.5</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
