@@ -2,7 +2,6 @@ package org.jbpm.ee.services.util;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +14,6 @@ import org.jbpm.ee.runtime.KieContainerEE;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.scanner.MavenRepository;
 import org.mvel2.MVEL;
@@ -30,12 +28,11 @@ public class WorkItemDefinitionUtil {
 	public static void loadWorkItemhandlersToSession(KieContainerEE containerEE, KieSession session) {
 		try {
 			
-			Map<String, String> handlers = containerEE.getWorkItemHandlers();
+			Map<String, Class> handlers = containerEE.getWorkItemHandlers();
 				for(String handlerName : handlers.keySet()) {
-					String handlerClassName = handlers.get(handlerName);
+					Class handlerClassName = handlers.get(handlerName);
 					LOG.info("Handler: "+handlerName+" -> "+handlerClassName);
-					Class handlerClass = containerEE.getClassLoader().loadClass(handlerClassName);
-					org.kie.api.runtime.process.WorkItemHandler handlerInstance = (WorkItemHandler)handlerClass.newInstance();
+					org.kie.api.runtime.process.WorkItemHandler handlerInstance = (WorkItemHandler)handlerClassName.newInstance();
 					session.getWorkItemManager().registerWorkItemHandler(handlerName, handlerInstance);
 				}
 			}

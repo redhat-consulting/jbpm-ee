@@ -22,7 +22,7 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 	private static final Logger LOG = LoggerFactory.getLogger(KieContainerEE.class);
 	
 	private final org.kie.api.runtime.KieContainer delegate;
-	private final Map<String, String> workItemHandlers = new HashMap<String, String>();
+	private final Map<String, Class> workItemHandlers = new HashMap<String, Class>();
 	
 	public KieContainerEE(org.kie.api.runtime.KieContainer delegate) {
 		this.delegate = delegate;
@@ -40,7 +40,7 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 		return delegate.verify();
 	}
 	
-	public Map<String, String> getWorkItemHandlers() {
+	public Map<String, Class> getWorkItemHandlers() {
 		return workItemHandlers;
 	}
 
@@ -60,10 +60,17 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 		
 		for(Map<String, Object> definitions : definition) {
 			String handlerName = (String)definitions.get("name");
-			String defaultHandler = (String)definitions.get("defaultHandler");
+			String defaultHandlerName = (String)definitions.get("defaultHandler");
 
-			LOG.info("Registering Handler: "+handlerName+" => "+defaultHandler);
-			this.workItemHandlers.put(handlerName, defaultHandler);
+			LOG.info("Registering Handler: "+handlerName+" => "+defaultHandlerName);
+			
+			Class defaultHandler;
+			try {
+				defaultHandler = getClassLoader().loadClass(defaultHandlerName);
+				this.workItemHandlers.put(handlerName, defaultHandler);
+			} catch (ClassNotFoundException e) {
+				LOG.error("Handler ["+handlerName+"] unable to register class ["+defaultHandlerName+"]");
+			}
 		}
 	}
 	
