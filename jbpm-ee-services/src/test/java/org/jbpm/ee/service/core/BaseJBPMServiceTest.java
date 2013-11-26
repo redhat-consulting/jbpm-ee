@@ -62,7 +62,8 @@ public class BaseJBPMServiceTest {
 		
 		archive.addPackages(true, "org.jbpm.ee");
 		
-		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-client").withTransitivity().asFile());
+		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-client-local").withTransitivity().asFile());
+		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-client-remote").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm.jbpm-ee:jbpm-ee-ws-client").withoutTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm:jbpm-flow").withTransitivity().asFile());
 		archive.addAsLibraries(resolveStage.resolve("org.jbpm:jbpm-flow-builder").withTransitivity().asFile());

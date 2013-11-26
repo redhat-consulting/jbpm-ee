@@ -12,8 +12,8 @@
 		<configuration>
 			<property name="serverConfig">standalone-full.xml</property>
 			
-			<property name="jbossHome">/Applications/jbdevstudio700/runtimes/jboss-eap</property>
-<!-- 			<property name="javaVmArguments">-Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=y -Xmx512m -XX:MaxPermSize=128m</property> -->
+			<property name="jbossHome">/home/abaxter/Applications/jbdevstudio-7.0.0/runtimes/EAP-6.1.1_BRMS6_ER3</property>
+<!-- 			<property name="javaVmArguments">-Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=y -Xmx1512m -XX:MaxPermSize=1128m</property> -->
  			<property name="javaVmArguments">-Xmx1512m -XX:MaxPermSize=1128m</property> 
 		</configuration>
 	</container>
