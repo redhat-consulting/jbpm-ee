@@ -27,7 +27,7 @@ public class BridgedClassloader extends ClassLoader {
 			LOG.debug("Looking up class["+name+"] in secondary classloader.");
 			return secondary.loadClass(name);
 		}
-		throw new ClassNotFoundException();
+		throw new ClassNotFoundException(name);
 	}
 	
 	@Override
@@ -36,7 +36,7 @@ public class BridgedClassloader extends ClassLoader {
 		try {
 			return this.getParent().loadClass(name);
 		}
-		catch(Exception e) {
+		catch(ClassNotFoundException e) {
 			LOG.debug("Looking up class["+name+"] in secondary classloader.");
 			return secondary.loadClass(name);
 		}
