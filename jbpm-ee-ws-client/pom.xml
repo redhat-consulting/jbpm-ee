@@ -9,18 +9,17 @@
 	<artifactId>jbpm-ee-ws-client</artifactId>
 	<packaging>jar</packaging>
 	<dependencies>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-
-		</dependency>
 		<!-- Various specs and utilities -->
 		<!-- Arquillian and JUnit -->
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-client</artifactId>
 			<version>3.0.5.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client-remote</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
