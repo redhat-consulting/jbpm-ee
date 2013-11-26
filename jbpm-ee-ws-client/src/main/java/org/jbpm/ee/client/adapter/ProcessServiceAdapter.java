@@ -18,10 +18,10 @@ import org.kie.api.runtime.process.ProcessInstance;
  */
 public class ProcessServiceAdapter implements ProcessService {
 
-	private final ProcessServiceWS restService;
+	private final ProcessServiceWS processService;
 	
 	public ProcessServiceAdapter(ProcessServiceWS restService) {
-		this.restService = restService;
+		this.processService = restService;
 	}
 	
 	@Override
@@ -29,7 +29,7 @@ public class ProcessServiceAdapter implements ProcessService {
 		JaxbInitializeProcessRequest request = new JaxbInitializeProcessRequest();
 		request.setReleaseId(releaseId);
 		
-		return this.restService.startProcess(processId, request);
+		return this.processService.startProcess(processId, request);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class ProcessServiceAdapter implements ProcessService {
 			request.setReleaseId(releaseId);
 			request.setVariables(parameters);
 			
-			return this.restService.startProcess(processId, request);
+			return this.processService.startProcess(processId, request);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -49,17 +49,17 @@ public class ProcessServiceAdapter implements ProcessService {
 
 	@Override
 	public void signalEvent(long processInstanceId, String type, Object event) {
-		this.restService.signalEvent(processInstanceId, type, event);
+		this.processService.signalEvent(processInstanceId, type, event);
 	}
 
 	@Override
 	public ProcessInstance getProcessInstance(long processInstanceId) {
-		return this.restService.getProcessInstance(processInstanceId);
+		return this.processService.getProcessInstance(processInstanceId);
 	}
 
 	@Override
 	public void abortProcessInstance(long processInstanceId) {
-		this.restService.abortProcessInstance(processInstanceId);
+		this.processService.abortProcessInstance(processInstanceId);
 	}
 
 }

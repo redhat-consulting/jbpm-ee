@@ -29,7 +29,7 @@ public class StringObjectMapXmlAdapter extends XmlAdapter<JaxbStringObjectMap, M
     @Override
     public JaxbStringObjectMap marshal(Map<String, Object> map) throws Exception {
         if( map == null ) { 
-            return null;
+            return new JaxbStringObjectMap();
         }
         JaxbStringObjectMap xmlMap = new JaxbStringObjectMap();
         for(Entry<String, Object> entry : map.entrySet()) {

@@ -9,25 +9,25 @@ import org.kie.api.runtime.process.WorkItem;
 
 public class WorkItemServiceAdapter implements WorkItemService {
 
-	private WorkItemServiceWS restService;
+	private WorkItemServiceWS workItemService;
 	
-	public WorkItemServiceAdapter(WorkItemServiceWS restManager) {
-		this.restService = restManager;
+	public WorkItemServiceAdapter(WorkItemServiceWS workItemService) {
+		this.workItemService = workItemService;
 	}
 	
 	@Override
 	public void completeWorkItem(long id, Map<String, Object> results) {
-		this.restService.completeWorkItem(id, new JaxbMapRequest(results));
+		this.workItemService.completeWorkItem(id, new JaxbMapRequest(results));
 	}
 
 	@Override
 	public void abortWorkItem(long id) {
-		this.restService.abortWorkItem(id);
+		this.workItemService.abortWorkItem(id);
 	}
 
 	@Override
 	public WorkItem getWorkItem(long id) {
-		return (WorkItem)this.restService.getWorkItem(id);
+		return (WorkItem)this.workItemService.getWorkItem(id);
 	}
 
 }

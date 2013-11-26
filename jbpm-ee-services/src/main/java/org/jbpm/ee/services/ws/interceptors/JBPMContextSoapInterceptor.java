@@ -4,7 +4,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.naming.InitialContext;
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
@@ -25,7 +24,7 @@ import org.w3c.dom.Element;
 public class JBPMContextSoapInterceptor implements SOAPHandler<SOAPMessageContext> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(JBPMContextSoapInterceptor.class);
-	private static final String CLASSLOADER_SERVICE = "java:global/jbpm-ee-services/BPMClassloaderService!org.jbpm.ee.services.ejb.startup.BPMClassloaderService";
+	private static final String CLASSLOADER_SERVICE = "java:global/jbpm-ee-external-ear-1.0.0-SNAPSHOT/jbpm-ee-services-1.0.0-SNAPSHOT/BPMClassloaderService!org.jbpm.ee.services.ejb.startup.BPMClassloaderService";
 	
 	@Override
 	public boolean handleMessage(SOAPMessageContext context) {

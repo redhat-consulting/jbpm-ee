@@ -9,7 +9,7 @@ import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
 
-@WebService(targetNamespace="http://jbpm.org/v6/SoapTest/wsdl", serviceName="SOAPTest")
+@WebService(targetNamespace="http://jbpm.org/v6/SoapTest/wsdl", serviceName="SoapTest")
 public class SoapTest extends BaseTest {
 
 	private TaskService cachedTaskService = null;
