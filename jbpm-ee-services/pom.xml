@@ -35,21 +35,6 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-ws-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.jboss.resteasy</groupId>
-					<artifactId>resteasy-jaxrs</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>resteasy-client</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 
 		<!-- Various specs and utilities -->
 		<dependency>
@@ -242,6 +227,11 @@
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-client-local</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client-ws</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

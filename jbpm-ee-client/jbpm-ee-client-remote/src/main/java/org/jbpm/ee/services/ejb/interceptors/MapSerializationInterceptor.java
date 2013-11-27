@@ -1,8 +1,5 @@
 package org.jbpm.ee.services.ejb.interceptors;
 
-import java.lang.reflect.GenericDeclaration;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Map;
 
 import org.jboss.ejb.client.EJBClientInterceptor;

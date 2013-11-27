@@ -23,7 +23,6 @@
             <groupId>org.jboss</groupId>
             <artifactId>jboss-ejb-client</artifactId>
             <version>1.0.0.Final</version>
-            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

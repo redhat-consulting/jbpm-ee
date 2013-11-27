@@ -43,21 +43,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-ws-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.jboss.resteasy</groupId>
-					<artifactId>resteasy-jaxrs</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>resteasy-client</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-services</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<type>war</type>
@@ -67,61 +52,6 @@
 			<artifactId>jbpm-ee-external-test</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<type>war</type>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-client-local</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-client-remote</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-core-asl</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>resteasy-jaxb-provider</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jms</artifactId>
-					<groupId>javax.jms</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-jaxrs</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-xc</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-mapper-asl</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-ws-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.jboss.resteasy</groupId>
-					<artifactId>resteasy-jaxrs</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>resteasy-client</artifactId>
-					<groupId>org.jboss.resteasy</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<!-- Various specs and utilities -->
@@ -396,12 +326,6 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-test-kjar</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>
@@ -455,12 +379,22 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-client-remote</artifactId>
+			<artifactId>jbpm-ee-test-kjar</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-client-local</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client-remote</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-client-ws</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
