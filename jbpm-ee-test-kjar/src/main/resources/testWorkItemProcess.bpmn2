@@ -70,7 +70,20 @@
       <script>org.jbpm.ee.test.LoanOrder order = (org.jbpm.ee.test.LoanOrder) kcontext.getVariable("loanOrder");
 System.out.println(order.toString());</script>
     </scriptTask>
-    <task id="_5" name="Test Handler" tns:taskName="TestHandler" >
+    <intermediateCatchEvent id="_6" name="Timer" >
+      <timerEventDefinition>
+        <timeDuration xsi:type="tFormalExpression">5s</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <task id="_8" name="Custom Handler" tns:taskName="Custom Handler" >
+      <ioSpecification>
+        <inputSet>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+    </task>
+    <task id="_9" name="Custom Handler" tns:taskName="Custom Handler" >
       <ioSpecification>
         <inputSet>
         </inputSet>
@@ -80,10 +93,12 @@ System.out.println(order.toString());</script>
     </task>
 
     <!-- connections -->
-    <sequenceFlow id="_4-_9A3B5E49-44DB-404D-8031-60F7C122E745" sourceRef="_4" targetRef="_9A3B5E49-44DB-404D-8031-60F7C122E745" />
+    <sequenceFlow id="_9-_9A3B5E49-44DB-404D-8031-60F7C122E745" sourceRef="_9" targetRef="_9A3B5E49-44DB-404D-8031-60F7C122E745" />
     <sequenceFlow id="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" sourceRef="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5" targetRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" />
-    <sequenceFlow id="_5-_4" sourceRef="_5" targetRef="_4" />
-    <sequenceFlow id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_5" sourceRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" targetRef="_5" />
+    <sequenceFlow id="_8-_4" sourceRef="_8" targetRef="_4" />
+    <sequenceFlow id="_4-_6" sourceRef="_4" targetRef="_6" />
+    <sequenceFlow id="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_8" sourceRef="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" targetRef="_8" />
+    <sequenceFlow id="_6-_9" sourceRef="_6" targetRef="_9" />
 
   </process>
 
@@ -101,24 +116,38 @@ System.out.println(order.toString());</script>
       <bpmndi:BPMNShape bpmnElement="_4" >
         <dc:Bounds x="233" y="253" width="80" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_5" >
-        <dc:Bounds x="132" y="340" width="100" height="48" />
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="276" y="105" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_4-_9A3B5E49-44DB-404D-8031-60F7C122E745" >
-        <di:waypoint x="273" y="277" />
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="156" y="461" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="397" y="258" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_9-_9A3B5E49-44DB-404D-8031-60F7C122E745" >
+        <di:waypoint x="447" y="282" />
         <di:waypoint x="421" y="129" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_DA911F2B-B7A6-4CB9-9179-390367A4EBB5-_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269" >
         <di:waypoint x="30" y="134" />
         <di:waypoint x="155" y="134" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_5-_4" >
-        <di:waypoint x="182" y="364" />
+      <bpmndi:BPMNEdge bpmnElement="_8-_4" >
+        <di:waypoint x="206" y="485" />
         <di:waypoint x="273" y="277" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_5" >
+      <bpmndi:BPMNEdge bpmnElement="_4-_6" >
+        <di:waypoint x="273" y="277" />
+        <di:waypoint x="300" y="129" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_A73AA91C-98D6-481A-BF5F-4EC8DDC3C269-_8" >
         <di:waypoint x="155" y="134" />
-        <di:waypoint x="182" y="364" />
+        <di:waypoint x="206" y="485" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_9" >
+        <di:waypoint x="300" y="129" />
+        <di:waypoint x="447" y="282" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

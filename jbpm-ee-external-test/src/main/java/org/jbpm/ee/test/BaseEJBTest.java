@@ -38,13 +38,17 @@ public abstract class BaseEJBTest extends BaseTest {
 
 	@WebMethod
 	public void startProcessAsync() {
-		StartProcessCommand startProcessCommand = new StartProcessCommand();
-		startProcessCommand.setProcessId(taskTestProcessId);
-		
-		final String variableKey = "processString";
+		final String variableKey = "loanOrder";
 		
 		Map<String, Object> processVariables = new HashMap<String, Object>();
-		processVariables.put(variableKey, "Initial");
+		LoanOrder order = new LoanOrder();
+		order.setFirstName("Adam");
+		order.setLastName("Baxter");
+		order.setLoanAmount(500000L);
+		processVariables.put(variableKey, order);
+		
+		StartProcessCommand startProcessCommand = new StartProcessCommand();
+		startProcessCommand.setProcessId(loadTestProcessId);
 		startProcessCommand.setParameters(processVariables);		
 		
 		getAsyncCommandExecutor().execute(taskTestReleaseId, startProcessCommand);

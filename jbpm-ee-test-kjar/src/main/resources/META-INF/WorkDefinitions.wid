@@ -1,7 +1,7 @@
 [
   [
-    "name" : "TestHandler",
-    "displayName" : "Test Handler",
+    "name" : "Custom Handler",
+    "displayName" : "Custom Handler",
     "defaultHandler" : "org.jbpm.ee.test.TestHandler",
     "dependencies" : [
     ]
