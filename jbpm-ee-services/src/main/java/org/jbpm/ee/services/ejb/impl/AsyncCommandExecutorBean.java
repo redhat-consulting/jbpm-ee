@@ -22,7 +22,7 @@ import org.jbpm.ee.jms.AcceptedCommands;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.services.ejb.remote.AsyncCommandExecutorRemote;
 import org.jbpm.ee.services.model.CommandResponse;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.mvel2.sh.CommandException;
 import org.slf4j.Logger;

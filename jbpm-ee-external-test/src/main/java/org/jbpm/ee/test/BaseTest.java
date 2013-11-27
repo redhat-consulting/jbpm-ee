@@ -4,15 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.jws.WebMethod;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.jboss.ejb.client.EJBClientContext;
+import org.jbpm.ee.services.AsyncCommandExecutor;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.ejb.interceptors.MapSerializationInterceptor;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
+import org.jbpm.ee.test.exception.TestRuntimeException;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.task.model.Task;

@@ -3,6 +3,7 @@ package org.jbpm.ee.test;
 import javax.jws.WebService;
 
 import org.jbpm.ee.client.RestClientFactory;
+import org.jbpm.ee.services.AsyncCommandExecutor;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
@@ -12,6 +13,7 @@ public class RestTest extends BaseTest {
 
 	private static final String REST_URL = "http://localhost:8080/jbpm-ee-services/rest";
 	
+	protected AsyncCommandExecutor cachedAsyncCommandExecutorService = null;
 	protected ProcessService cachedProcessService = null;
 	protected TaskService cachedTaskService = null;
 	protected WorkItemService cachedWorkItemService = null;
@@ -27,7 +29,6 @@ public class RestTest extends BaseTest {
 		}
 		return cachedProcessService; 
 	}
-
 
 	/**
 	 * Creates the TaskService & caches the instance for reuse.  

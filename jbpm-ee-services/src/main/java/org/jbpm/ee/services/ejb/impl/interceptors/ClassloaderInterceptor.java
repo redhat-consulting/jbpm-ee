@@ -10,8 +10,8 @@ import javax.interceptor.InvocationContext;
 
 import org.jbpm.ee.services.ejb.interceptors.InterceptorUtil;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.LazyDeserializingMap;
-import org.jbpm.ee.support.KieReleaseId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

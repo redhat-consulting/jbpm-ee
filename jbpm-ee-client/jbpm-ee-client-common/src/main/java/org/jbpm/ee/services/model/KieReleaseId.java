@@ -1,4 +1,4 @@
-package org.jbpm.ee.support;
+package org.jbpm.ee.services.model;
 
 import java.io.Serializable;
 

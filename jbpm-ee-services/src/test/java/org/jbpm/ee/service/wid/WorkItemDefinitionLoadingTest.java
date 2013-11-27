@@ -3,8 +3,8 @@ package org.jbpm.ee.service.wid;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.util.WorkItemDefinitionUtil;
-import org.jbpm.ee.support.KieReleaseId;
 import org.junit.Test;
 
 public class WorkItemDefinitionLoadingTest {

@@ -26,7 +26,7 @@ import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.services.model.CommandResponse;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.services.task.commands.ClaimTaskCommand;
 import org.jbpm.services.task.commands.CompleteTaskCommand;
 import org.jbpm.services.task.commands.GetTaskAssignedAsPotentialOwnerCommand;

@@ -5,7 +5,7 @@ import java.util.Map;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ReleaseId;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.kie.api.runtime.process.ProcessInstance;
 /**
  * 

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

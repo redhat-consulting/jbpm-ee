@@ -4,7 +4,7 @@ import org.drools.core.command.impl.GenericCommand;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ReleaseId;
 import org.jbpm.ee.services.model.CommandResponse;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
 
 public interface AsyncCommandExecutor {
 

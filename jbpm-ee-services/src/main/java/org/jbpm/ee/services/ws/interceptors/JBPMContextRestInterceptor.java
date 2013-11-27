@@ -24,7 +24,7 @@ import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.spi.interception.MessageBodyReaderContext;
 import org.jboss.resteasy.spi.interception.MessageBodyReaderInterceptor;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;

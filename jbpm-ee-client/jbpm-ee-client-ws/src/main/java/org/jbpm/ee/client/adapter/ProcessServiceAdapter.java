@@ -3,9 +3,9 @@ package org.jbpm.ee.client.adapter;
 import java.util.Map;
 
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.ws.ProcessServiceWS;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
-import org.jbpm.ee.support.KieReleaseId;
 import org.kie.api.runtime.process.ProcessInstance;
 
 /**

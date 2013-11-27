@@ -8,9 +8,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import org.jbpm.ee.services.AsyncCommandExecutor;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
+import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
@@ -20,10 +22,12 @@ import org.slf4j.Logger;
 @WebService(targetNamespace="http://jbpm.org/v6/EJBLocalTest/wsdl", serviceName="EJBLocalTest")
 @LocalBean
 @Stateless
-public class EJBLocalTest extends BaseTest {
+public class EJBLocalTest extends BaseEJBTest {
 
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(EJBLocalTest.class);
 
+	@EJB
+	private AsyncCommandExecutorLocal asyncCommandExecutorService;
 	
 	@EJB
 	private ProcessServiceLocal processService;
@@ -34,6 +38,10 @@ public class EJBLocalTest extends BaseTest {
 	@EJB
 	private WorkItemServiceLocal workItemService;
 	
+	@Override
+	protected AsyncCommandExecutor getAsyncCommandExecutor() {
+		return asyncCommandExecutorService;
+	}
 	
 	@Override
 	protected ProcessService getProcessService() {
@@ -49,26 +57,4 @@ public class EJBLocalTest extends BaseTest {
 	protected WorkItemService getWorkItemService() {
 		return workItemService;
 	}
-	
-	/**
-	 * List number of tasks; creates a new process; rolls back.
-	 * Number of tasks should remain consistent.
-	 */
-	@WebMethod
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void startProcessThenRollback() {
-		try {
-			this.startProcess();
-			generateException();
-		}
-		catch(RuntimeException e) {
-			LOG.info("Started process, then rolled back.  Number of tasks should remain the same before this test was executed.");
-			throw e;
-		}
-	}
-	
-	private void generateException() {
-		throw new TestRuntimeException("Exception to show rollback.");
-	}
-
 }

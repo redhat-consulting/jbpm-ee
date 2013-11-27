@@ -1,9 +1,13 @@
 package org.jbpm.ee.jms;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -29,11 +33,13 @@ import org.drools.core.command.runtime.process.GetProcessInstanceCommand;
 import org.jbpm.ee.exception.CommandException;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.CommandResponse;
+import org.jbpm.ee.services.model.KieReleaseId;
+import org.jbpm.ee.services.model.LazyDeserializingMap;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.model.TaskFactory;
-import org.jbpm.ee.services.model.CommandResponse;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
+import org.jbpm.ee.support.BeanUtils;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.kie.api.runtime.CommandExecutor;
 import org.kie.api.runtime.KieSession;
@@ -44,8 +50,6 @@ import org.kie.api.task.model.TaskSummary;
 import org.kie.internal.task.api.InternalTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import antlr.collections.List;
 
 
 /**
@@ -138,6 +142,8 @@ public class CommandExecutorMDB implements MessageListener {
 						.getKieSession();
 			}
 		}
+		
+		
 		return null;
 	}
 
@@ -150,10 +156,11 @@ public class CommandExecutorMDB implements MessageListener {
 	}
 
 	public Object executeCommand(GenericCommand<?> command,
-			ObjectMessage objectMessage) throws JMSException {
+			ObjectMessage objectMessage) throws JMSException, IOException {
 		CommandExecutor executor = null;
 		try {
 			executor = getCommandExecutor(command);
+			initializeLazyMaps(command);
 		} catch (InactiveProcessInstance e) {
 			if (!command.getClass().equals(GetProcessInstanceCommand.class)) {
 				throw new IllegalStateException("Unknown process for command",
@@ -173,6 +180,24 @@ public class CommandExecutorMDB implements MessageListener {
 					"Unable to determine runtime executor.");
 		}
 		return executor.execute(command);
+	}
+	
+	protected void initializeLazyMaps(Object obj) throws IOException {
+		for(Field field : obj.getClass().getFields()) {
+			if(Map.class.isAssignableFrom(field.getType())) {
+				Object mapObj = BeanUtils.getObjectViaGetter(field, obj);
+				if(LazyDeserializingMap.class.isAssignableFrom(mapObj.getClass())) {
+					LazyDeserializingMap lazyMap = (LazyDeserializingMap)mapObj;
+					lazyMap.initializeLazy();
+					
+					Map<String, Object> newMap = new HashMap<String, Object>();
+					newMap.putAll(lazyMap);
+					
+					BeanUtils.setObjectViaSetter(field, obj, newMap);
+					LOG.info("Reset object after initializing.");
+				}
+			}
+		}
 	}
 	
 	
@@ -278,8 +303,12 @@ public class CommandExecutorMDB implements MessageListener {
 			// check the command and lookup the kie session.
 			GenericCommand<?> command = (GenericCommand<?>) objectMessage
 					.getObject();
-			Method executeMethod = command.getClass().getMethod("execute",
-					executeArgs);
+			
+			if(LOG.isInfoEnabled()) {
+				LOG.info("Request: "+ReflectionToStringBuilder.toString(command));
+			}
+			
+			Method executeMethod = command.getClass().getMethod("execute", executeArgs);
 
 			Object commandResponse = executeCommand(command, objectMessage);
 
@@ -315,7 +344,10 @@ public class CommandExecutorMDB implements MessageListener {
 					
 					responseMessage.setObject(responseObject);
 					responseMessage.setJMSCorrelationID(correlation);
-					LOG.info("Sending message");
+					if(LOG.isDebugEnabled()) {
+						LOG.debug("Sending response: "+ReflectionToStringBuilder.toString(convertedObject));
+					}
+					
 					producer.send(responseMessage);
 					producer.close();
 					session.close();
@@ -325,7 +357,7 @@ public class CommandExecutorMDB implements MessageListener {
 									.toString(convertedObject));
 				}
 			}
-		} catch (JMSException | NoSuchMethodException | SecurityException e) {
+		} catch (JMSException | NoSuchMethodException | IOException | SecurityException e) {
 			throw new CommandException("Exception processing command via JMS.",
 					e);
 		}

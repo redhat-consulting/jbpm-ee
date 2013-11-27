@@ -10,7 +10,7 @@ import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 import org.jbpm.ee.services.ejb.annotations.ReleaseId;
 import org.jbpm.ee.services.ejb.annotations.TaskId;
 import org.jbpm.ee.services.ejb.annotations.WorkItemId;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

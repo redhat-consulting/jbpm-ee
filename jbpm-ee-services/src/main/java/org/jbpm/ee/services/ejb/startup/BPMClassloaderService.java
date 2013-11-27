@@ -7,9 +7,9 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.adapter.ClassloaderManager;
 import org.jbpm.ee.services.util.BridgedClassloader;
-import org.jbpm.ee.support.KieReleaseId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
