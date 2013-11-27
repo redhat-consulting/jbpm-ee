@@ -15,7 +15,9 @@ public class MapSerializationInterceptor implements EJBClientInterceptor {
 	@Override
 	public void handleInvocation(EJBClientInvocationContext context) throws Exception {
 		if(!InterceptorUtil.requiresClassloaderInterception(context.getViewClass(), context.getInvokedMethod())) {
-			LOG.info("Method: "+context.getInvokedMethod().getName()+" does not require preprocessing.");
+			if(LOG.isDebugEnabled()) {
+				LOG.debug("Method: "+context.getInvokedMethod().getName()+" does not require preprocessing.");
+			}
 			context.sendRequest();
 			return;
 		}

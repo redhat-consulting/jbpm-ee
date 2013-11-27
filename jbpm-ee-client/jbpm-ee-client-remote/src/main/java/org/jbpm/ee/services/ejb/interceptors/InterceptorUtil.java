@@ -2,6 +2,8 @@ package org.jbpm.ee.services.ejb.interceptors;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
@@ -14,6 +16,9 @@ import org.slf4j.LoggerFactory;
 
 public class InterceptorUtil {
 
+	private static final Set<String> noClassloaderRequired = new HashSet<String>(); 
+	private static final Set<String> classloaderRequired = new HashSet<String>(); 
+	
 	private static final Logger LOG = LoggerFactory.getLogger(InterceptorUtil.class);
 	
 	private InterceptorUtil() {
@@ -21,7 +26,14 @@ public class InterceptorUtil {
 	}
 	
 	public static boolean requiresClassloaderInterception(Class clz, Method method) {
-		//recurse.
+		//cache reflection.
+		if(noClassloaderRequired.contains(clz.getName()+method.hashCode())) {
+			return false;
+		}
+		if(classloaderRequired.contains(clz.getName()+method.hashCode())) {
+			return true;
+		}
+		
 		if(method.isAnnotationPresent(PreprocessClassloader.class)) {
 			return true;
 		}
@@ -33,6 +45,8 @@ public class InterceptorUtil {
 					boolean response = requiresClassloaderInterception(clzz, superInterfaceMethod);
 					
 					if(response == true) {
+						//add to cache.
+						classloaderRequired.add(clz.getName()+method.hashCode());
 						return true;
 					}
 				}
@@ -41,6 +55,8 @@ public class InterceptorUtil {
 				}
 			}
 		}
+		//add to cache.
+		noClassloaderRequired.add(clz.getName()+method.hashCode());
 		return false;
 	}
 	

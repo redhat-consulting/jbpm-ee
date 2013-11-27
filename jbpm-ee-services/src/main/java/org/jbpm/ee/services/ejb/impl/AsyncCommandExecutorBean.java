@@ -88,6 +88,9 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 			request.setObject(command);
 			request.setJMSReplyTo(responseQueue);
 			
+			//check the object, and see if we need to replace the map with a lazy map.
+			
+			
 			if (kieReleaseId == null) {
 				if(!TaskCommand.class.isAssignableFrom(command.getClass()) &&
 						(!AcceptedCommands.containsProcessInstanceId(command.getClass())) &&
