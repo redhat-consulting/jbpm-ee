@@ -14,6 +14,7 @@ import org.kie.api.runtime.Environment;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.StatelessKieSession;
+import org.kie.api.runtime.process.WorkItemHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 	private static final Logger LOG = LoggerFactory.getLogger(KieContainerEE.class);
 	
 	private final org.kie.api.runtime.KieContainer delegate;
-	private final Map<String, Class> workItemHandlers = new HashMap<String, Class>();
+	private final Map<String, WorkItemHandler> workItemHandlers = new HashMap<String, WorkItemHandler>();
 	
 	public KieContainerEE(org.kie.api.runtime.KieContainer delegate) {
 		this.delegate = delegate;
@@ -40,7 +41,7 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 		return delegate.verify();
 	}
 	
-	public Map<String, Class> getWorkItemHandlers() {
+	public Map<String, WorkItemHandler> getWorkItemHandlers() {
 		return workItemHandlers;
 	}
 
@@ -67,8 +68,9 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 			Class defaultHandler;
 			try {
 				defaultHandler = getClassLoader().loadClass(defaultHandlerName);
-				this.workItemHandlers.put(handlerName, defaultHandler);
-			} catch (ClassNotFoundException e) {
+				WorkItemHandler instance = (WorkItemHandler)defaultHandler.newInstance();
+				this.workItemHandlers.put(handlerName, instance);
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 				LOG.error("Handler ["+handlerName+"] unable to register class ["+defaultHandlerName+"]");
 			}
 		}

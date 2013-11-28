@@ -25,23 +25,6 @@ public class WorkItemDefinitionUtil {
 
 	private static final Logger LOG = LoggerFactory.getLogger(WorkItemDefinitionUtil.class);
 	
-	public static void loadWorkItemhandlersToSession(KieContainerEE containerEE, KieSession session) {
-		try {
-			
-			Map<String, Class> handlers = containerEE.getWorkItemHandlers();
-				for(String handlerName : handlers.keySet()) {
-					Class handlerClassName = handlers.get(handlerName);
-					LOG.info("Handler: "+handlerName+" -> "+handlerClassName);
-					org.kie.api.runtime.process.WorkItemHandler handlerInstance = (WorkItemHandler)handlerClassName.newInstance();
-					session.getWorkItemManager().registerWorkItemHandler(handlerName, handlerInstance);
-				}
-			}
-			catch(Exception e) {
-				LOG.error("Exception loading handlers.", e);
-			}
-	}
-	
-	
 	public static List<Map<String, Object>> loadWorkItemDefinitions(ReleaseId releaseId, String pattern) {
 		Artifact artifact = MavenRepository.getMavenRepository().resolveArtifact(releaseId.toString());
 		

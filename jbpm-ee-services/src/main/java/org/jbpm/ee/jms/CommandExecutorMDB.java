@@ -150,8 +150,6 @@ public class CommandExecutorMDB implements MessageListener {
 	public CommandExecutor getCommandExecutor(KieReleaseId releaseId) {
 		RuntimeEngine engine = getRuntimeEngine(releaseId);
 		KieSession kSession = engine.getKieSession();
-		kSession.addEventListener(new KieReleaseIdXProcessInstanceListener(
-				releaseId, entityManager));
 		return kSession;
 	}
 

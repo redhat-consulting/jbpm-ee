@@ -20,9 +20,9 @@ import org.jbpm.ee.config.Configuration;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.persistence.KieBaseXProcessInstance;
 import org.jbpm.ee.runtime.KieContainerEE;
+import org.jbpm.ee.runtime.RegisterableItemsFactoryEE;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
-import org.jbpm.ee.services.util.WorkItemDefinitionUtil;
 import org.jbpm.runtime.manager.impl.RuntimeEnvironmentBuilder;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
@@ -30,11 +30,11 @@ import org.kie.api.PropertiesConfiguration;
 import org.kie.api.builder.KieScanner;
 import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.runtime.manager.RuntimeEngine;
+import org.kie.api.runtime.manager.RuntimeEnvironment;
 import org.kie.api.runtime.manager.RuntimeManager;
+import org.kie.api.runtime.manager.RuntimeManagerFactory;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Task;
-import org.kie.api.runtime.manager.RuntimeEnvironment;
-import org.kie.api.runtime.manager.RuntimeManagerFactory;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 import org.kie.internal.task.api.UserGroupCallback;
 import org.slf4j.Logger;
@@ -173,6 +173,7 @@ public class KnowledgeManagerBean {
 	 * @return
 	 */
 	public RuntimeEnvironment getRuntimeEnvironment(KieReleaseId releaseId) {
+		KieContainerEE container = getKieContainer(releaseId);
 		
 		RuntimeEnvironment re = RuntimeEnvironmentBuilder.Factory.get().newDefaultBuilder()
 				.entityManagerFactory(emf)
@@ -180,6 +181,7 @@ public class KnowledgeManagerBean {
 				.knowledgeBase(getKieBase(releaseId))
 				.persistence(true)
 				.classLoader(getClasssloader(releaseId))
+				.registerableItemsFactory(new RegisterableItemsFactoryEE(container))
 				.get();
 		return re;
 	}
@@ -210,8 +212,6 @@ public class KnowledgeManagerBean {
 	public RuntimeEngine getRuntimeEngine(KieReleaseId releaseId) {
 		RuntimeManager rm = getRuntimeManager(releaseId);
 		RuntimeEngine engine = rm.getRuntimeEngine(ProcessInstanceIdContext.get());
-		KieContainerEE containerEE = getKieContainer(releaseId);
-		WorkItemDefinitionUtil.loadWorkItemhandlersToSession(containerEE, engine.getKieSession());
 
 		return engine;
 	}
@@ -237,39 +237,9 @@ public class KnowledgeManagerBean {
 		LOG.debug("Kie Release: "+releaseId);
 		
 		RuntimeManager manager = getRuntimeManager(releaseId);
-
-		
-		KieContainerEE containerEE = getKieContainer(releaseId);
-		WorkItemDefinitionUtil.loadWorkItemhandlersToSession(containerEE, manager.getRuntimeEngine(context).getKieSession());
-		
-		
-		if(!hasDisposalListener(manager, processInstanceId)) {
-			//add the listener.
-			LOG.debug("Adding the disposal listener to existing runtime for process ID: "+processInstanceId);
-			manager.getRuntimeEngine(context).getKieSession().addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, em));
-		}
-		
 		return manager.getRuntimeEngine(context);
 	}
-	
-	/**
-	 * Checks to see whether the given runtime engine has the KieReleaseIdXProcessInstanceListener for disposing the cross reference when the process is completed.
-	 * 
-	 * @param manager
-	 * @param processInstanceId
-	 * @return
-	 */
-	protected boolean hasDisposalListener(RuntimeManager manager, long processInstanceId) {
-		
-		 RuntimeEngine engine = manager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId));
-		 for(ProcessEventListener pel : (engine.getKieSession().getProcessEventListeners())) {
-			if(KieReleaseIdXProcessInstanceListener.class.isAssignableFrom(pel.getClass())) {
-				return true;
-			}
-		}
-		 
-		return false;
-	}
+
 
 	/**
 	 * Returns the RuntimeEngine for a given Task

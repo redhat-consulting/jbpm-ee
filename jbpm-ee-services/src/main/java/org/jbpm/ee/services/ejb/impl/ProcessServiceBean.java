@@ -40,7 +40,6 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 	@Override
 	public ProcessInstance startProcess(KieReleaseId releaseId, String processId) {
 		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
-		session.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
 		
 		return ProcessInstanceFactory.convert(session.startProcess(processId));
 	}
@@ -48,7 +47,6 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 	@Override
 	public ProcessInstance startProcess(KieReleaseId releaseId, String processId, Map<String, Object> parameters) {
 		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
-		session.addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, entityManager));
 		return ProcessInstanceFactory.convert(session.startProcess(processId, parameters));
 	}
 
