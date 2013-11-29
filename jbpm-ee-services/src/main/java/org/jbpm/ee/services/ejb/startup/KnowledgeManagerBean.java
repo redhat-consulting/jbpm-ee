@@ -22,7 +22,6 @@ import org.jbpm.ee.persistence.KieBaseXProcessInstance;
 import org.jbpm.ee.runtime.KieContainerEE;
 import org.jbpm.ee.runtime.RegisterableItemsFactoryEE;
 import org.jbpm.ee.services.model.KieReleaseId;
-import org.jbpm.process.core.timer.impl.QuartzSchedulerService;
 import org.jbpm.runtime.manager.impl.RuntimeEnvironmentBuilder;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
@@ -80,16 +79,15 @@ public class KnowledgeManagerBean {
 	@Inject
 	protected TaskService taskService;
 	
-	protected QuartzSchedulerService quartzScheduler;
-	
 	@PostConstruct
 	private void setup() {
-		 kieServices = KieServices.Factory.get();
-		 containers = new ConcurrentHashMap<KieReleaseId, KieContainerEE>();
-		 scanners = new ConcurrentHashMap<KieReleaseId, KieScanner>();
-		 
-		 runtimeManagers = new ConcurrentHashMap<KieReleaseId, RuntimeManager>();
-		 quartzScheduler = new QuartzSchedulerService();
+		System.setProperty("org.quartz.properties", "jbpm-ee-quartz.properties");
+		
+		kieServices = KieServices.Factory.get();
+		containers = new ConcurrentHashMap<KieReleaseId, KieContainerEE>();
+		scanners = new ConcurrentHashMap<KieReleaseId, KieScanner>();
+		
+		runtimeManagers = new ConcurrentHashMap<KieReleaseId, RuntimeManager>();
 	}
 
 	@PreDestroy
@@ -184,7 +182,6 @@ public class KnowledgeManagerBean {
 				.persistence(true)
 				.classLoader(getClasssloader(releaseId))
 				.registerableItemsFactory(new RegisterableItemsFactoryEE(container))
-				.schedulerService(quartzScheduler)
 				.get();
 		return re;
 	}
