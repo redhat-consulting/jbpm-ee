@@ -1,5 +1,8 @@
 package org.jbpm.ee.persistence;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -7,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.kie.api.builder.ReleaseId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +49,20 @@ public class KieBaseXProcessInstanceDao {
 		catch(NoResultException e) {
 			LOG.warn("No result found for ProcessInstance: "+processInstanceId, e);
 		}
+	}
+	
+	public List<KieReleaseId> queryActiveKieReleases() {
+		List<KieReleaseId> activeReleases = new LinkedList<KieReleaseId>();
+		
+		Query q = entityManager.createQuery("select distinct kb.releaseGroupId, kb.releaseArtifactId, kb.releaseVersion from KieBaseXProcessInstance kb");
+		List<Object[]> results = (List<Object[]>)q.getResultList();
+		
+		for(Object[] result : results) {
+			KieReleaseId release = new KieReleaseId((String)result[0], (String)result[1], (String)result[2]);
+			activeReleases.add(release);
+		}
+		
+		return activeReleases;
 	}
 	
 	

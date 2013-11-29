@@ -19,6 +19,7 @@ import org.hibernate.SessionException;
 import org.jbpm.ee.config.Configuration;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.persistence.KieBaseXProcessInstance;
+import org.jbpm.ee.persistence.KieBaseXProcessInstanceDao;
 import org.jbpm.ee.runtime.KieContainerEE;
 import org.jbpm.ee.runtime.RegisterableItemsFactoryEE;
 import org.jbpm.ee.services.model.KieReleaseId;
@@ -79,6 +80,9 @@ public class KnowledgeManagerBean {
 	@Inject
 	protected TaskService taskService;
 	
+	@Inject
+	protected KieBaseXProcessInstanceDao kieBaseXProcessInstanceDao;
+	
 	@PostConstruct
 	private void setup() {
 		System.setProperty("org.quartz.properties", "jbpm-ee-quartz.properties");
@@ -88,6 +92,14 @@ public class KnowledgeManagerBean {
 		scanners = new ConcurrentHashMap<KieReleaseId, KieScanner>();
 		
 		runtimeManagers = new ConcurrentHashMap<KieReleaseId, RuntimeManager>();
+		
+		//instantiate existing managers.
+		for(KieReleaseId release : kieBaseXProcessInstanceDao.queryActiveKieReleases()) {
+			LOG.info("Rehydrating runtime manager for: "+release);
+			getRuntimeManager(release);
+		}
+		
+		
 	}
 
 	@PreDestroy
