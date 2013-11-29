@@ -16,10 +16,8 @@ import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
 import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
-import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.kie.api.runtime.manager.RuntimeEngine;
-import org.kie.api.runtime.manager.RuntimeEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,9 +46,6 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 
 	@Override
 	public org.kie.api.runtime.process.WorkItem getWorkItem(long id) {
-		KieReleaseId releaseId = knowledgeManager.getReleaseIdByWorkItemId(id);
-		RuntimeEnvironment environment = knowledgeManager.getRuntimeEnvironment(releaseId);
-		
 		Query query = entityManager.createQuery("from WorkItemInfo wii where wii.workItemId = :workItemId");
 		query.setParameter("workItemId", id);
 		WorkItemInfo info = (WorkItemInfo)query.getSingleResult();

@@ -20,6 +20,9 @@ public class BPMClassloaderService {
 	private static final Logger LOG = LoggerFactory.getLogger(BPMClassloaderService.class);
 
 	@Inject
+	private RuntimeManagerBean runtimeManager;
+	
+	@Inject
 	private KnowledgeManagerBean knowledgeManager;
 	
 	public void bridgeClassloaderByProcessInstanceId(Long processInstanceId) {
@@ -48,7 +51,7 @@ public class BPMClassloaderService {
 		
 		ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
 		if (releaseId != null) {
-			ClassLoader bpmClassloader = knowledgeManager.getKieContainer(releaseId).getClassLoader();
+			ClassLoader bpmClassloader = runtimeManager.getKieContainer(releaseId).getClassLoader();
 			BridgedClassloader bridged = new BridgedClassloader(appLoader,bpmClassloader);
 			ClassloaderManager.set(bridged);
 			LOG.info("Set thread classloader: " + bridged);

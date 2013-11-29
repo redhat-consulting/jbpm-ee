@@ -1,41 +1,22 @@
 package org.jbpm.ee.services.ejb.startup;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import org.drools.compiler.kproject.ReleaseIdImpl;
 import org.hibernate.SessionException;
-import org.jbpm.ee.config.Configuration;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.persistence.KieBaseXProcessInstance;
-import org.jbpm.ee.persistence.KieBaseXProcessInstanceDao;
-import org.jbpm.ee.runtime.KieContainerEE;
-import org.jbpm.ee.runtime.RegisterableItemsFactoryEE;
 import org.jbpm.ee.services.model.KieReleaseId;
-import org.jbpm.runtime.manager.impl.RuntimeEnvironmentBuilder;
-import org.kie.api.KieBase;
-import org.kie.api.KieServices;
-import org.kie.api.PropertiesConfiguration;
-import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.manager.RuntimeEngine;
-import org.kie.api.runtime.manager.RuntimeEnvironment;
 import org.kie.api.runtime.manager.RuntimeManager;
-import org.kie.api.runtime.manager.RuntimeManagerFactory;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Task;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
-import org.kie.internal.task.api.UserGroupCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,163 +37,20 @@ import org.slf4j.LoggerFactory;
 @DependsOn("ResourceManager")
 public class KnowledgeManagerBean {
 	private static final Logger LOG = LoggerFactory.getLogger(KnowledgeManagerBean.class);
-	
-	protected Map<KieReleaseId, KieContainerEE> containers;
-	protected Map<KieReleaseId, KieScanner> scanners;
-	
-	protected Map<KieReleaseId, RuntimeManager> runtimeManagers;
-	
-	protected KieServices kieServices;
-	
-	@Inject
-	@Configuration(value="scannerPollFrequency")
-	protected Long scannerPollFrequency;
-	
-	@Inject
-	protected EntityManagerFactory emf;
-	
+
 	@Inject
 	protected EntityManager em;
-	
-	@Inject
-	protected UserGroupCallback userGroupCallback;
 	
 	@Inject
 	protected TaskService taskService;
 	
 	@Inject
-	protected KieBaseXProcessInstanceDao kieBaseXProcessInstanceDao;
-	
-	@PostConstruct
-	private void setup() {
-		System.setProperty("org.quartz.properties", "jbpm-ee-quartz.properties");
-		
-		kieServices = KieServices.Factory.get();
-		containers = new ConcurrentHashMap<KieReleaseId, KieContainerEE>();
-		scanners = new ConcurrentHashMap<KieReleaseId, KieScanner>();
-		
-		runtimeManagers = new ConcurrentHashMap<KieReleaseId, RuntimeManager>();
-		
-		//instantiate existing managers.
-		for(KieReleaseId release : kieBaseXProcessInstanceDao.queryActiveKieReleases()) {
-			LOG.info("Rehydrating runtime manager for: "+release);
-			getRuntimeManager(release);
-		}
-		
-		
-	}
-
-	@PreDestroy
-	private void destroy() {
-		LOG.info("Stopping jBPM Resource Change Listeners.");
-		
-		for(KieScanner scanner : scanners.values()) {
-			scanner.stop();
-		}
-		
-		//set for dispose.
-		this.scanners = null;
-	}
+	protected RuntimeManagerBean runtimeManager;
 
 	public TaskService getKieSessionUnboundTaskService() {
 		return taskService;
 	}
 	
-	private static boolean isReleaseIdValid(KieReleaseId releaseId) {
-		if ((releaseId != null) &&
-				(releaseId.getGroupId() != null) &&
-				(releaseId.getArtifactId() != null) &&
-				(releaseId.getVersion() != null)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Loads a kjar via the given Release Id (maven deployment information)
-	 * Additionally, sets up scanning to monitor for kjar changes
-	 * 
-	 * @param resourceKey The maven deployment information for the kjar
-	 * @return The in-memory loaded kjar
-	 */
-	public KieContainerEE getKieContainer(KieReleaseId resourceKey) {
-		
-		if (!isReleaseIdValid(resourceKey)) {
-			throw new IllegalArgumentException("ReleaseId invalid: " + resourceKey);
-		}
-		
-		if(!containers.containsKey(resourceKey)) {
-			//create a new container.
-			
-			ReleaseIdImpl releaseID = new ReleaseIdImpl(resourceKey.getGroupId(), resourceKey.getArtifactId(), resourceKey.getVersion());
-			KieContainerEE kieContainer = new KieContainerEE(kieServices.newKieContainer(releaseID));
-			KieScanner kieScanner = kieServices.newKieScanner(kieContainer);
-			kieScanner.start(scannerPollFrequency);
-			
-			//register the new container and scanner.
-			this.containers.put(resourceKey, kieContainer);
-			this.scanners.put(resourceKey, kieScanner);
-		}
-		return this.containers.get(resourceKey);
-	}
-	
-	
-	/**
-	 * Returns the kjar resources for the given kjar deployment information
-	 * 
-	 * @param resourceKey The maven deployment information for the kjar
-	 * @return
-	 */
-	protected KieBase getKieBase(KieReleaseId resourceKey) {
-		return getKieContainer(resourceKey).getKieBase();
-	}	
-	
- 	/**
-	 * Returns the kjar classloader for the given kjar deployment information
-	 * 
-	 * @param resourceKey The maven deployment information for the kjar
-	 * @return
-	 */
-	protected ClassLoader getClasssloader(KieReleaseId releaseId) {
-		return getKieContainer(releaseId).getClassLoader();
-	}
-	
-	/**
-	 * Creates the RuntimeEnvironment for the RuntimeManager to use
-	 * 
-	 * @param releaseId  The maven deployment information for the kjar
-	 * @return
-	 */
-	public RuntimeEnvironment getRuntimeEnvironment(KieReleaseId releaseId) {
-		KieContainerEE container = getKieContainer(releaseId);
-		
-		RuntimeEnvironment re = RuntimeEnvironmentBuilder.Factory.get().newDefaultBuilder()
-				.entityManagerFactory(emf)
-				.userGroupCallback(userGroupCallback)
-				.knowledgeBase(getKieBase(releaseId))
-				.persistence(true)
-				.classLoader(getClasssloader(releaseId))
-				.registerableItemsFactory(new RegisterableItemsFactoryEE(container))
-				.get();
-		return re;
-	}
-	
-	/**
-	 * Creates/returns the RuntimeManager for the specified kjar
-	 * 
-	 * @param releaseId  The maven deployment information for the kjar
-	 * @return
-	 * @throws SessionException
-	 */
-	protected RuntimeManager getRuntimeManager(KieReleaseId releaseId) {
-		if(!runtimeManagers.containsKey(releaseId)) {
-			RuntimeEnvironment re = getRuntimeEnvironment(releaseId);
-			runtimeManagers.put(releaseId, RuntimeManagerFactory.Factory.get().newPerProcessInstanceRuntimeManager(re, releaseId.toString()));
-		}
-		
-		return runtimeManagers.get(releaseId);
-	}
 	
 	/**
 	 * Returns the default RuntimeEngine for a specified kjar
@@ -222,7 +60,7 @@ public class KnowledgeManagerBean {
 	 * @throws SessionException
 	 */
 	public RuntimeEngine getRuntimeEngine(KieReleaseId releaseId) {
-		RuntimeManager rm = getRuntimeManager(releaseId);
+		RuntimeManager rm = runtimeManager.getRuntimeManager(releaseId);
 		RuntimeEngine engine = rm.getRuntimeEngine(ProcessInstanceIdContext.get());
 
 		return engine;
@@ -248,7 +86,7 @@ public class KnowledgeManagerBean {
 		}
 		LOG.debug("Kie Release: "+releaseId);
 		
-		RuntimeManager manager = getRuntimeManager(releaseId);
+		RuntimeManager manager = runtimeManager.getRuntimeManager(releaseId);
 		return manager.getRuntimeEngine(context);
 	}
 
@@ -354,31 +192,5 @@ public class KnowledgeManagerBean {
 		
 		return this.getReleaseIdByProcessId(processInstanceId);
 	}
-	
-
-	private static void setDefaultingProperty(String name, String val, PropertiesConfiguration config) {
-		if(val == null) return;
-
-		LOG.debug("Setting property: "+name+" to value: "+val);
-		config.setProperty(name, val);
-	}
-	private static void setDefaultingProperty(String name, Boolean val, PropertiesConfiguration config) {
-		if(val == null) return;
-
-		String value = Boolean.toString(val);
-		LOG.debug("Setting property: "+name+" to value: "+value);
-		config.setProperty(name, value);
-	}
-	private static void setDefaultingProperty(String name, Integer val, PropertiesConfiguration config) {
-		if(val == null) return;
-
-		String value = Integer.toString(val);
-		LOG.debug("Setting property: "+name+" to value: "+value);
-		config.setProperty(name, value);
-	}
-	
-	
-	
-	
 	
 }

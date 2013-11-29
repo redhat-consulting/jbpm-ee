@@ -1,7 +1,8 @@
 package org.jbpm.ee.persistence;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -51,8 +52,8 @@ public class KieBaseXProcessInstanceDao {
 		}
 	}
 	
-	public List<KieReleaseId> queryActiveKieReleases() {
-		List<KieReleaseId> activeReleases = new LinkedList<KieReleaseId>();
+	public Set<KieReleaseId> queryActiveKieReleases() {
+		Set<KieReleaseId> activeReleases = new HashSet<KieReleaseId>();
 		
 		Query q = entityManager.createQuery("select distinct kb.releaseGroupId, kb.releaseArtifactId, kb.releaseVersion from KieBaseXProcessInstance kb");
 		List<Object[]> results = (List<Object[]>)q.getResultList();
