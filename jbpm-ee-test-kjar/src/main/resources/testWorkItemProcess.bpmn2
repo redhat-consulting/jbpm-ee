@@ -72,7 +72,7 @@ System.out.println(order.toString());</script>
     </scriptTask>
     <intermediateCatchEvent id="_6" name="Timer" >
       <timerEventDefinition>
-        <timeDuration xsi:type="tFormalExpression">5s</timeDuration>
+        <timeDuration xsi:type="tFormalExpression">30s</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <task id="_8" name="Custom Handler" tns:taskName="Custom Handler" >

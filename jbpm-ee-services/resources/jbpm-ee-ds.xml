@@ -5,7 +5,7 @@
         http://www.jboss.org/ironjacamar/schema
         http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
 
-		<xa-datasource jndi-name="jdbc/arquillian-jbpmmain" pool-name="JbpmMainDS">
+		<xa-datasource jndi-name="jdbc/jbpm-main" pool-name="JbpmMainDS">
 			<driver>mysql</driver>
 			<xa-datasource-property name="ServerName">localhost</xa-datasource-property>
 			<xa-datasource-property name="DatabaseName">jbpm</xa-datasource-property>
