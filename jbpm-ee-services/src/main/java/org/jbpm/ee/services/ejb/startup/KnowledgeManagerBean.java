@@ -5,6 +5,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -51,6 +52,8 @@ public class KnowledgeManagerBean {
 		return taskService;
 	}
 	
+	@Inject
+	protected EntityManagerFactory emf;
 	
 	/**
 	 * Returns the default RuntimeEngine for a specified kjar

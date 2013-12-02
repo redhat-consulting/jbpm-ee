@@ -71,7 +71,7 @@ public class RuntimeManagerBean {
 		containerCache = new ConcurrentHashMap<KieReleaseId, KieContainerEE>();
 		scannerCache = new ConcurrentHashMap<KieReleaseId, KieScanner>();
 		runtimeManagerCache = new ConcurrentHashMap<KieReleaseId, RuntimeManager>();
-		
+
 		//instantiate existing managers.
 		for(KieReleaseId release : kieBaseXProcessInstanceDao.queryActiveKieReleases()) {
 			LOG.info("Rehydrating runtime manager for: "+release);
@@ -91,12 +91,19 @@ public class RuntimeManagerBean {
 		this.scannerCache = null;
 	}
 	
-	@Schedule(second= "*", minute = "*/15", hour = "*", persistent = false)
+	@Schedule(minute = "*/15", persistent = false)
 	@Lock(LockType.WRITE)
-	private void purgeRuntimeManagerCache() {
+	private void purgeHydrateRuntimeManagerCache() {
 		LOG.info("Running scheduled cache purge.");
 		Set<KieReleaseId> activeReleases = kieBaseXProcessInstanceDao.queryActiveKieReleases();
 		
+		//instantiate existing managers.
+		for(KieReleaseId release : kieBaseXProcessInstanceDao.queryActiveKieReleases()) {
+			if(!runtimeManagerCache.containsKey(release)) {
+				LOG.info("Rehydrating runtime manager for: "+release);
+				getRuntimeManager(release);
+			}
+		}
 		
 		//prune non-active scanners.
 		for(KieReleaseId release : scannerCache.keySet()) {
@@ -198,7 +205,8 @@ public class RuntimeManagerBean {
 	public RuntimeManager getRuntimeManager(KieReleaseId releaseId) {
 		if(!runtimeManagerCache.containsKey(releaseId)) {
 			RuntimeEnvironment re = createEnvironment(releaseId);
-			runtimeManagerCache.put(releaseId, RuntimeManagerFactory.Factory.get().newPerProcessInstanceRuntimeManager(re, releaseId.toString()));
+			RuntimeManager runtimeManager = RuntimeManagerFactory.Factory.get().newPerProcessInstanceRuntimeManager(re, releaseId.toString());
+			runtimeManagerCache.put(releaseId, runtimeManager);
 		}
 		
 		return runtimeManagerCache.get(releaseId);

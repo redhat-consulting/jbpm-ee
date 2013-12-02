@@ -8,6 +8,9 @@
             <jms-topic name="JBPMCommandResponseQueue">
                 <entry name="jms/JBPMCommandResponseQueue"/>
             </jms-topic>
+            <jms-topic name="JBPMClusterCoordinationTopic">
+                <entry name="jms/JBPMClusterCoordinationTopic"/>
+            </jms-topic>
         </jms-destinations>
     </hornetq-server>
 </messaging-deployment>
