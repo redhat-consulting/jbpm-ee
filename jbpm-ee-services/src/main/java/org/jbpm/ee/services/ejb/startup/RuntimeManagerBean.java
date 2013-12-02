@@ -1,7 +1,6 @@
 package org.jbpm.ee.services.ejb.startup;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -91,50 +90,16 @@ public class RuntimeManagerBean {
 		this.scannerCache = null;
 	}
 	
-	@Schedule(minute = "*/15", persistent = false)
+	@Schedule(minute = "*/15", hour = "*", persistent = false)
 	@Lock(LockType.WRITE)
-	private void purgeHydrateRuntimeManagerCache() {
-		LOG.info("Running scheduled cache purge.");
-		Set<KieReleaseId> activeReleases = kieBaseXProcessInstanceDao.queryActiveKieReleases();
+	private void hydrateRuntimeManagerCache() {
+		LOG.info("Running scheduled hydrate.");
 		
 		//instantiate existing managers.
 		for(KieReleaseId release : kieBaseXProcessInstanceDao.queryActiveKieReleases()) {
 			if(!runtimeManagerCache.containsKey(release)) {
 				LOG.info("Rehydrating runtime manager for: "+release);
 				getRuntimeManager(release);
-			}
-		}
-		
-		//prune non-active scanners.
-		for(KieReleaseId release : scannerCache.keySet()) {
-			if(!activeReleases.contains(release)) {
-				//stop the scanner.
-				KieScanner scanner = scannerCache.get(release);
-				scanner.stop();
-				
-				LOG.info("Releasing scanner for Release ID: "+release);
-				//remove the scanner.
-				scannerCache.remove(release);
-			}
-		}
-		
-		//prune non-active containers.
-		for(KieReleaseId release : containerCache.keySet()) {
-			if(!activeReleases.contains(release)) {
-				//remove the container.
-				LOG.info("Releasing container for Release ID: "+release);
-				containerCache.remove(release);
-			}
-		}
-		
-		//prune non-active runtime managers.
-		for(KieReleaseId release : runtimeManagerCache.keySet()) {
-			if(!activeReleases.contains(release)) {
-				//remove the container.
-				LOG.info("Releasing runtime manager for Release ID: "+release);
-				getRuntimeManager(release).close();
-				runtimeManagerCache.remove(release);
-				
 			}
 		}
 	}
