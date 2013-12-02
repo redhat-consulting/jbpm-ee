@@ -7,6 +7,7 @@ import java.io.ObjectOutput;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.jbpm.ee.services.model.adapter.JaxbSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,12 @@ public class LazyDeserializingMap extends HashMap<String, Object> implements Ext
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
 		try {
-			JaxbSerializer.writeExternal(new JaxbMapRequest(this), out);
+			if(StringUtils.isNotBlank(lazyMap)) {
+				out.writeUTF(lazyMap);
+			}
+			else {
+				JaxbSerializer.writeExternal(new JaxbMapRequest(this), out);
+			}
 		} catch (Exception e) {
 			throw new IOException("Exception marshalling map.", e);
 		}

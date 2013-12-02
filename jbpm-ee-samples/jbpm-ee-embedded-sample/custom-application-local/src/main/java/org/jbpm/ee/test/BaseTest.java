@@ -4,19 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.jws.WebMethod;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.jboss.ejb.client.EJBClientContext;
-import org.jbpm.ee.services.AsyncCommandExecutor;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
-import org.jbpm.ee.services.ejb.interceptors.MapSerializationInterceptor;
 import org.jbpm.ee.services.model.KieReleaseId;
-import org.jbpm.ee.test.exception.TestRuntimeException;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.task.model.Task;
@@ -25,21 +19,17 @@ import org.kie.api.task.model.TaskSummary;
 import org.slf4j.Logger;
 
 public abstract class BaseTest {
-	
-	static {
-		EJBClientContext.getCurrent().registerInterceptor(0, new MapSerializationInterceptor());
-	}
-	
+
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(BaseTest.class);
 	
 	protected abstract ProcessService getProcessService();
 	protected abstract TaskService getTaskService();
 	protected abstract WorkItemService getWorkItemService();
 	
-	protected static final KieReleaseId taskTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-test-kjar", "1.0.0-SNAPSHOT");
+	protected static final KieReleaseId taskTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 	protected static final String taskTestProcessId = "testTaskProcess.bpmn2";
 	
-	protected static final KieReleaseId loanTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-test-kjar", "1.0.0-SNAPSHOT");
+	protected static final KieReleaseId loanTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 	protected static final String loadTestProcessId = "testWorkItemProcess.bpmn2";
 	
 	@WebMethod

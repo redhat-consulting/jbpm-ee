@@ -1,10 +1,8 @@
 package org.jbpm.ee.services.ejb.interceptors;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.drools.core.command.impl.GenericCommand;
 import org.jboss.ejb.client.EJBClientInterceptor;
@@ -55,9 +53,13 @@ public class MapSerializationInterceptor implements EJBClientInterceptor {
 				LOG.info("Replace the command's map properties with lazy maps.");
 				
 				for(Field field : parameter.getClass().getDeclaredFields()) {
+					LOG.info("Field: "+field);
+					LOG.info("Field type: "+field.getType().toString());
 					if(Map.class.isAssignableFrom(field.getType())) {
+						LOG.info("Field is map.");
 						LazyDeserializingMap map = new LazyDeserializingMap();
 						Map<String, Object> vals = (Map<String, Object>)BeanUtils.getObjectViaGetter(field, parameter);
+						LOG.info("Map reflected: "+ReflectionToStringBuilder.toString(vals));
 						map.putAll(vals);
 						BeanUtils.setObjectViaSetter(field, parameter, map);
 						

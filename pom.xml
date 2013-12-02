@@ -33,6 +33,12 @@
 				<version>${drools.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-core</artifactId>
+				<version>${drools.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
 				<groupId>org.jbpm</groupId>
 				<artifactId>jbpm-flow</artifactId>
 				<version>${jbpm.version}</version>
@@ -308,10 +314,11 @@
 		<module>jbpm-ee-services</module>
 		
 		<module>jbpm-ee-external-test</module>
-		<module>jbpm-ee-test-kjar</module>
+		
 		<module>jbpm-ee-external-soap-archetype</module>
 		<module>jbpm-ee-external-ejb-archetype</module>
 		<module>jbpm-ee-external-rest-archetype</module>
 		<module>jbpm-ee-external-ear</module>
+		<module>jbpm-ee-samples</module>
 	</modules>
 </project>

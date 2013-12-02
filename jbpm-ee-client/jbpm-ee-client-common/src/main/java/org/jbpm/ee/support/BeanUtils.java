@@ -4,9 +4,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BeanUtils {
-
+	private static final Logger LOG = LoggerFactory.getLogger(BeanUtils.class);
+	
 	public BeanUtils() {
 		// seal
 	}
@@ -25,8 +29,10 @@ public class BeanUtils {
 	
 	public static void setObjectViaSetter(Field field, Object target, Object objectSet) {
 		String fieldName = field.getName();
-		String setterName = "set"+StringUtils.capitalise(fieldName);
+		String setterName = "set"+StringUtils.capitalize(fieldName);
+		
 		try {
+			LOG.info("Calling setter: "+setterName+" on target: "+ReflectionToStringBuilder.toString(target)+ " with parameter: "+ReflectionToStringBuilder.toString(objectSet));
 			Method setterMethod = target.getClass().getMethod(setterName, field.getType());
 			setterMethod.invoke(target, objectSet);
 		}

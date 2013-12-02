@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class KieReleaseIdXProcessInstanceListener implements ProcessEventListener {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KieReleaseIdXProcessInstanceListener.class);
-	private static final String KBPI_SERVICE = "java:global/jbpm-ee-external-ear/jbpm-ee-services/KieBaseXProcessInstanceDao";
+	private static final String KBPI_SERVICE = "java:app/jbpm-ee-services/KieBaseXProcessInstanceDao";
 	
 	private final ReleaseId kieReleaseId;
 	

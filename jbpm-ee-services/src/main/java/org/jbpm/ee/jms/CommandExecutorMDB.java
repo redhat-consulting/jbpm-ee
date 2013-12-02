@@ -38,7 +38,6 @@ import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.LazyDeserializingMap;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.model.TaskFactory;
-import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
 import org.jbpm.ee.support.BeanUtils;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.kie.api.runtime.CommandExecutor;
@@ -153,8 +152,7 @@ public class CommandExecutorMDB implements MessageListener {
 		return kSession;
 	}
 
-	public Object executeCommand(GenericCommand<?> command,
-			ObjectMessage objectMessage) throws JMSException, IOException {
+	public Object executeCommand(GenericCommand<?> command, ObjectMessage objectMessage) throws JMSException, IOException {
 		CommandExecutor executor = null;
 		try {
 			executor = getCommandExecutor(command);
@@ -181,10 +179,16 @@ public class CommandExecutorMDB implements MessageListener {
 	}
 	
 	protected void initializeLazyMaps(Object obj) throws IOException {
-		for(Field field : obj.getClass().getFields()) {
+		LOG.info("Reflected Object: "+ReflectionToStringBuilder.toString(obj));
+		
+		for(Field field : obj.getClass().getDeclaredFields()) {
+			LOG.info("Field: "+field);
 			if(Map.class.isAssignableFrom(field.getType())) {
+				
 				Object mapObj = BeanUtils.getObjectViaGetter(field, obj);
+				LOG.info("Map Object: "+ReflectionToStringBuilder.toString(mapObj));
 				if(LazyDeserializingMap.class.isAssignableFrom(mapObj.getClass())) {
+					LOG.info("Lazy map!");
 					LazyDeserializingMap lazyMap = (LazyDeserializingMap)mapObj;
 					lazyMap.initializeLazy();
 					
