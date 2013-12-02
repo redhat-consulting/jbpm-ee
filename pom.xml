@@ -312,13 +312,6 @@
 	<modules>
 		<module>jbpm-ee-client</module>
 		<module>jbpm-ee-services</module>
-		
-		<module>jbpm-ee-external-test</module>
-		
-		<module>jbpm-ee-external-soap-archetype</module>
-		<module>jbpm-ee-external-ejb-archetype</module>
-		<module>jbpm-ee-external-rest-archetype</module>
-		<module>jbpm-ee-external-ear</module>
 		<module>jbpm-ee-samples</module>
 	</modules>
 </project>
