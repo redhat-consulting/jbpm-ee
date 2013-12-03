@@ -10,7 +10,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>custom-application-local</module>
-  	
-  	<module>customer-application-local-ear</module>
+  	<module>custom-application-local-ear</module>
   </modules>
 </project>
