@@ -36,6 +36,15 @@
 	</build>
 	<dependencies>
 
+		<!-- mySQL overlay war -->
+		<dependency>
+			<groupId>org.jbpm.jbpm-ee</groupId>
+			<artifactId>jbpm-ee-services-mysql</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<scope>runtime</scope>
+			<type>war</type>
+		</dependency>
+
 		<!-- Various specs and utilities -->
 		<dependency>
 			<groupId>org.jboss.spec</groupId>
