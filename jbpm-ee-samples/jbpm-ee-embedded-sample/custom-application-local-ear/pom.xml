@@ -5,7 +5,7 @@
     <artifactId>jbpm-ee-embedded-sample</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>customer-application-local-ear</artifactId>
+  <artifactId>custom-application-local-ear</artifactId>
 <packaging>ear</packaging>
 
 	<build>
@@ -18,7 +18,7 @@
 					<packagingExcludes>WEB-INF/lib/jms-1.1.jar</packagingExcludes>
 					<skinnyWars>true</skinnyWars>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
-					<finalName>customer-application-local</finalName>
+					<finalName>custom-application-local</finalName>
 					<modules>
 						<webModule>
 							<groupId>org.jbpm.jbpm-ee</groupId>
@@ -40,6 +40,7 @@
 	</build>
 
 	<dependencies>
+		
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
 			<artifactId>jbpm-ee-services</artifactId>
