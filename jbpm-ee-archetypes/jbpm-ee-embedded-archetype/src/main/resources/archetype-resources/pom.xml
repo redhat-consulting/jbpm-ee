@@ -6,7 +6,7 @@
     <artifactId>jbpm-ee-samples</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>${artifactId}</artifactId>
+  <artifactId>${artifactId}-parent</artifactId>
   <groupId>${groupId}</groupId>
   <name>jBPM EE Embedded Mode</name>
   <packaging>pom</packaging>

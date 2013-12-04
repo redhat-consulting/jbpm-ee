@@ -8,7 +8,7 @@
   <artifactId>jbpm-ee-services-db2</artifactId>
   <packaging>war</packaging>
   <build>
-        <finalName>${parent.artifactId}</finalName>
+        <finalName>${project.parent.artifactId}</finalName>
   </build>
   
   <dependencies>
