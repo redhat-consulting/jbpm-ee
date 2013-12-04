@@ -9,5 +9,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>jbpm-ee-embedded-sample-archetype</module>
+  	<module>jbpm-ee-remote-archetype</module>
   </modules>
 </project>

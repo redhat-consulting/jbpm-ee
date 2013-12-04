@@ -7,7 +7,9 @@
   </parent>
   <artifactId>jbpm-ee-services-oracle</artifactId>
   <packaging>war</packaging>
-  
+  <build>
+        <finalName>${parent.artifactId}</finalName>
+  </build>
   <dependencies>
   	<dependency>
   		<groupId>org.jbpm.jbpm-ee</groupId>

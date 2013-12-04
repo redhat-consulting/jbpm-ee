@@ -8,6 +8,9 @@
   <artifactId>jbpm-ee-services-mysql</artifactId>
   <packaging>war</packaging>
   
+  <build>
+        <finalName>${parent.artifactId}</finalName>
+  </build>
   <dependencies>
   	<dependency>
   		<groupId>org.jbpm.jbpm-ee</groupId>
