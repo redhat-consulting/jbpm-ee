@@ -17,7 +17,7 @@
     </fileSet>
   </fileSets>
   <modules>
-    <module id="custom-application-remote" dir="custom-application-remote" name="custom-application-remote">
+    <module id="__rootArtifactId__" dir="__rootArtifactId__" name="__rootArtifactId__">
       <fileSets>
         <fileSet filtered="true" packaged="true" encoding="UTF-8">
           <directory>src/main/java</directory>
