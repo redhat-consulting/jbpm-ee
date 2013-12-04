@@ -9,7 +9,7 @@
   <packaging>war</packaging>
   
   <build>
-        <finalName>${parent.artifactId}</finalName>
+        <finalName>${project.parent.artifactId}</finalName>
   </build>
   <dependencies>
   	<dependency>
