@@ -5,7 +5,7 @@
   <artifactId>jbpm-ee-embedded-sample-archetype</artifactId>
   <packaging>maven-archetype</packaging>
 
-  <name>jbpm-ee-embedded-sample-archetype</name>
+  <name>jbpm-ee-embedded-archetype</name>
 
   <build>
     <extensions>
