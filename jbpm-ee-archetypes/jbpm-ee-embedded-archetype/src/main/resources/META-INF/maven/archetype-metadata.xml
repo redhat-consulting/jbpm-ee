@@ -17,7 +17,7 @@
     </fileSet>
   </fileSets>
   <modules>
-    <module id="custom-application-local" dir="custom-application-local" name="custom-application-local">
+    <module id="__rootArtifactId__" dir="__rootArtifactId__" name="__rootArtifactId__">
       <fileSets>
         <fileSet filtered="true" packaged="true" encoding="UTF-8">
           <directory>src/main/java</directory>
@@ -56,7 +56,7 @@
         </fileSet>
       </fileSets>
     </module>
-    <module id="custom-application-local-ear" dir="custom-application-local-ear" name="custom-application-local-ear">
+    <module id="__rootArtifactId__-ear" dir="__rootArtifactId__-ear" name="__rootArtifactId__-ear">
       <fileSets>
         <fileSet filtered="true" encoding="UTF-8">
           <directory>.settings</directory>

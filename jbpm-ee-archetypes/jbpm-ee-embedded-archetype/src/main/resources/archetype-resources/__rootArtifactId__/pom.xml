@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>${groupId}</groupId>
-    <artifactId>${rootArtifactId}</artifactId>
+    <artifactId>${rootArtifactId}-parent</artifactId>
     <version>${version}</version>
   </parent>
-  <artifactId>${artifactId}</artifactId>
+  <artifactId>${rootArtifactId}</artifactId>
 <dependencies>
 		<dependency>
 			<groupId>org.jboss.spec</groupId>
