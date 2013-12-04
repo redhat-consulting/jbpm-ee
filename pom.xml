@@ -313,5 +313,6 @@
 		<module>jbpm-ee-client</module>
 		<module>jbpm-ee-services</module>
 		<module>jbpm-ee-samples</module>
+		<module>jbpm-ee-archetypes</module>
 	</modules>
 </project>

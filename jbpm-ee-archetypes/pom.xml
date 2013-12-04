@@ -5,11 +5,9 @@
     <artifactId>jbpm-ee-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>jbpm-ee-samples</artifactId>
+  <artifactId>jbpm-ee-archetypes</artifactId>
   <packaging>pom</packaging>
   <modules>
-  	<module>jbpm-ee-embedded-sample</module>
-  	<module>jbpm-ee-remote-sample</module>
-  	<module>jbpm-ee-kjar-sample</module>
+  	<module>jbpm-ee-embedded-sample-archetype</module>
   </modules>
 </project>
