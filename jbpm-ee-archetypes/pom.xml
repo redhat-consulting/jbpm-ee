@@ -8,6 +8,6 @@
   <artifactId>jbpm-ee-archetypes</artifactId>
   <packaging>pom</packaging>
   <modules>
-  	<module>jbpm-ee-embedded-sample-archetype</module>
+  	<module>jbpm-ee-embedded-archetype</module>
   </modules>
 </project>
