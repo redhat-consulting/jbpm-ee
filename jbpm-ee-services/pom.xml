@@ -11,5 +11,8 @@
 	<modules>
 		<module>jbpm-ee-services-base</module>
 		<module>jbpm-ee-services-mysql</module>
+		<module>jbpm-ee-services-oracle</module>
+		<module>jbpm-ee-services-db2</module>
+		<module>jbpm-ee-services-sqlserver</module>
 	</modules>
 </project>
