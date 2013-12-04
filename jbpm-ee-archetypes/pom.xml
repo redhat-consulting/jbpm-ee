@@ -8,6 +8,7 @@
   <artifactId>jbpm-ee-archetypes</artifactId>
   <packaging>pom</packaging>
   <modules>
+  	<module>jbpm-ee-remote-archetype</module>
   	<module>jbpm-ee-embedded-archetype</module>
   </modules>
 </project>
