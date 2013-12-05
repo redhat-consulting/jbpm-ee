@@ -2,7 +2,7 @@
   [
     "name" : "Custom Handler",
     "displayName" : "Custom Handler",
-    "defaultHandler" : "${groupId}.TestHandler",
+    "defaultHandler" : "${package}.TestHandler",
     "dependencies" : [
     ]
   ]
