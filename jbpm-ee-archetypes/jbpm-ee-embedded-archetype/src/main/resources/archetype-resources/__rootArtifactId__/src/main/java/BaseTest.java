@@ -30,10 +30,10 @@ public abstract class BaseTest {
 	protected abstract TaskService getTaskService();
 	protected abstract WorkItemService getWorkItemService();
 	
-	protected static final KieReleaseId taskTestReleaseId = new KieReleaseId("${groupId}", "jbpm-ee-kjar-sample", "${version}");
+	protected static final KieReleaseId taskTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 	protected static final String taskTestProcessId = "testTaskProcess.bpmn2";
 	
-	protected static final KieReleaseId loanTestReleaseId = new KieReleaseId("${groupId}", "jbpm-ee-kjar-sample", "${version}");
+	protected static final KieReleaseId loanTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 	protected static final String loadTestProcessId = "testWorkItemProcess.bpmn2";
 	
 	@WebMethod
