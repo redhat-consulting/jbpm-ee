@@ -14,5 +14,6 @@
 		<module>jbpm-ee-services-oracle</module>
 		<module>jbpm-ee-services-db2</module>
 		<module>jbpm-ee-services-sqlserver</module>
+		<module>jbpm-ee-services-postgres</module>
 	</modules>
 </project>
