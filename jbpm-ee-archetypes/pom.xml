@@ -10,5 +10,6 @@
   <modules>
   	<module>jbpm-ee-remote-archetype</module>
   	<module>jbpm-ee-embedded-archetype</module>
+  	<module>jbpm-ee-kjar-archetype</module>
   </modules>
 </project>
