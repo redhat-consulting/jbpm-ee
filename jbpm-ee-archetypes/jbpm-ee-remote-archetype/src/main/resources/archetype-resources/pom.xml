@@ -8,7 +8,6 @@
   </parent>
   <artifactId>${artifactId}-parent</artifactId>
   <groupId>${groupId}</groupId>
-  <name>jBPM EE Embedded Mode</name>
   <packaging>pom</packaging>
   <version>${version}</version>
 </project>

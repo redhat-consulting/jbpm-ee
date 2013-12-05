@@ -5,12 +5,11 @@
     <artifactId>jbpm-ee-services</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>jbpm-ee-services-mysql</artifactId>
+  <artifactId>jbpm-ee-services-postgres</artifactId>
   <packaging>war</packaging>
-  
   <build>
         <finalName>${project.parent.artifactId}</finalName>
-  </build>
+  </build>  
   <dependencies>
   	<dependency>
   		<groupId>org.jbpm.jbpm-ee</groupId>

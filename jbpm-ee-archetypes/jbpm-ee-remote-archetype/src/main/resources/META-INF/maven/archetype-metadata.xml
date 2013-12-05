@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="jbpm-ee-embedded-sample"
+<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="jbpm-ee-remote-sample"
     xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <fileSets>
@@ -56,33 +56,5 @@
         </fileSet>
       </fileSets>
     </module>
-    <module id="__rootArtifactId__-ear" dir="__rootArtifactId__-ear" name="__rootArtifactId__-ear">
-      <fileSets>
-        <fileSet filtered="true" encoding="UTF-8">
-          <directory>.settings</directory>
-          <includes>
-            <include>**/*.xml</include>
-          </includes>
-        </fileSet>
-        <fileSet encoding="UTF-8">
-          <directory>.settings</directory>
-          <includes>
-            <include>**/*.prefs</include>
-            <include>**/*.component</include>
-          </includes>
-        </fileSet>
-        <fileSet filtered="true" encoding="UTF-8">
-          <directory></directory>
-          <includes>
-            <include>.project</include>
-          </includes>
-        </fileSet>
-      </fileSets>
-    </module>
   </modules>
-  <requiredProperties>
-    <requiredProperty key="dbType">
-      <defaultValue>mysql</defaultValue>
-    </requiredProperty>
-  </requiredProperties>
 </archetype-descriptor>
