@@ -1,5 +1,7 @@
 package org.jbpm.ee.services.ws;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -51,5 +53,9 @@ public interface WorkItemServiceWS {
     WorkItem getWorkItem(
     		@WebParam(name="work-item-id") @PathParam("workItemId") long id
     );
-
+	
+	@WebMethod
+    @GET
+    @Path("by/processinstance/{processInstanceId}")
+	List<WorkItem> getWorkItemByProcessInstance(@WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId);
 }

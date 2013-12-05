@@ -1,5 +1,6 @@
 package org.jbpm.ee.client.adapter;
 
+import java.util.List;
 import java.util.Map;
 
 import org.jbpm.ee.services.WorkItemService;
@@ -28,6 +29,11 @@ public class WorkItemServiceAdapter implements WorkItemService {
 	@Override
 	public WorkItem getWorkItem(long id) {
 		return (WorkItem)this.workItemService.getWorkItem(id);
+	}
+
+	@Override
+	public List<WorkItem> getWorkItemByProcessInstance(long processInstanceId) {
+		return (List)this.workItemService.getWorkItemByProcessInstance(processInstanceId);
 	}
 
 }

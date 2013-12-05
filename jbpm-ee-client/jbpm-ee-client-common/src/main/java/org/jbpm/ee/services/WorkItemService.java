@@ -1,8 +1,10 @@
 package org.jbpm.ee.services;
 
+import java.util.List;
 import java.util.Map;
 
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
+import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 import org.jbpm.ee.services.ejb.annotations.WorkItemId;
 import org.kie.api.runtime.process.WorkItem;
 
@@ -37,5 +39,13 @@ public interface WorkItemService {
      * @return The specified WorkItem
      */
     WorkItem getWorkItem(@WorkItemId long id);
+
+    /**
+     * Returns active work items by process instance id.
+     * 
+     * @param processInstanceId Process Instance ID
+     * @return The list of active WorkItems for the Process Instance
+     */
+    List<WorkItem> getWorkItemByProcessInstance(@ProcessInstanceId long processInstanceId);
 
 }

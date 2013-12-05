@@ -1,5 +1,6 @@
 package org.jbpm.ee.services.ws;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -49,6 +50,11 @@ public class WorkItemServiceWSImpl implements WorkItemServiceWS {
 		catch(Exception e) {
 			throw new RemoteServiceException(e);
 		}
+	}
+
+	@Override
+	public List<WorkItem> getWorkItemByProcessInstance(long processInstanceId) {
+		return (List)workItemManager.getWorkItemByProcessInstance(processInstanceId);
 	}
 
 }

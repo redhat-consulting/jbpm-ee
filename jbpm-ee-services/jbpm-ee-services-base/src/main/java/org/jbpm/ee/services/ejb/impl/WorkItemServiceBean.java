@@ -1,5 +1,7 @@
 package org.jbpm.ee.services.ejb.impl;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -18,6 +20,7 @@ import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.kie.api.runtime.manager.RuntimeEngine;
+import org.kie.api.runtime.process.WorkItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +56,23 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 		RuntimeEngine engine = knowledgeManager.getRuntimeEngineByProcessId(info.getProcessInstanceId());
 		org.drools.core.process.instance.WorkItemManager wim = (org.drools.core.process.instance.WorkItemManager)(engine.getKieSession().getWorkItemManager());
 		return ProcessInstanceFactory.convert(wim.getWorkItem(id));
+	}
+
+	@Override
+	public List<WorkItem> getWorkItemByProcessInstance(long processInstanceId) {
+		Query query = entityManager.createQuery("from WorkItemInfo wii where wii.processInstanceId = :processInstanceId and wii.state = :state");
+		query.setParameter("processInstanceId", processInstanceId);
+		query.setParameter("state", WorkItem.PENDING);
+		
+		List<WorkItemInfo> infos = (List)query.getResultList();
+		RuntimeEngine engine = knowledgeManager.getRuntimeEngineByProcessId(processInstanceId);
+		org.drools.core.process.instance.WorkItemManager wim = (org.drools.core.process.instance.WorkItemManager)(engine.getKieSession().getWorkItemManager());
+
+		List<org.kie.api.runtime.process.WorkItem> workItem = new LinkedList<WorkItem>(); 
+		for(WorkItemInfo info : infos) {
+			workItem.add(ProcessInstanceFactory.convert(wim.getWorkItem(info.getId())));
+		}
+		return workItem;
 	}
 	
 
