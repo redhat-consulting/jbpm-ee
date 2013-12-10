@@ -60,9 +60,12 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 
 	@Override
 	public List<WorkItem> getWorkItemByProcessInstance(long processInstanceId) {
+		final Long pendingStatus = new Long(WorkItem.PENDING);
+		
 		Query query = entityManager.createQuery("from WorkItemInfo wii where wii.processInstanceId = :processInstanceId and wii.state = :state");
-		query.setParameter("processInstanceId", processInstanceId);
-		query.setParameter("state", WorkItem.PENDING);
+		query.setParameter("processInstanceId",  processInstanceId);
+		
+		query.setParameter("state", pendingStatus);
 		
 		List<WorkItemInfo> infos = (List)query.getResultList();
 		RuntimeEngine engine = knowledgeManager.getRuntimeEngineByProcessId(processInstanceId);
