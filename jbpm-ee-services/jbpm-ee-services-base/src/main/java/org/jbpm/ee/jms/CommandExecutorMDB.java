@@ -184,8 +184,12 @@ public class CommandExecutorMDB implements MessageListener {
 		for(Field field : obj.getClass().getDeclaredFields()) {
 			LOG.info("Field: "+field);
 			if(Map.class.isAssignableFrom(field.getType())) {
-				
 				Object mapObj = BeanUtils.getObjectViaGetter(field, obj);
+				if(mapObj == null) {
+					//do nothing.
+					continue;
+				}
+				
 				LOG.info("Map Object: "+ReflectionToStringBuilder.toString(mapObj));
 				if(LazyDeserializingMap.class.isAssignableFrom(mapObj.getClass())) {
 					LOG.info("Lazy map!");
