@@ -80,6 +80,10 @@ public class StringObjectMapXmlAdapter extends XmlAdapter<JaxbStringObjectMap, M
             return null;
         }
         Map<String, Object> map = new HashMap<String, Object>();
+        if(xmlMap.entries == null) {
+        	return map;
+        }
+        
         for( JaxbStringObjectMapEntry xmlEntry : xmlMap.entries ) { 
             String key = xmlEntry.getKey();
             Object value = deserializeObject(xmlEntry.getBytes(), xmlEntry.getClassName(), key);
