@@ -8,6 +8,7 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.jbpm.ee.services.ejb.interceptors.InterceptorUtil;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.jbpm.ee.services.model.KieReleaseId;
@@ -26,7 +27,12 @@ public class ClassloaderInterceptor {
 	@AroundInvoke
 	public Object intercept(InvocationContext ctx) throws Exception {
 		if(!InterceptorUtil.requiresClassloaderInterception(ctx.getTarget().getClass(), ctx.getMethod())) {
-			LOG.info("Interceptor not required for method: "+ctx.getMethod().getName()+".  Parameter count: "+ctx.getParameters().length);
+			LOG.info("Interceptor not required for method: "+ctx.getMethod().getName()+".  Target: "+ctx.getTarget().getClass());
+			LOG.info("  - Source: "+ctx.getMethod().getDeclaringClass().getName()+" Method: "+ctx.getMethod().getName());
+			LOG.info("  - Parameter count: "+ctx.getParameters().length);
+			for(Object param : ctx.getParameters()) {
+				LOG.info("  - Parameter: "+ReflectionToStringBuilder.toString(param));
+			}
 			return ctx.proceed();
 		}
 		LOG.info("Method: "+ctx.getMethod().getName()+" does require preprocessor; Parameter count: "+ctx.getParameters().length);
