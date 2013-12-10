@@ -5,6 +5,7 @@ import java.util.Map;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.ws.ProcessServiceWS;
+import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 import org.kie.api.runtime.process.ProcessInstance;
 
@@ -41,10 +42,8 @@ public class ProcessServiceAdapter implements ProcessService {
 			
 			return this.processService.startProcess(processId, request);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RemoteServiceException(e);
 		}
-		
-		return null;
 	}
 
 	@Override
