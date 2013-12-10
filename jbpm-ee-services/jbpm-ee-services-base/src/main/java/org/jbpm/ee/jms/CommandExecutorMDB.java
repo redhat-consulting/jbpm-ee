@@ -5,8 +5,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -219,86 +221,71 @@ public class CommandExecutorMDB implements MessageListener {
     	if(commandResponse==null){
     		return null;
     	}else if(commandResponse instanceof Collection<?>){
-    		//if commandReponse returns a Collection, retrieve generic type information
-    		Object collectionObject = getClassFromCollection(commandResponse);
-    		if(collectionObject instanceof org.kie.api.runtime.process.ProcessInstance){
+    		
+    		Collection commandResponses = (Collection)commandResponse;
+    		Collection convertedResponses = new ArrayList(commandResponses.size());
+    		
+    		for (Iterator iterator = commandResponses.iterator(); iterator.hasNext();) {
+    			convertedResponses.add(convertResponse(iterator.next()));
     			
-    			response = ProcessInstanceFactory.convertProcessInstances((Collection<org.kie.api.runtime.process.ProcessInstance>)commandResponse);
-    			
-    		}else if(collectionObject instanceof Long){
-    			
-    			response = commandResponse;
-    			
-    		}else if(collectionObject instanceof org.kie.api.task.model.TaskSummary) {
-    				//genericClassType.eq(org.kie.api.task.model.TaskSummary.class) && returnType.isInstance(List.class)){
-    			
-    			response = TaskFactory.convertTaskSummaries((java.util.List<TaskSummary>)commandResponse);
-    			
-    		}else if(collectionObject instanceof String){
-    			
-    			response = commandResponse;
-    			
-    		}else{
-    			
-    			throw new IllegalStateException("No converter for class Collection<"+collectionObject.getClass().getCanonicalName()+">.");
-        		
     		}
+    		
+    		response = convertedResponses;
+    		
     		
     	}else{
     			
-    		if(commandResponse instanceof org.drools.core.process.instance.WorkItem){
-    			
-    			response = ProcessInstanceFactory.convert((WorkItem)commandResponse);
-    			
-    		}else if(commandResponse instanceof org.kie.api.task.model.Content){
-    			
-    			response = TaskFactory.convert((Content)commandResponse);
-    			
-    		}else if(commandResponse instanceof Long){
-    			
-    			response = commandResponse;
-    			
-    		}else  if(commandResponse instanceof org.kie.api.runtime.process.ProcessInstance){
-    			
-    			response = ProcessInstanceFactory.convert((org.kie.api.runtime.process.ProcessInstance)commandResponse);
-    			
-    		}else if(commandResponse instanceof org.kie.api.task.model.Attachment){
-    			
-    			response = TaskFactory.convert((org.kie.api.task.model.Attachment) commandResponse);
-    			
-    		}else if(commandResponse instanceof Integer){
-    			
-    			response = commandResponse;
-    			
-    		}else if(commandResponse instanceof org.kie.api.task.model.Task){
-    			
-    			response = TaskFactory.convert((org.kie.api.task.model.Task) commandResponse);
-    			
-    		}else{
-    			throw new IllegalStateException("No converter for class "+commandResponse.getClass().getCanonicalName()+".");
-        		
-    		}
+    		response = convertResponse(commandResponse);
     		
     	}
     	
     	return response;
     }
 
-	/**
-	 * This method returns the generic type of a non-empty Collection or null
-	 * 
-	 * @param commandResponse
-	 * @return returns the generic type of a non-empty Collection
-	 */
-	private static Object getClassFromCollection(Object commandResponse) {
-		Object obj = null;
-			Collection<?> col = (Collection<?>) commandResponse;
-
-			if (!col.isEmpty()) {
-				obj = col.toArray()[0];
-			}
-
-		return obj;
+	private static Object convertResponse(Object commandResponse) {
+		
+		Object response = null;
+		if(commandResponse instanceof org.kie.api.task.model.TaskSummary) {
+			
+			response = TaskFactory.convert((TaskSummary)commandResponse);
+			
+		}else if(commandResponse instanceof org.drools.core.process.instance.WorkItem){
+			
+			response = ProcessInstanceFactory.convert((WorkItem)commandResponse);
+			
+		}else if(commandResponse instanceof org.kie.api.task.model.Content){
+			
+			response = TaskFactory.convert((Content)commandResponse);
+			
+		}else if(commandResponse instanceof Long){
+			
+			response = commandResponse;
+			
+		}else if(commandResponse instanceof String){
+			
+			response = commandResponse;
+			
+		}else  if(commandResponse instanceof org.kie.api.runtime.process.ProcessInstance){
+			
+			response = ProcessInstanceFactory.convert((org.kie.api.runtime.process.ProcessInstance)commandResponse);
+			
+		}else if(commandResponse instanceof org.kie.api.task.model.Attachment){
+			
+			response = TaskFactory.convert((org.kie.api.task.model.Attachment) commandResponse);
+			
+		}else if(commandResponse instanceof Integer){
+			
+			response = commandResponse;
+			
+		}else if(commandResponse instanceof org.kie.api.task.model.Task){
+			
+			response = TaskFactory.convert((org.kie.api.task.model.Task) commandResponse);
+			
+		}else{
+			throw new IllegalStateException("No converter for class "+commandResponse.getClass().getCanonicalName()+".");
+			
+		}
+		return response;
 	}
 
 	@Override
