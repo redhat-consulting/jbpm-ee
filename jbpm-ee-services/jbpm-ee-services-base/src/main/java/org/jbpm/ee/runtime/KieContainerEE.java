@@ -55,6 +55,11 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 
 	protected void refreshWorkItemDefinitionCache() { 
 		List<Map<String, Object>> definition = WorkItemDefinitionUtil.loadWorkItemDefinitions(getReleaseId(), "META-INF/WorkDefinitions.wid");
+		if(definition == null) {
+			return;
+		}
+		
+		//otherwise, populate.
 		LOG.info("Loading Kie WorkItemDefinitions: "+definition.size());
 		LOG.info("Definitions: "+definition);
 		this.workItemHandlers.clear();
