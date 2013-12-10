@@ -56,6 +56,9 @@ public interface WorkItemServiceWS {
 	
 	@WebMethod
     @GET
-    @Path("by/processinstance/{processInstanceId}")
-	List<WorkItem> getWorkItemByProcessInstance(@WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId);
+    @Path("by/process/instance/{processInstanceId}")
+	List<WorkItem> getWorkItemByProcessInstance(
+			@WebParam(name="process-instance-id") 
+			@PathParam("processInstanceId") long processInstanceId
+	);
 }

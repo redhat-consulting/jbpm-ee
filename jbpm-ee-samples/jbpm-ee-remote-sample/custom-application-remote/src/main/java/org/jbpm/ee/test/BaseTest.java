@@ -76,6 +76,24 @@ public abstract class BaseTest {
 	}
 	
 	@WebMethod
+	public String completeTaskAsNull() {
+
+		TaskService service = getTaskService();
+		List<TaskSummary> tasks = service.getTasksAssignedAsPotentialOwner("abaxter", "en-UK");
+		
+		int i=0;
+		for(TaskSummary summary : tasks) {
+			service.claim(summary.getId(), "abaxter");
+			service.start(summary.getId(), "abaxter");
+			
+			service.complete(summary.getId(), "abaxter", null);
+			i++;
+		}
+		
+		return "Completed: "+i;
+	}
+	
+	@WebMethod
 	public String completeTasks() {
 
 		TaskService service = getTaskService();
@@ -87,6 +105,7 @@ public abstract class BaseTest {
 			service.start(summary.getId(), "abaxter");
 			
 			Map<String,Object> testResults = new HashMap<String,Object>();
+			testResults.put("ResultValue", "Hello World");
 			service.complete(summary.getId(), "abaxter", testResults);
 			i++;
 		}
