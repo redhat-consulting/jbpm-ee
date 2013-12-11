@@ -11,7 +11,7 @@ public class WorkItemDefinitionLoadingTest {
 
 	@Test
 	public void testLoad() throws Exception {
-		KieReleaseId releaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-test-kjar", "1.0.0-SNAPSHOT");
+		KieReleaseId releaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 		List<Map<String, Object>> map = WorkItemDefinitionUtil.loadWorkItemDefinitions(releaseId, "META-INF/WorkDefinitions.wid");
 		
 		System.out.println(map);

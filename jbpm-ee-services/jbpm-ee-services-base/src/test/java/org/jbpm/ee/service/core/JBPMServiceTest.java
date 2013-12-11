@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
 	private static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
-	private static final KieReleaseId loanReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-test-kjar", "1.0.0-SNAPSHOT");
+	private static final KieReleaseId loanReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 	private static final Logger LOG = LoggerFactory.getLogger(JBPMServiceTest.class);
 	
 	public abstract TaskService getTaskService();
