@@ -1,0 +1,65 @@
+version: 1
+
+dn: ou=groups,o=ee,dc=jbpm,dc=org
+objectclass: top
+objectclass: organizationalunit
+ou: groups
+description: generic groups branch
+
+dn: cn=loanProcessor,ou=groups,o=ee,dc=jbpm,dc=org
+objectclass: top
+objectclass: groupofnames
+cn: LoanAdministrator
+cn: loanProcessor
+member: uid=abaxter,ou=people,dc=example,dc=com
+description: Load Administrators
+
+dn: uid=abaxter,ou=people,o=ee,dc=jbpm,dc=org
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: organizationalPerson
+cn: Adam Baxter
+sn: Baxter
+givenName: Adam
+mail: abaxter@redhat.com
+uid: abaxter
+
+dn: uid=Administrator,ou=people,o=ee,dc=jbpm,dc=org
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: organizationalPerson
+cn: Administrator
+sn: Administrator
+givenName: Administrator
+mail: administrator@example.com
+uid: Administrator
+
+dn: ou=people,o=ee,dc=jbpm,dc=org
+objectClass: top
+objectClass: organizationalunit
+ou: People
+description: This is the tree where user accounts are stored
+
+dn: cn=loanAdministrator,ou=groups,o=ee,dc=jbpm,dc=org
+objectclass: top
+objectclass: groupofnames
+cn: LoanAdministrator
+member: uid=abaxter,ou=people,dc=example,dc=com
+description: Load Administrators
+
+dn: cn=Administrators,ou=groups,o=ee,dc=jbpm,dc=org
+objectclass: top
+objectclass: groupofnames
+cn: Administrators
+member: uid=Administrator,ou=people,dc=example,dc=com
+description: Load Administrators
+
+dn: o=ee,dc=jbpm,dc=org
+objectclass: extensibleObject
+objectclass: top
+objectclass: domain
+dc: ee
+o: ee
+
