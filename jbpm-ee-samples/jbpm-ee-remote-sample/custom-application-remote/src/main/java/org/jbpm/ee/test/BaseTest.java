@@ -36,7 +36,7 @@ public abstract class BaseTest {
 	protected static final String taskTestProcessId = "testTaskProcess.bpmn2";
 	
 	protected static final KieReleaseId loanTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
-	protected static final String loadTestProcessId = "testWorkItemProcess.bpmn2";
+	protected static final String loanTestProcessId = "testWorkItemProcess.bpmn2";
 	
 	@WebMethod
 	public Long startProcess() {
@@ -146,7 +146,7 @@ public abstract class BaseTest {
 		
 		ProcessService processService = getProcessService();
 		
-		ProcessInstance processInstance = processService.startProcess(loanTestReleaseId, loadTestProcessId, processVariables);
+		ProcessInstance processInstance = processService.startProcess(loanTestReleaseId, loanTestProcessId, processVariables);
 		return processInstance.getId();
 	}
 	
