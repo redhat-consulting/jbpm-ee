@@ -48,7 +48,7 @@ public abstract class BaseEJBTest extends BaseTest {
 		processVariables.put(variableKey, order);
 		
 		StartProcessCommand startProcessCommand = new StartProcessCommand();
-		startProcessCommand.setProcessId(loadTestProcessId);
+		startProcessCommand.setProcessId(loanTestProcessId);
 		startProcessCommand.setParameters(processVariables);		
 		
 		getAsyncCommandExecutor().execute(taskTestReleaseId, startProcessCommand);

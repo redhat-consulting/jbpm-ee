@@ -6,7 +6,7 @@
         http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
 
 
-	<datasource jta="false" jndi-name="jdbc/jbpm-timers-non-xa" pool-name="JbpmTimersNonXADS">
+	<datasource jta="false" jndi-name="java:/jdbc/jbpm-timers-non-xa" pool-name="JbpmTimersNonXADS">
 		<connection-url>jdbc:mysql://localhost/jbpm-timers</connection-url>
 		<driver>mysql</driver>
 		<security>
@@ -15,7 +15,7 @@
 		</security>
 	</datasource>
 
-	<xa-datasource jndi-name="jdbc/jbpm-timers-xa" pool-name="JbpmTimersXADS">
+	<xa-datasource jndi-name="java:/jdbc/jbpm-timers-xa" pool-name="JbpmTimersXADS">
 		<driver>mysql</driver>
 		<xa-datasource-property name="ServerName">localhost</xa-datasource-property>
 		<xa-datasource-property name="DatabaseName">jbpm-timers</xa-datasource-property>
