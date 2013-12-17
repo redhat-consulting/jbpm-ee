@@ -17,7 +17,7 @@
   <process processType="Private" isExecutable="true" id="testWorkItemProcess.bpmn2" name="testWorkItemProcess" tns:packageName="org.jbpm" tns:version="1.0" >
 
     <extensionElements>
-     <tns:import name="org.jbpm.ee.test.LoanOrder" />
+     <tns:import name="${package}.LoanOrder" />
     </extensionElements>
     <!-- process variables -->
     <property id="processString" itemSubjectRef="_processStringItem"/>
@@ -67,7 +67,7 @@
       </dataOutputAssociation>
     </userTask>
     <scriptTask id="_4" name="Script" scriptFormat="http://www.java.com/java" >
-      <script>org.jbpm.ee.test.LoanOrder order = (org.jbpm.ee.test.LoanOrder) kcontext.getVariable("loanOrder");
+      <script>${package}.LoanOrder order = (${package}.LoanOrder) kcontext.getVariable("loanOrder");
 System.out.println(order.toString());</script>
     </scriptTask>
     <intermediateCatchEvent id="_6" name="Timer" >
@@ -92,7 +92,7 @@ System.out.println(order.toString());</script>
       </ioSpecification>
     </task>
     <scriptTask id="_10" name="Script" scriptFormat="http://www.java.com/java" >
-      <script>org.jbpm.ee.test.LoanOrder order = (org.jbpm.ee.test.LoanOrder) kcontext.getVariable("loanOrder");
+      <script>${package}.LoanOrder order = (${package}.LoanOrder) kcontext.getVariable("loanOrder");
 System.out.println(order.toString());</script>
     </scriptTask>
 

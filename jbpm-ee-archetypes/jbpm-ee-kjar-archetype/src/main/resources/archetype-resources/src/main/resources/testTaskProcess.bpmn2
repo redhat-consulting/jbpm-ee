@@ -17,7 +17,7 @@
   <process processType="Private" isExecutable="true" id="testTaskProcess.bpmn2" name="testTaskProcess" tns:packageName="org.jbpm" tns:version="1.0" >
 
     <extensionElements>
-     <tns:import name="org.jbpm.ee.test.LoanOrder" />
+     <tns:import name="${package}.LoanOrder" />
     </extensionElements>
     <!-- process variables -->
     <property id="processString" itemSubjectRef="_processStringItem"/>
