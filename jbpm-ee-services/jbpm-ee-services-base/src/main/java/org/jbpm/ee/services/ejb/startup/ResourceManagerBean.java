@@ -57,7 +57,7 @@ public class ResourceManagerBean {
 			
 			return new LDAPUserGroupCallbackImpl(props);
 			
-		}else if (System.getProperty("jbpm.ee.user.group.callback.ldap.properties") != null) {
+		}else if (System.getProperty("jbpm.ee.user.group.callback.file.properties") != null) {
 			
 			String fileLocation = System.getProperty("jbpm.ee.user.group.callback.file.properties");
 			LOG.info("Loading Properties file from location: "+ fileLocation);
