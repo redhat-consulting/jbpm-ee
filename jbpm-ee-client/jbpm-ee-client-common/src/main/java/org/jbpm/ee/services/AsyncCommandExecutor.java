@@ -8,6 +8,12 @@ import org.jbpm.ee.services.model.KieReleaseId;
 
 public interface AsyncCommandExecutor {
 
+	/***
+	 * Executes a generic command on the jBPM 
+	 * @param kieReleaseId
+	 * @param command
+	 * @return
+	 */
 	@PreprocessClassloader
 	String execute(@ReleaseId KieReleaseId kieReleaseId, GenericCommand<?> command);
 	
