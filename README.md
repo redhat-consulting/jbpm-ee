@@ -7,7 +7,7 @@ Enterprise Services for jBPM 6.
   * Integration Mode - Standalone: https://github.com/redhat-consulting/jbpm-ee/wiki/Standalone-Modes
 
 
-2) A simplified scale-out model - Because jBPM becomes a blackbox, and the interfaces to integrate with jBPM through the service layer are the same no matter if you call them remotely or locally, it allows jBPM to be used remotely near as easily as locally.  In large enterprise (such as consumer banking or logistics) you might have a huge array of machines to serve largely user experience, and then BPM is needed to only serve a small subset of functionality.  In the model we are delivering, it is easy to create a cluster of jBPM service machines, and then separate that from the larger application.  This allows the customers to more effectively scale the different tiers of their application while controlling cost, and therefore making us competitive price wise.
+2) A simplified scale-out model - Because jBPM becomes a blackbox, and the interfaces to integrate with jBPM through the service layer are the same no matter if you call them remotely or locally, it allows jBPM to be used remotely near as easily as locally.  In large enterprise (such as consumer banking or logistics) you might have a huge array of machines to serve largely user experience, and then BPM is needed to only serve a small subset of functionality.  In the model we are delivering, it is easy to create a cluster of jBPM service machines, and then separate that from the larger application.  This allows the customers to more effectively scale the different tiers of their application while controlling cost.
   * Integration Mode - Standalone: https://github.com/redhat-consulting/jbpm-ee/wiki/Standalone-Modes
 
 
@@ -21,6 +21,6 @@ Enterprise Services for jBPM 6.
   * https://github.com/redhat-consulting/jbpm-ee/wiki/Clustering
 
 
-5) Separation of responsibility - We pre-generate the DDLs for Oracle, DB2, SQL Server, Postgres, and MySQL.  Because of points (1) and (2), we also simplify the enterprise setup.  This allows the DBA team to install the data layer, the operations team to install the jBPM service layer / application server, and the development team to focus on, well, development.  This separation is almost required in large enterprises such as financial services, where the DBA team is not likely to concede to providing administration rights to the jBPM database in order to have Hibernate generate the schema on the fly.
+5) Separation of responsibility - We pre-generate the DDLs for Oracle, DB2, SQL Server, Postgres, and MySQL.  Because of points (1) and (2), we also simplify the enterprise setup.  This allows the DBA team to install the data layer, the operations team to install the jBPM service layer / application server, and the development team to focus on development.
 
 
