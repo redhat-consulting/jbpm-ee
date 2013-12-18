@@ -231,12 +231,12 @@
     );
 
     create table KieBaseXProcessInstance (
-        kieProcessInstanceId number(19,0) not null unique,
+        kieProcessInstanceId number(19,0) not null,
         releaseArtifactId varchar2(255 char) not null,
         releaseGroupId varchar2(255 char) not null,
         releaseVersion varchar2(255 char) not null,
-        OPTLOCK number(10,0)--,
-        --primary key (kieProcessInstanceId)
+        OPTLOCK number(10,0),
+        primary key (kieProcessInstanceId)
     );
 
     create table NodeInstanceLog (
