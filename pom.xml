@@ -108,6 +108,12 @@
 				<artifactId>quartz</artifactId>
 				<version>1.8.5</version>
 			</dependency>
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz-oracle</artifactId>
+				<version>1.8.5</version>
+			</dependency>
+			
 
 			<!-- Java EE6 stack -->
 			<dependency>
