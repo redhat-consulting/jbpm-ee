@@ -1,4 +1,126 @@
 
+    drop table Attachment cascade constraints;
+
+    drop table BAMTaskSummary cascade constraints;
+
+    drop table BooleanExpression cascade constraints;
+
+    drop table Content cascade constraints;
+
+    drop table ContextMappingInfo cascade constraints;
+
+    drop table CorrelationKeyInfo cascade constraints;
+
+    drop table CorrelationPropertyInfo cascade constraints;
+
+    drop table Deadline cascade constraints;
+
+    drop table Delegation_delegates cascade constraints;
+
+    drop table Escalation cascade constraints;
+
+    drop table EventTypes cascade constraints;
+
+    drop table I18NText cascade constraints;
+
+    drop table KieBaseXProcessInstance cascade constraints;
+
+    drop table NodeInstanceLog cascade constraints;
+
+    drop table Notification cascade constraints;
+
+    drop table Notification_BAs cascade constraints;
+
+    drop table Notification_Recipients cascade constraints;
+
+    drop table Notification_email_header cascade constraints;
+
+    drop table OrganizationalEntity cascade constraints;
+
+    drop table PeopleAssignments_BAs cascade constraints;
+
+    drop table PeopleAssignments_ExclOwners cascade constraints;
+
+    drop table PeopleAssignments_PotOwners cascade constraints;
+
+    drop table PeopleAssignments_Recipients cascade constraints;
+
+    drop table PeopleAssignments_Stakeholders cascade constraints;
+
+    drop table PresentationElement cascade constraints;
+
+    drop table ProcessInstanceEventInfo cascade constraints;
+
+    drop table ProcessInstanceInfo cascade constraints;
+
+    drop table ProcessInstanceLog cascade constraints;
+
+    drop table Reassignment cascade constraints;
+
+    drop table Reassignment_potentialOwners cascade constraints;
+
+    drop table SessionInfo cascade constraints;
+
+    drop table Task cascade constraints;
+
+    drop table TaskDef cascade constraints;
+
+    drop table VariableInstanceLog cascade constraints;
+
+    drop table WorkItemInfo cascade constraints;
+
+    drop table email_header cascade constraints;
+
+    drop table task_comment cascade constraints;
+
+    drop sequence ATTACHMENT_ID_SEQ;
+
+    drop sequence BAM_TASK_ID_SEQ;
+
+    drop sequence BOOLEANEXPR_ID_SEQ;
+
+    drop sequence COMMENT_ID_SEQ;
+
+    drop sequence CONTENT_ID_SEQ;
+
+    drop sequence CONTEXT_MAPPING_INFO_ID_SEQ;
+
+    drop sequence CORRELATION_KEY_ID_SEQ;
+
+    drop sequence CORRELATION_PROP_ID_SEQ;
+
+    drop sequence DEADLINE_ID_SEQ;
+
+    drop sequence EMAILNOTIFHEAD_ID_SEQ;
+
+    drop sequence ESCALATION_ID_SEQ;
+
+    drop sequence I18NTEXT_ID_SEQ;
+
+    drop sequence NODE_INST_LOG_ID_SEQ;
+
+    drop sequence NOTIFICATION_ID_SEQ;
+
+    drop sequence PROCESS_INSTANCE_INFO_ID_SEQ;
+
+    drop sequence PROC_INST_EVENT_ID_SEQ;
+
+    drop sequence PROC_INST_LOG_ID_SEQ;
+
+    drop sequence REASSIGNMENT_ID_SEQ;
+
+    drop sequence SESSIONINFO_ID_SEQ;
+
+    drop sequence TASK_DEF_ID_SEQ;
+
+    drop sequence TASK_ID_SEQ;
+
+    drop sequence VAR_INST_LOG_ID_SEQ;
+
+    drop sequence WORKITEMINFO_ID_SEQ;
+
+    drop sequence hibernate_sequence;
+
     create table Attachment (
         id number(19,0) not null,
         accessType number(10,0),
@@ -113,8 +235,8 @@
         releaseArtifactId varchar2(255 char) not null,
         releaseGroupId varchar2(255 char) not null,
         releaseVersion varchar2(255 char) not null,
-        OPTLOCK number(10,0),
-        primary key (kieProcessInstanceId)
+        OPTLOCK number(10,0)--,
+        --primary key (kieProcessInstanceId)
     );
 
     create table NodeInstanceLog (
