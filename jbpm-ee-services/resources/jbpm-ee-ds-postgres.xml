@@ -7,8 +7,9 @@
 	<xa-datasource jndi-name="java:/jdbc/jbpm-main"
 		pool-name="JbpmMainDS">
 		<driver>postgresql</driver>
-		<xa-datasource-property name="URL">jdbc:postgresql://localhost:5432/jbpmtest
-		</xa-datasource-property>
+		<xa-datasource-property name="ServerName">localhost</xa-datasource-property>
+    	<xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    	<xa-datasource-property name="DatabaseName">jbpmtest</xa-datasource-property>
 		<security>
 			<user-name>jbpm</user-name>
 			<password>jbpm</password>
