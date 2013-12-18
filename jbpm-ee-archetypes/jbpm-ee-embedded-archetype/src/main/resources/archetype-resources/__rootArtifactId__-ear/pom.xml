@@ -23,7 +23,7 @@
 					<modules>
 						<webModule>
 							<groupId>org.jbpm.jbpm-ee</groupId>
-							<artifactId>jbpm-ee-services-${dbType}</artifactId>
+							<artifactId>jbpm-ee-services</artifactId>
 							<contextRoot>/jbpm-ee-services</contextRoot>
 							<bundleFileName>jbpm-ee-services.war</bundleFileName>							
 						</webModule>
@@ -389,7 +389,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jbpm.jbpm-ee</groupId>
-			<artifactId>jbpm-ee-services-${dbType}</artifactId>
+			<artifactId>jbpm-ee-services</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<type>war</type>
 		</dependency>
