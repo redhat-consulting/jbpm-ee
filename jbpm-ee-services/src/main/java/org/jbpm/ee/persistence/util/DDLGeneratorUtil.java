@@ -45,7 +45,8 @@ public class DDLGeneratorUtil {
 		schemaExport.setOutputFile(destinationSQLFile.getAbsolutePath());
 		schemaExport.setFormat(true);
 		schemaExport.setDelimiter(";");
-		schemaExport.execute(false, false, false, true);
+		
+		schemaExport.execute(false, false, false, false);
 		System.out.println("Schema exported to " + destinationSQLFile.getAbsolutePath());
 	}
 }
