@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Jaxb, serializable map implementation.
- * Lazily deserializes values in order to support inte
+ * Lazily deserializes values in order to support server side classloader setup prior to deserialization.
  * 
  * @author bradsdavis
  *
