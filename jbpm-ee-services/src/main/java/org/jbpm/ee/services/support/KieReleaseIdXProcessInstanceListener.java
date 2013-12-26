@@ -24,7 +24,10 @@ import org.slf4j.LoggerFactory;
 public class KieReleaseIdXProcessInstanceListener implements ProcessEventListener {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KieReleaseIdXProcessInstanceListener.class);
-	private static final String KBPI_SERVICE = "java:app/jbpm-ee-services/KieBaseXProcessInstanceDao";
+	private static final String KBPI_SERVICE_APP = "java:app/jbpm-ee-services/KieBaseXProcessInstanceDao";
+	private static final String KBPI_SERVICE_GLOBAL = "java:global/jbpm-ee-services/KieBaseXProcessInstanceDao!org.jbpm.ee.persistence.KieBaseXProcessInstanceDao";
+	
+	
 	
 	private final ReleaseId kieReleaseId;
 	
@@ -36,10 +39,17 @@ public class KieReleaseIdXProcessInstanceListener implements ProcessEventListene
 	public void beforeProcessStarted(ProcessStartedEvent event) {
 		try {
 			InitialContext initialContext = new InitialContext();
-			KieBaseXProcessInstanceDao dao = (KieBaseXProcessInstanceDao)initialContext.lookup(KBPI_SERVICE);
+			KieBaseXProcessInstanceDao dao = (KieBaseXProcessInstanceDao)initialContext.lookup(KBPI_SERVICE_APP);
 			dao.addKieBaseXProcessInstanceReference(kieReleaseId, event.getProcessInstance().getId());
 		} catch (NamingException e) {
-			LOG.error("Exception looking up KieBaseXProcessInstanceDao", e);
+			LOG.info("Exception looking up KieBaseXProcessInstanceDao: "+KBPI_SERVICE_APP+" retrying with "+KBPI_SERVICE_GLOBAL, e.getMessage());
+			try {
+				InitialContext initialContext = new InitialContext();
+				KieBaseXProcessInstanceDao dao = (KieBaseXProcessInstanceDao)initialContext.lookup(KBPI_SERVICE_GLOBAL);
+				dao.addKieBaseXProcessInstanceReference(kieReleaseId, event.getProcessInstance().getId());
+			} catch (NamingException ne) {
+				LOG.error("Exception looking up KieBaseXProcessInstanceDao: "+KBPI_SERVICE_GLOBAL, ne);
+			}
 		}
 		
 	}
@@ -60,10 +70,17 @@ public class KieReleaseIdXProcessInstanceListener implements ProcessEventListene
 		
 		try {
 			InitialContext initialContext = new InitialContext();
-			KieBaseXProcessInstanceDao dao = (KieBaseXProcessInstanceDao)initialContext.lookup(KBPI_SERVICE);
+			KieBaseXProcessInstanceDao dao = (KieBaseXProcessInstanceDao)initialContext.lookup(KBPI_SERVICE_APP);
 			dao.removeKieBaseXProcessInstanceReference(processInstanceId);
 		} catch (NamingException e) {
-			LOG.error("Exception looking up KieBaseXProcessInstanceDao", e);
+			LOG.info("Exception looking up KieBaseXProcessInstanceDao using "+KBPI_SERVICE_APP+" retrying with "+KBPI_SERVICE_GLOBAL, e.getMessage());
+			try {
+				InitialContext initialContext = new InitialContext();
+				KieBaseXProcessInstanceDao dao = (KieBaseXProcessInstanceDao)initialContext.lookup(KBPI_SERVICE_GLOBAL);
+				dao.removeKieBaseXProcessInstanceReference(processInstanceId);
+			} catch (NamingException ne) {
+				LOG.error("Exception looking up KieBaseXProcessInstanceDao: "+KBPI_SERVICE_GLOBAL, ne);
+			}
 		}
 	}
 

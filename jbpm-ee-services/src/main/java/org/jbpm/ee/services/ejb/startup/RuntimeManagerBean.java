@@ -72,7 +72,7 @@ public class RuntimeManagerBean {
 
 		//instantiate existing managers.
 		for(KieReleaseId release : kieBaseXProcessInstanceDao.queryActiveKieReleases()) {
-			LOG.info("Rehydrating runtime manager for: "+release);
+			LOG.info("SETUP: Rehydrating runtime manager for: "+release);
 			getRuntimeManager(release);
 		}
 	}
@@ -97,7 +97,7 @@ public class RuntimeManagerBean {
 		//instantiate existing managers.
 		for(KieReleaseId release : kieBaseXProcessInstanceDao.queryActiveKieReleases()) {
 			if(!runtimeManagerCache.containsKey(release)) {
-				LOG.info("Rehydrating runtime manager for: "+release);
+				LOG.info("CACHE: Rehydrating runtime manager for: "+release);
 				getRuntimeManager(release);
 			}
 		}
