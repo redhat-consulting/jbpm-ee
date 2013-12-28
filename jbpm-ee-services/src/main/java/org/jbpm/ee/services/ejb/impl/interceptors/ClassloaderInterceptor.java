@@ -27,16 +27,19 @@ public class ClassloaderInterceptor {
 	@AroundInvoke
 	public Object intercept(InvocationContext ctx) throws Exception {
 		if(!InterceptorUtil.requiresClassloaderInterception(ctx.getTarget().getClass(), ctx.getMethod())) {
-			LOG.info("Interceptor not required for method: "+ctx.getMethod().getName()+".  Target: "+ctx.getTarget().getClass());
-			LOG.info("  - Source: "+ctx.getMethod().getDeclaringClass().getName()+" Method: "+ctx.getMethod().getName());
-			LOG.info("  - Parameter count: "+ctx.getParameters().length);
-			for(Object param : ctx.getParameters()) {
-				LOG.info("  - Parameter: "+ReflectionToStringBuilder.toString(param));
+			if(LOG.isDebugEnabled()) {
+				LOG.debug("Interceptor not required for method: "+ctx.getMethod().getName()+".  Target: "+ctx.getTarget().getClass());
+				LOG.debug("  - Source: "+ctx.getMethod().getDeclaringClass().getName()+" Method: "+ctx.getMethod().getName());
+				LOG.debug("  - Parameter count: "+ctx.getParameters().length);
+				for(Object param : ctx.getParameters()) {
+					LOG.debug("  - Parameter: "+ReflectionToStringBuilder.toString(param));
+				}
 			}
 			return ctx.proceed();
 		}
-		LOG.info("Method: "+ctx.getMethod().getName()+" does require preprocessor; Parameter count: "+ctx.getParameters().length);
-		
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("Method: "+ctx.getMethod().getName()+" does require preprocessor; Parameter count: "+ctx.getParameters().length);
+		}
 		setupClassloader(ctx.getTarget().getClass(), ctx.getMethod(), ctx.getParameters());
 		
 		try {

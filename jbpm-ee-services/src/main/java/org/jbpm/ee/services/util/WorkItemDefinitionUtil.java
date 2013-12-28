@@ -28,14 +28,14 @@ public class WorkItemDefinitionUtil {
 	public static List<Map<String, Object>> loadWorkItemDefinitions(ReleaseId releaseId, String pattern) {
 		Artifact artifact = MavenRepository.getMavenRepository().resolveArtifact(releaseId.toString());
 		
-		LOG.info("Artifact found: "+artifact);
+		LOG.debug("Artifact found: "+artifact);
 		
 		InputStream is = null;
 		ZipFile zip = null;
 		try {
 			File jar = artifact.getFile();
-			LOG.info("File reference: "+jar.getAbsolutePath());
-			LOG.info("Loading entry: "+pattern);
+			LOG.debug("File reference: "+jar.getAbsolutePath());
+			LOG.debug("Loading entry: "+pattern);
 	        zip = new ZipFile(jar);
 	        ZipEntry entry = zip.getEntry(pattern);
 	        
@@ -44,14 +44,14 @@ public class WorkItemDefinitionUtil {
 	        	return new LinkedList<Map<String, Object>>();
 	        }
 	        
-	        LOG.info("Found entry: "+entry);
+	        LOG.debug("Found entry: "+entry);
 	        
 	        is = zip.getInputStream(entry);
 
 	        String content = IOUtils.toString(is);
 			List<Map<String, Object>> vals = (List<Map<String, Object>>)MVEL.eval(content, new HashMap<String, Object>());
 	        		
-			LOG.info("Read: "+vals.toString());
+			LOG.debug("Read: "+vals.toString());
 			
 			
 	        return vals;

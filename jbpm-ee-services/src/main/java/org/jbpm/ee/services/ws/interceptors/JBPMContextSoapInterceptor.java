@@ -28,7 +28,7 @@ public class JBPMContextSoapInterceptor implements SOAPHandler<SOAPMessageContex
 	
 	@Override
 	public boolean handleMessage(SOAPMessageContext context) {
-		LOG.info("Handling message...");
+		LOG.debug("Handling message...");
 		try {
 			InitialContext initialContext = new InitialContext();
 			BPMClassloaderService classloaderService = (BPMClassloaderService)(initialContext.lookup(CLASSLOADER_SERVICE));
@@ -71,29 +71,34 @@ public class JBPMContextSoapInterceptor implements SOAPHandler<SOAPMessageContex
 	
 	
 	public static final void prettyPrint(Element xml) throws Exception {
+		//only log on debug.
+		if(!LOG.isDebugEnabled()) {
+			return;
+		}
+		
         Transformer tf = TransformerFactory.newInstance().newTransformer();
         tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         tf.setOutputProperty(OutputKeys.INDENT, "yes");
         Writer out = new StringWriter();
         tf.transform(new DOMSource(xml), new StreamResult(out));
-        LOG.info("Request: \n"+out.toString());
+        LOG.debug("Request: \n"+out.toString());
     }
 
 
 	@Override
 	public boolean handleFault(SOAPMessageContext context) {
-		LOG.info("Handling fault...");
+		LOG.debug("Handling fault...");
 		return true;
 	}
 
 	@Override
 	public void close(MessageContext context) {
-		LOG.info("Close...");
+		LOG.debug("Close...");
 	}
 
 	@Override
 	public Set<QName> getHeaders() {
-		LOG.info("Get headers...");
+		LOG.debug("Get headers...");
 		return null;
 	}
 

@@ -83,8 +83,10 @@ public abstract class BaseTest {
 		
 		int i=0;
 		for(TaskSummary summary : tasks) {
-			service.claim(summary.getId(), "abaxter");
-			service.start(summary.getId(), "abaxter");
+			if(summary.getActualOwner() == null || !"abaxter".equals(summary.getActualOwner().getId())) {
+					service.claim(summary.getId(), "abaxter");
+					service.start(summary.getId(), "abaxter");
+			}
 			
 			service.complete(summary.getId(), "abaxter", null);
 			i++;

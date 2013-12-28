@@ -51,12 +51,17 @@ public class JBPMContextRestInterceptor implements MessageBodyReaderInterceptor 
 	}
 	
 	public static void prettyPrint(Element xml) throws Exception {
-        Transformer tf = TransformerFactory.newInstance().newTransformer();
+		//only pretty print on debug.
+		if(!LOG.isDebugEnabled()) {
+			return;
+		}
+
+		Transformer tf = TransformerFactory.newInstance().newTransformer();
         tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         tf.setOutputProperty(OutputKeys.INDENT, "yes");
         Writer out = new StringWriter();
         tf.transform(new DOMSource(xml), new StreamResult(out));
-        LOG.info("Request: \n"+out.toString());
+        LOG.debug("Request: \n"+out.toString());
     }
 
 	@Override
@@ -64,6 +69,7 @@ public class JBPMContextRestInterceptor implements MessageBodyReaderInterceptor 
 		byte[] req = IOUtils.toByteArray(context.getInputStream());
 		
 		try {
+			LOG.debug("Handling message...");
 			ByteArrayInputStream bais = new ByteArrayInputStream(req);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -71,7 +77,7 @@ public class JBPMContextRestInterceptor implements MessageBodyReaderInterceptor 
 			prettyPrint(doc.getDocumentElement());
 			KieReleaseId releaseId = XmlUtil.extractReleaseId(doc.getDocumentElement());
 			if(releaseId != null) {
-				LOG.info("ReleaseId: "+releaseId.toString());
+				LOG.debug("ReleaseId: "+releaseId.toString());
 				classloaderService.bridgeClassloaderByReleaseId(releaseId);
 			}
 			
@@ -83,7 +89,7 @@ public class JBPMContextRestInterceptor implements MessageBodyReaderInterceptor 
 		context.setInputStream(newStream);
 		
 		for(String str : uri.getPathParameters().keySet()) {
-			LOG.info("Path Parameters: "+str);
+			LOG.debug("Path Parameters: "+str);
 		}
 	
 		Long processInstanceId = extractId(uri, "processInstanceId");

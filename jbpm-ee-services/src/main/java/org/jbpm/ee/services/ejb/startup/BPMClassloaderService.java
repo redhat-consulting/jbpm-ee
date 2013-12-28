@@ -54,10 +54,10 @@ public class BPMClassloaderService {
 			ClassLoader bpmClassloader = runtimeManager.getKieContainer(releaseId).getClassLoader();
 			BridgedClassloader bridged = new BridgedClassloader(appLoader,bpmClassloader);
 			ClassloaderManager.set(bridged);
-			LOG.info("Set thread classloader: " + bridged);
+			LOG.debug("Set thread classloader: " + bridged);
 		} else {
 			ClassloaderManager.set(appLoader);
-			LOG.info("Set thread classloader: " + appLoader);
+			LOG.debug("Set thread classloader: " + appLoader);
 		}
 		
 	}

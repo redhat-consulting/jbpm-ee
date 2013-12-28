@@ -164,7 +164,7 @@ public class CommandExecutorMDB implements MessageListener {
 				throw new IllegalStateException("Unknown process for command",
 						e);
 			} else {
-				LOG.info("Null process for GetProcessInstance command");
+				LOG.debug("Null process for GetProcessInstance command");
 				return null;
 			}
 		}
@@ -181,10 +181,13 @@ public class CommandExecutorMDB implements MessageListener {
 	}
 	
 	protected void initializeLazyMaps(Object obj) throws IOException {
-		LOG.info("Reflected Object: "+ReflectionToStringBuilder.toString(obj));
-		
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("Reflected Object: "+ReflectionToStringBuilder.toString(obj));
+		}
 		for(Field field : obj.getClass().getDeclaredFields()) {
-			LOG.info("Field: "+field);
+			if(LOG.isDebugEnabled()) {
+				LOG.debug("Field: "+field);
+			}
 			if(Map.class.isAssignableFrom(field.getType())) {
 				Object mapObj = BeanUtils.getObjectViaGetter(field, obj);
 				if(mapObj == null) {
@@ -192,9 +195,12 @@ public class CommandExecutorMDB implements MessageListener {
 					continue;
 				}
 				
-				LOG.info("Map Object: "+ReflectionToStringBuilder.toString(mapObj));
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Map Object: "+ReflectionToStringBuilder.toString(mapObj));
+				}
+				
 				if(LazyDeserializingMap.class.isAssignableFrom(mapObj.getClass())) {
-					LOG.info("Lazy map!");
+					LOG.debug("Lazy map!");
 					LazyDeserializingMap lazyMap = (LazyDeserializingMap)mapObj;
 					lazyMap.initializeLazy();
 					
@@ -202,7 +208,7 @@ public class CommandExecutorMDB implements MessageListener {
 					newMap.putAll(lazyMap);
 					
 					BeanUtils.setObjectViaSetter(field, obj, newMap);
-					LOG.info("Reset object after initializing.");
+					LOG.debug("Reset object after initializing.");
 				}
 			}
 		}
