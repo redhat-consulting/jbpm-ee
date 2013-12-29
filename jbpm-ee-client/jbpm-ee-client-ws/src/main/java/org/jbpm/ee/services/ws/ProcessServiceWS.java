@@ -14,6 +14,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.model.JaxbMapResponse;
+import org.jbpm.ee.services.model.JaxbObjectRequest;
+import org.jbpm.ee.services.model.JaxbObjectResponse;
 import org.jbpm.ee.services.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 
@@ -65,4 +68,31 @@ public interface ProcessServiceWS {
 	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
 	);
 
+	@WebMethod
+	@PUT
+	@Path("instance/{processInstanceId}/variable/{variableName}")
+	void setProcessInstanceVariable(
+		@WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId,
+		@WebParam(name="variable-name") @PathParam("variableName") String variableName,
+		@WebParam(name="variable") JaxbObjectRequest variable
+	);
+
+
+	@WebMethod
+	@GET
+	@Path("instance/{processInstanceId}/variable/{variableName}")
+	JaxbObjectResponse getProcessInstanceVariable(
+		@WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId,
+		@WebParam(name="variable-name") @PathParam("variableName") String variableName
+	);
+	
+
+	@WebMethod
+	@GET
+	@Path("instance/{processInstanceId}/variables")
+	JaxbMapResponse getProcessInstanceVariables(
+		@WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
+	);
+	
+	
 }

@@ -94,6 +94,13 @@ public class StringObjectMapXmlAdapter extends XmlAdapter<JaxbStringObjectMap, M
 
     public static Object deserializeObject(byte [] objBytes, String className, String key) {
     	ClassLoader threadLoader = ClassloaderManager.get();
+    	
+    	if(threadLoader == null) {
+    		//fall back on the application loader.
+    		logger.info("Leveraging local classloader.");
+    		threadLoader = StringObjectMapXmlAdapter.class.getClassLoader();
+    	}
+    	
         if( objBytes == null || objBytes.length == 0 ) { 
             return null;
         }

@@ -3,6 +3,7 @@ package org.jbpm.ee.services;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 import org.jbpm.ee.services.ejb.annotations.WorkItemId;
@@ -23,7 +24,7 @@ public interface WorkItemService {
 	 * @param results Results of the WorkItem
 	 */
 	@PreprocessClassloader
-    void completeWorkItem(@WorkItemId long id, Map<String, Object> results);
+    void completeWorkItem(@WorkItemId long id, @LazilyDeserialized Map<String, Object> results);
 
     /**
      * Abort the specified WorkItem

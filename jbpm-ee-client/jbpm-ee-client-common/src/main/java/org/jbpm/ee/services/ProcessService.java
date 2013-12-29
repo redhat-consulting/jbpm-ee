@@ -2,6 +2,7 @@ package org.jbpm.ee.services;
 
 import java.util.Map;
 
+import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ReleaseId;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
@@ -33,7 +34,7 @@ public interface ProcessService {
 	 * @return Process instance information
 	 */
 	@PreprocessClassloader
-	ProcessInstance startProcess(@ReleaseId KieReleaseId releaseId, String processId, Map<String, Object> parameters);
+	ProcessInstance startProcess(@ReleaseId KieReleaseId releaseId, String processId, @LazilyDeserialized Map<String, Object> parameters);
 	
 	/**
 	 * Signal an event to a single process
@@ -60,4 +61,28 @@ public interface ProcessService {
 	 * @param processInstanceId The process instance's unique identifier
 	 */
 	void abortProcessInstance(@ProcessInstanceId long processInstanceId);
+	
+	
+	/**
+	 * Sets a process variable.
+	 * @param processInstanceId The process instance's unique identifier.
+	 * @param variableName The variable name to set.
+	 * @param variable The variable value.
+	 */
+	@PreprocessClassloader
+	void setProcessInstanceVariable(@ProcessInstanceId long processInstanceId, String variableName, @LazilyDeserialized Object variable);
+
+	/**
+	 * Gets a process instance's variable.
+	 * @param processInstanceId The process instance's unique identifier.
+	 * @param variableName The variable name to get from the process.
+	*/	
+	Object getProcessInstanceVariable(@ProcessInstanceId long processInstanceId, String variableName);
+
+	/**
+	 * Gets a process instance's variable values.
+	 * @param processInstanceId The process instance's unique identifier.
+	*/
+	Map<String, Object> getProcessInstanceVariables(@ProcessInstanceId long processInstanceId);
+
 }

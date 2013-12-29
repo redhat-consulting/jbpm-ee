@@ -12,7 +12,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.jbpm.ee.services.ejb.interceptors.InterceptorUtil;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.jbpm.ee.services.model.KieReleaseId;
-import org.jbpm.ee.services.model.LazyDeserializingMap;
+import org.jbpm.ee.services.model.LazyDeserializing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +43,7 @@ public class ClassloaderInterceptor {
 		setupClassloader(ctx.getTarget().getClass(), ctx.getMethod(), ctx.getParameters());
 		
 		try {
-			lazyInitializeMaps(ctx.getParameters());
+			lazyInitialize(ctx.getParameters());
 		}
 		catch(IOException e) {
 			throw new ClassloaderException("Exception deserializing object.", e); 
@@ -52,16 +52,19 @@ public class ClassloaderInterceptor {
 		return ctx.proceed();
 	}
 	
-	private void lazyInitializeMaps(Object[] parameters) throws IOException {
+	private void lazyInitialize(Object[] parameters) throws IOException {
 		for(int i=0, j=parameters.length; i<j; i++) {
 			Object parameter = parameters[i];
 			if(parameter == null) {
 				//skip.
 				continue;
 			}
-			if(LazyDeserializingMap.class.isAssignableFrom(parameter.getClass())) {
-				LazyDeserializingMap obj = (LazyDeserializingMap)parameter;
+			if(LazyDeserializing.class.isAssignableFrom(parameter.getClass())) {
+				LazyDeserializing obj = (LazyDeserializing)parameter;
 				obj.initializeLazy();
+				
+				//set in the delegate.
+				parameters[i] = obj.getDelegate();
 			}
 		}
 	}

@@ -1,11 +1,17 @@
 
 package org.jbpm.ee.services.ws;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import javax.ejb.EJB;
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
+import org.jbpm.ee.services.model.JaxbMapResponse;
+import org.jbpm.ee.services.model.JaxbObjectRequest;
+import org.jbpm.ee.services.model.JaxbObjectResponse;
 import org.jbpm.ee.services.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
@@ -63,4 +69,35 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 		
 	}
 
+	@Override
+	public void setProcessInstanceVariable(long processInstanceId, String variableName, JaxbObjectRequest variable) {
+		try {
+			this.processRuntimeService.setProcessInstanceVariable(processInstanceId, variableName, variable.getObject());
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
+
+	@Override
+	public JaxbObjectResponse getProcessInstanceVariable(long processInstanceId, String variableName) {
+		try {
+			return new JaxbObjectResponse((Serializable)this.processRuntimeService.getProcessInstanceVariable(processInstanceId, variableName));
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
+
+	@Override
+	public JaxbMapResponse getProcessInstanceVariables(long processInstanceId) {
+		try {
+			Map<String, Object> variables = this.processRuntimeService.getProcessInstanceVariables(processInstanceId);
+			JaxbMapResponse response = new JaxbMapResponse(variables); 
+			return response;
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
 }

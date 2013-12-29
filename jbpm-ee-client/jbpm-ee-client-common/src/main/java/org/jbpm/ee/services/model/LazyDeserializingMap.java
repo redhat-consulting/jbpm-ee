@@ -1,6 +1,5 @@
 package org.jbpm.ee.services.model;
 
-import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author bradsdavis
  *
  */
-public class LazyDeserializingMap extends HashMap<String, Object> implements Externalizable {
+public class LazyDeserializingMap extends HashMap<String, Object> implements LazyDeserializing<HashMap<String, Object>> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LazyDeserializingMap.class);
 	private String lazyMap;
@@ -59,6 +58,11 @@ public class LazyDeserializingMap extends HashMap<String, Object> implements Ext
 		JaxbMapRequest map = JaxbSerializer.unmarshall(JaxbMapRequest.class, lazyMap);
 		this.putAll(map.getMap());
 		LOG.debug("Lazily initializing map: "+this.size());
+	}
+
+	@Override
+	public HashMap<String, Object> getDelegate() {
+		return this;
 	}
 
 }

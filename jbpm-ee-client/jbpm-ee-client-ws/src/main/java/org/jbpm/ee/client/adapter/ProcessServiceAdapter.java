@@ -1,8 +1,12 @@
 package org.jbpm.ee.client.adapter;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.model.JaxbMapResponse;
+import org.jbpm.ee.services.model.JaxbObjectRequest;
+import org.jbpm.ee.services.model.JaxbObjectResponse;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.ws.ProcessServiceWS;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
@@ -59,6 +63,24 @@ public class ProcessServiceAdapter implements ProcessService {
 	@Override
 	public void abortProcessInstance(long processInstanceId) {
 		this.processService.abortProcessInstance(processInstanceId);
+	}
+
+	@Override
+	public void setProcessInstanceVariable(long processInstanceId, String variableName, Object variable) {
+		JaxbObjectRequest request = new JaxbObjectRequest((Serializable)variable);
+		this.processService.setProcessInstanceVariable(processInstanceId, variableName, request);
+	}
+
+	@Override
+	public Object getProcessInstanceVariable(long processInstanceId, String variableName) {
+		JaxbObjectResponse response = this.processService.getProcessInstanceVariable(processInstanceId, variableName);
+		return response.getObject();
+	}
+
+	@Override
+	public Map<String, Object> getProcessInstanceVariables(long processInstanceId) {
+		JaxbMapResponse response = this.processService.getProcessInstanceVariables(processInstanceId);
+		return response.getMap();
 	}
 
 }

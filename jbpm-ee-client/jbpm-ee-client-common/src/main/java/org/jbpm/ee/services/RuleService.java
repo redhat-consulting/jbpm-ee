@@ -1,5 +1,6 @@
 package org.jbpm.ee.services;
 
+import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 
@@ -44,6 +45,6 @@ public interface RuleService {
      * @param object The fact to be inserted
      */
 	@PreprocessClassloader
-    void insert(@ProcessInstanceId Long processInstanceId, Object object);
+    void insert(@ProcessInstanceId Long processInstanceId, @LazilyDeserialized Object object);
     
 }

@@ -165,4 +165,44 @@ public abstract class BaseTest {
 		return processInstance.getId();
 	}
 	
+	@WebMethod
+	public String getProcessVariables(long processInstanceId) {
+		ProcessService processService =  getProcessService();
+		Map<String, Object> variables = processService.getProcessInstanceVariables(processInstanceId);
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("Total variables: "+variables.size()+"\n");
+		for(String key : variables.keySet()) {
+			builder.append("Variable: "+key+" :: "+ReflectionToStringBuilder.toString(variables.get(key))+"\n");
+		}
+		return builder.toString();
+	}
+	
+	@WebMethod
+	public String getProcessVariable(long processInstanceId, String key) {
+		ProcessService processService =  getProcessService();
+		Object variable = processService.getProcessInstanceVariable(processInstanceId, key);
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("Variable: "+key+" :: "+ReflectionToStringBuilder.toString(variable)+"\n");
+		return builder.toString();
+	}
+	
+	
+	@WebMethod
+	public String setProcessVariable(long processInstanceId, String key, String firstName) {
+		ProcessService processService =  getProcessService();
+		Object variable = processService.getProcessInstanceVariable(processInstanceId, key);
+		
+		if(variable != null && variable instanceof LoanOrder) {
+			LoanOrder order = (LoanOrder)variable;
+			order.setFirstName(firstName);
+			processService.setProcessInstanceVariable(processInstanceId, key, order);
+		}
+		
+		return getProcessVariable(processInstanceId, key);
+	}
+	
+	
+	
 }

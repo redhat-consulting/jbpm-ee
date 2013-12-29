@@ -18,6 +18,8 @@ import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
+import org.jbpm.workflow.instance.WorkflowProcessInstance;
+import org.jbpm.workflow.instance.impl.WorkflowProcessInstanceImpl;
 import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -75,6 +77,25 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 			}
 		}
 		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().abortProcessInstance(processInstanceId);
+	}
+
+	@Override
+	public void setProcessInstanceVariable(long processInstanceId, String variableName, Object variable) {
+		WorkflowProcessInstance pi = (WorkflowProcessInstance)knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId);
+		pi.setVariable(variableName, variable);
+	}
+
+	@Override
+	public Object getProcessInstanceVariable(long processInstanceId, String variableName) {
+		WorkflowProcessInstance pi = (WorkflowProcessInstance)knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId);
+		return pi.getVariable(variableName);
+	}
+
+	@Override
+	public Map<String, Object> getProcessInstanceVariables(long processInstanceId) {
+		WorkflowProcessInstanceImpl pi = (WorkflowProcessInstanceImpl)knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId);
+		LOG.debug("Process variable size: "+pi.getVariables().size());
+		return pi.getVariables();
 	}
 	
 }

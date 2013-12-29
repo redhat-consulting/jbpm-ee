@@ -3,6 +3,7 @@ package org.jbpm.ee.services;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 import org.jbpm.ee.services.ejb.annotations.TaskId;
@@ -54,7 +55,7 @@ public interface TaskService {
 	 * @param data
 	 */
 	@PreprocessClassloader
-	void complete(@TaskId long taskId, String userId, Map<String, Object> data);
+	void complete(@TaskId long taskId, String userId, @LazilyDeserialized Map<String, Object> data);
 
 	/**
 	 * 
@@ -86,7 +87,8 @@ public interface TaskService {
 	 * @param userId
 	 * @param faultData
 	 */
-	void fail(@TaskId long taskId, String userId, Map<String, Object> faultData);
+	@PreprocessClassloader
+	void fail(@TaskId long taskId, String userId, @LazilyDeserialized Map<String, Object> faultData);
 
 	/**
 	 * Forward the task to another organization entity. The caller has to
@@ -254,8 +256,7 @@ public interface TaskService {
 	 * @return
 	 */
 	List<TaskSummary> getTasksByStatusByProcessInstanceId(
-			@ProcessInstanceId long processInstanceId, List<Status> status,
-			String language);
+			@ProcessInstanceId long processInstanceId, List<Status> status, String language);
 
 	/**
 	 * 
