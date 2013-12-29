@@ -197,8 +197,8 @@ public class CommandExecutorMDB implements MessageListener {
 			obj.initializeLazy(ClassloaderManager.get());
 			GenericCommand<?> command = (GenericCommand<?>)obj.getDelegate();
 			
-			if(LOG.isInfoEnabled()) {
-				LOG.info("Request: "+ReflectionToStringBuilder.toString(command));
+			if(LOG.isDebugEnabled()) {
+				LOG.debug("Request: "+ReflectionToStringBuilder.toString(command));
 			}
 
 			Object commandResponse = getCommandExecutor(releaseId).execute(command);
