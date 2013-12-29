@@ -17,8 +17,6 @@ public interface AsyncCommandExecutor {
 	 */
 	@PreprocessClassloader
 	String execute(@ReleaseId KieReleaseId kieReleaseId, @LazilyDeserialized GenericCommand<?> command);
-	
-	String execute(GenericCommand<?> command);
-	
+
 	CommandResponse pollResponse(String correlation);
 }

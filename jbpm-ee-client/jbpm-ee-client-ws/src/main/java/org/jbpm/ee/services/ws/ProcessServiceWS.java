@@ -17,6 +17,7 @@ import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.model.JaxbMapResponse;
 import org.jbpm.ee.services.model.JaxbObjectRequest;
 import org.jbpm.ee.services.model.JaxbObjectResponse;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 
@@ -94,5 +95,11 @@ public interface ProcessServiceWS {
 		@WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
 	);
 	
+	@WebMethod
+	@GET
+	@Path("/release/by/process/instance/{processInstanceId}")
+	public KieReleaseId getReleaseId(
+			@WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
+	);
 	
 }

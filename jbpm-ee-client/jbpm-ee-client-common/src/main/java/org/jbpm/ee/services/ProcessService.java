@@ -85,4 +85,11 @@ public interface ProcessService {
 	*/
 	Map<String, Object> getProcessInstanceVariables(@ProcessInstanceId long processInstanceId);
 
+	/**
+	 * Gets the release id for the process instance.
+	 * @param processInstanceId Process Instance ID
+	 * @return
+	 */
+	KieReleaseId getReleaseId(@ProcessInstanceId long processInstanceId);
+
 }

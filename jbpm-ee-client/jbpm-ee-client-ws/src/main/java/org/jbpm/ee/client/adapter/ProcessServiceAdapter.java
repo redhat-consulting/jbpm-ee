@@ -83,4 +83,9 @@ public class ProcessServiceAdapter implements ProcessService {
 		return response.getMap();
 	}
 
+	@Override
+	public KieReleaseId getReleaseId(long processInstanceId) {
+		return this.processService.getReleaseId(processInstanceId);
+	}
+
 }

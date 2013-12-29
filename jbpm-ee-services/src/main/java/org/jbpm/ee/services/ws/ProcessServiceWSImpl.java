@@ -12,6 +12,7 @@ import org.jbpm.ee.services.ejb.local.ProcessServiceLocal;
 import org.jbpm.ee.services.model.JaxbMapResponse;
 import org.jbpm.ee.services.model.JaxbObjectRequest;
 import org.jbpm.ee.services.model.JaxbObjectResponse;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
@@ -100,4 +101,11 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 			throw new RemoteServiceException(e);
 		}
 	}
+
+	@Override
+	public KieReleaseId getReleaseId(long processInstanceId) {
+		return this.processRuntimeService.getReleaseId(processInstanceId);
+	}
+	
+	
 }

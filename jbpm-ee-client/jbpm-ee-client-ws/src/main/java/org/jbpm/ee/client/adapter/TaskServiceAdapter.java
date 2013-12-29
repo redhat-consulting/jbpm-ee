@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jbpm.ee.services.TaskService;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.ws.TaskServiceWS;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.kie.api.task.model.Attachment;
@@ -192,6 +193,11 @@ public class TaskServiceAdapter implements TaskService {
 	@Override
 	public Attachment getAttachmentById(long attachId) {
 		return this.taskService.getAttachmentById(attachId);
+	}
+	
+	@Override
+	public KieReleaseId getReleaseId(long taskId) {
+		return this.taskService.getReleaseId(taskId);
 	}
 
 }

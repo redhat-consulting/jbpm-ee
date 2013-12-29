@@ -28,11 +28,11 @@ public class LazyDeserializingObject implements LazyDeserializing<Serializable> 
 	
 	private Serializable obj;
 	
-	public LazyDeserializingObject() throws Exception {
+	public LazyDeserializingObject() {
 
 	}
 
-	public LazyDeserializingObject(Serializable obj) throws Exception {
+	public LazyDeserializingObject(Serializable obj) {
 		this.obj = obj;
 	}
 	
@@ -41,8 +41,9 @@ public class LazyDeserializingObject implements LazyDeserializing<Serializable> 
 		try {
 			if(lazyObj != null && lazyObj.length > 0) {
 				out.writeUTF(lazyObjType);
-				String s = DatatypeConverter.printBase64Binary(lazyObj);
-				out.writeUTF(s);
+
+				String lazyObjectUTFBinaryBase = DatatypeConverter.printBase64Binary(lazyObj);
+				out.writeUTF(lazyObjectUTFBinaryBase);
 			}
 			else {
 				String objectType = obj.getClass().getName();
@@ -54,13 +55,9 @@ public class LazyDeserializingObject implements LazyDeserializing<Serializable> 
 				os.writeObject(obj);
 				os.close();
 				
-				byte[] bytes = baos.toByteArray();
-				String s = DatatypeConverter.printBase64Binary(bytes);
-				out.writeUTF(s);
-				LOG.debug("Array on Write Converted: "+s);
-				
-				String str = new String(bytes);
-				LOG.debug("Array on Write: "+str);
+				byte[] lazyObjectBytes = baos.toByteArray();
+				String lazyObjectUTFBinaryBase = DatatypeConverter.printBase64Binary(lazyObjectBytes);
+				out.writeUTF(lazyObjectUTFBinaryBase);
 			}
 		} catch (Exception e) {
 			throw new IOException("Exception marshalling map.", e);
@@ -72,19 +69,14 @@ public class LazyDeserializingObject implements LazyDeserializing<Serializable> 
 		this.lazyObjType = in.readUTF();
 		String utfObj = in.readUTF();
 		this.lazyObj = DatatypeConverter.parseBase64Binary(utfObj);
-		
-		LOG.debug("Array on Read Converted: "+utfObj);
-		
-		String str = new String(this.lazyObj);
-		LOG.debug("Array on Read: "+str);
 	}
 
 	public void initializeLazy(ClassLoader classloader) throws IOException {
-		LOG.debug("Lazily object: "+this.lazyObjType);
 		try {
 			ByteArrayInputStream bais = new ByteArrayInputStream(this.lazyObj);
 			LazyDeserializingObjectInputStream ldois = new LazyDeserializingObjectInputStream(bais);
 			this.obj = (Serializable)ldois.readObject();
+			ldois.close();
 		}
 		catch(Exception e) {
 			throw new IOException("Exception reading class.", e);

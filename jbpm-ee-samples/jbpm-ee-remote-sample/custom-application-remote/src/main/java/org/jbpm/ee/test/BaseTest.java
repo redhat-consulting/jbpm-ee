@@ -11,7 +11,7 @@ import org.jboss.ejb.client.EJBClientContext;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
-import org.jbpm.ee.services.ejb.interceptors.MapSerializationInterceptor;
+import org.jbpm.ee.services.ejb.interceptors.SerializationInterceptor;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 public abstract class BaseTest {
 	
 	static {
-		EJBClientContext.getCurrent().registerInterceptor(0, new MapSerializationInterceptor());
+		EJBClientContext.getCurrent().registerInterceptor(0, new SerializationInterceptor());
 	}
 	
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(BaseTest.class);

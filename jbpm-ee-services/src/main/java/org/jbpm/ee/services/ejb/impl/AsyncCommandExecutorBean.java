@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -18,12 +19,13 @@ import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.drools.core.command.impl.GenericCommand;
-import org.jbpm.ee.jms.AcceptedCommands;
+import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderBinding;
+import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.services.ejb.remote.AsyncCommandExecutorRemote;
 import org.jbpm.ee.services.model.CommandResponse;
 import org.jbpm.ee.services.model.KieReleaseId;
-import org.jbpm.services.task.commands.TaskCommand;
+import org.jbpm.ee.services.model.LazyDeserializingObject;
 import org.mvel2.sh.CommandException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +36,9 @@ import org.slf4j.LoggerFactory;
  * @author bdavis, abaxter
  *
  */
+@ClassloaderBinding
 @Stateless
+@Interceptors({ClassloaderInterceptor.class})
 public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, AsyncCommandExecutorRemote{
 
 	private static final Logger LOG = LoggerFactory.getLogger(AsyncCommandExecutorBean.class);
@@ -81,27 +85,23 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 	 * @return
 	 */
 	public String execute(KieReleaseId kieReleaseId, GenericCommand<?> command) {
+		if(kieReleaseId == null) {
+			throw new CommandException("Command Message must include ReleaseId: " + command.getClass().getCanonicalName());
+		}
+		
 		String uuid = UUID.randomUUID().toString();
 		try {
 			ObjectMessage request = session.createObjectMessage();
 			request.setJMSCorrelationID(uuid);
-			request.setObject(command);
+			
+			LazyDeserializingObject lazyObject = new LazyDeserializingObject(command);
+			request.setObject(lazyObject);
 			request.setJMSReplyTo(responseQueue);
 			
 			//check the object, and see if we need to replace the map with a lazy map.
-			
-			
-			if (kieReleaseId == null) {
-				if(!TaskCommand.class.isAssignableFrom(command.getClass()) &&
-						(!AcceptedCommands.containsProcessInstanceId(command.getClass())) &&
-						(!AcceptedCommands.containsWorkItemId(command.getClass()))) {
-					throw new CommandException("Command Message must include ReleaseId: " + command.getClass().getCanonicalName());
-				} 
-			} else {
-				request.setStringProperty("groupId", kieReleaseId.getGroupId());
-				request.setStringProperty("artifactId", kieReleaseId.getArtifactId());
-				request.setStringProperty("version", kieReleaseId.getVersion());
-			}
+			request.setStringProperty("groupId", kieReleaseId.getGroupId());
+			request.setStringProperty("artifactId", kieReleaseId.getArtifactId());
+			request.setStringProperty("version", kieReleaseId.getVersion());
 			
 			producer.send(request);
 			
@@ -111,10 +111,6 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 		}
 	}
 
-	public String execute(GenericCommand<?> command) {
-		return execute(null, command);
-	}
-	
 	/**
 	 * Waits for the response object for a given correlation id.
 	 * 

@@ -8,6 +8,7 @@ import javax.jws.WebService;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.TaskFactory;
 import org.jbpm.ee.services.model.task.Content;
 import org.jbpm.ee.services.model.task.Task;
@@ -301,5 +302,10 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 		
 		return results;
 		
+	}
+
+	@Override
+	public KieReleaseId getReleaseId(long taskId) {
+		return this.taskService.getReleaseId(taskId);
 	}
 }

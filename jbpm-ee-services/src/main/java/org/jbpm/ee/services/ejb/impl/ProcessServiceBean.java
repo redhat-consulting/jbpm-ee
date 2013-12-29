@@ -97,5 +97,11 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 		LOG.debug("Process variable size: "+pi.getVariables().size());
 		return pi.getVariables();
 	}
+
+
+	@Override
+	public KieReleaseId getReleaseId(long processInstanceId) {
+		return knowledgeManager.getReleaseIdByProcessId(processInstanceId);
+	}
 	
 }

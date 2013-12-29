@@ -17,6 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.task.Content;
 import org.jbpm.ee.services.model.task.Task;
 import org.jbpm.ee.services.model.task.TaskAttachment;
@@ -232,7 +233,7 @@ public interface TaskServiceWS {
 	@Path("/process/instance/{processInstanceId}/tasks/all")
 	@WebResult(name="task-summaries")
 	List<Long> getTasksByProcessInstanceId(
-	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId
+	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId
 	);
 	
 	@WebMethod
@@ -240,7 +241,7 @@ public interface TaskServiceWS {
 	@Path("/process/instance/{processInstanceId}/tasks/status")
 	@WebResult(name="task-summaries")
 	List<TaskSummary> getTasksByStatusByProcessInstanceId(
-	    @WebParam(name="processInstanceId") @PathParam("processInstanceId") long processInstanceId, 
+	    @WebParam(name="process-instance-id") @PathParam("processInstanceId") long processInstanceId, 
 	    List<Status> status, 
 	    @WebParam(name="language") @QueryParam("lang") String language
 	);
@@ -259,4 +260,11 @@ public interface TaskServiceWS {
 	    @WebParam(name="attachId") @PathParam("attachId") long attachId
 	);
 
+
+	@WebMethod
+	@GET
+	@Path("/release/by/task/{taskId}")
+	public KieReleaseId getReleaseId(
+			@WebParam(name="task-id") @PathParam("taskId") long taskId
+	);
 }

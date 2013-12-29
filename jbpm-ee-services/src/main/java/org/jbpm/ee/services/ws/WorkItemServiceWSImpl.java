@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.process.WorkItem;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
@@ -55,6 +56,11 @@ public class WorkItemServiceWSImpl implements WorkItemServiceWS {
 	@Override
 	public List<WorkItem> getWorkItemByProcessInstance(long processInstanceId) {
 		return (List)workItemManager.getWorkItemByProcessInstance(processInstanceId);
+	}
+
+	@Override
+	public KieReleaseId getReleaseId(long workItemId) {
+		return this.workItemManager.getReleaseId(workItemId);
 	}
 
 }

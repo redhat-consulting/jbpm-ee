@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jbpm.ee.services.WorkItemService;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.ws.WorkItemServiceWS;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.kie.api.runtime.process.WorkItem;
@@ -36,4 +37,9 @@ public class WorkItemServiceAdapter implements WorkItemService {
 		return (List)this.workItemService.getWorkItemByProcessInstance(processInstanceId);
 	}
 
+	@Override
+	public KieReleaseId getReleaseId(long id) {
+		return this.workItemService.getReleaseId(id);
+	}
+	
 }

@@ -16,6 +16,7 @@ import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
 import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.TaskFactory;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
@@ -210,5 +211,9 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 		return TaskFactory.convert(taskAttachmentService.getAttachmentById(attachId));
 	}
 	
+	@Override
+	public KieReleaseId getReleaseId(long taskId) {
+		return knowledgeManager.getReleaseIdByTaskId(taskId);
+	}
 	
 }

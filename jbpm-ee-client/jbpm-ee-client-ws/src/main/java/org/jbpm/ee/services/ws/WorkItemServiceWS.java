@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.jbpm.ee.services.WorkItemService;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.process.WorkItem;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 
@@ -60,5 +61,13 @@ public interface WorkItemServiceWS {
 	List<WorkItem> getWorkItemByProcessInstance(
 			@WebParam(name="process-instance-id") 
 			@PathParam("processInstanceId") long processInstanceId
+	);
+	
+
+	@WebMethod
+	@GET
+	@Path("/release/by/workitem/{workItemId}")
+	public KieReleaseId getReleaseId(
+			@WebParam(name="work-item-id") @PathParam("workItemId") long workItemId
 	);
 }

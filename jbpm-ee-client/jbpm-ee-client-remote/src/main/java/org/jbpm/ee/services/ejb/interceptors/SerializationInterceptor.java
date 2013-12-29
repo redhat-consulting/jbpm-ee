@@ -1,29 +1,23 @@
 package org.jbpm.ee.services.ejb.interceptors;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.drools.core.command.impl.GenericCommand;
 import org.jboss.ejb.client.EJBClientInterceptor;
 import org.jboss.ejb.client.EJBClientInvocationContext;
-import org.jbpm.ee.services.model.LazyDeserializingMap;
 import org.jbpm.ee.services.model.LazyDeserializingObject;
-import org.jbpm.ee.support.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MapSerializationInterceptor implements EJBClientInterceptor {
+public class SerializationInterceptor implements EJBClientInterceptor {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MapSerializationInterceptor.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SerializationInterceptor.class);
 	
 	@Override
 	public void handleInvocation(EJBClientInvocationContext context) throws Exception {
 		Set<Integer> lazyParameterIndex = new HashSet<Integer>(); 
-		
+		 
 		boolean response = InterceptorUtil.requiresClassloaderInterception(context.getViewClass(), context.getInvokedMethod(), lazyParameterIndex);
 		if(!response) {
 			if(LOG.isDebugEnabled()) {
@@ -33,13 +27,12 @@ public class MapSerializationInterceptor implements EJBClientInterceptor {
 			return;
 		}
 		if(LOG.isDebugEnabled()) {
-		LOG.debug("Method: "+context.getInvokedMethod().getName()+" does require preprocessor; Parameter count: "+context.getParameters().length);
+			LOG.debug("Method: "+context.getInvokedMethod().getName()+" does require preprocessor; Parameter count: "+context.getParameters().length);
 			LOG.debug("Needs lazy initialization on parameters: ");
 			for(Integer pos : lazyParameterIndex) {
-				LOG.info("Parameter["+pos+"]"+context.getInvokedMethod().getParameterTypes()[pos]);
+				LOG.debug("Parameter["+pos+"]"+context.getInvokedMethod().getParameterTypes()[pos]);
 			}
 		}
-		
 		
 		//look for the map objects, and convert them to lazy deserializing map.
 		for(int i=0, j=context.getParameters().length; i<j; i++) {
@@ -49,7 +42,9 @@ public class MapSerializationInterceptor implements EJBClientInterceptor {
 				LazyDeserializingObject obj = new LazyDeserializingObject(parameter);
 				context.getParameters()[i] = obj;
 				
-				LOG.info("Wrapped serializable parameter["+i+"]: "+parameter.getClass().getName());
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Wrapped serializable parameter["+i+"]: "+parameter.getClass().getName());
+				}
 			}
 		}
 

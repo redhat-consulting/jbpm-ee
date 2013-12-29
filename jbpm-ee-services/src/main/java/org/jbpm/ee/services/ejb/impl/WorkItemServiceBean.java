@@ -18,6 +18,7 @@ import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
 import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.process.WorkItem;
@@ -76,6 +77,11 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 			workItem.add(ProcessInstanceFactory.convert(wim.getWorkItem(info.getId())));
 		}
 		return workItem;
+	}
+	
+	@Override
+	public KieReleaseId getReleaseId(long id) {
+		return knowledgeManager.getReleaseIdByWorkItemId(id);
 	}
 	
 

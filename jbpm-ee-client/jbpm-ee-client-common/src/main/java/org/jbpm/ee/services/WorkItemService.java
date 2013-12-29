@@ -7,6 +7,7 @@ import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 import org.jbpm.ee.services.ejb.annotations.WorkItemId;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.kie.api.runtime.process.WorkItem;
 
 /**
@@ -48,5 +49,12 @@ public interface WorkItemService {
      * @return The list of active WorkItems for the Process Instance
      */
     List<WorkItem> getWorkItemByProcessInstance(@ProcessInstanceId long processInstanceId);
+
+	/**
+	 * Gets the release id for the work item.
+	 * @param id Work Item ID
+	 * @return
+	 */
+	KieReleaseId getReleaseId(@WorkItemId long id);
 
 }

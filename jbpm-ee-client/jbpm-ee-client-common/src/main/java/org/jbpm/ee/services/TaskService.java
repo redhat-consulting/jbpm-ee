@@ -8,6 +8,7 @@ import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 import org.jbpm.ee.services.ejb.annotations.TaskId;
 import org.jbpm.ee.services.ejb.annotations.WorkItemId;
+import org.jbpm.ee.services.model.KieReleaseId;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
 import org.kie.api.task.model.OrganizationalEntity;
@@ -271,5 +272,12 @@ public interface TaskService {
 	 * @return
 	 */
 	Attachment getAttachmentById(long attachId);
+
+	/**
+	 * Gets the release id for the task instance.
+	 * @param taskId Task ID
+	 * @return
+	 */
+	KieReleaseId getReleaseId(@TaskId long taskId);
 
 }
