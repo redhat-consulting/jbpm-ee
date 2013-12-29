@@ -40,6 +40,7 @@ import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.LazyDeserializingMap;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.model.TaskFactory;
+import org.jbpm.ee.services.model.adapter.ClassloaderManager;
 import org.jbpm.ee.support.BeanUtils;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.kie.api.runtime.CommandExecutor;
@@ -202,7 +203,7 @@ public class CommandExecutorMDB implements MessageListener {
 				if(LazyDeserializingMap.class.isAssignableFrom(mapObj.getClass())) {
 					LOG.debug("Lazy map!");
 					LazyDeserializingMap lazyMap = (LazyDeserializingMap)mapObj;
-					lazyMap.initializeLazy();
+					lazyMap.initializeLazy(ClassloaderManager.get());
 					
 					Map<String, Object> newMap = new HashMap<String, Object>();
 					newMap.putAll(lazyMap);

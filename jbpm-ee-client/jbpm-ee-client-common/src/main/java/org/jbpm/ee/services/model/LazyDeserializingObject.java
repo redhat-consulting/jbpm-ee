@@ -1,12 +1,15 @@
 package org.jbpm.ee.services.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import org.apache.commons.lang.StringUtils;
-import org.jbpm.ee.services.model.adapter.JaxbSerializer;
+import javax.xml.bind.DatatypeConverter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class LazyDeserializingObject implements LazyDeserializing<Serializable> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LazyDeserializingObject.class);
-	private String lazyObj;
+	private byte[] lazyObj;
 	private String lazyObjType;
 	
 	private Serializable obj;
@@ -36,14 +39,28 @@ public class LazyDeserializingObject implements LazyDeserializing<Serializable> 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
 		try {
-			if(StringUtils.isNotBlank(lazyObj)) {
+			if(lazyObj != null && lazyObj.length > 0) {
 				out.writeUTF(lazyObjType);
-				out.writeUTF(lazyObj);
+				String s = DatatypeConverter.printBase64Binary(lazyObj);
+				out.writeUTF(s);
 			}
 			else {
 				String objectType = obj.getClass().getName();
 				out.writeUTF(objectType);
-				JaxbSerializer.writeExternal(obj, out);
+
+				ObjectOutputStream os = null;
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				os = new ObjectOutputStream(baos);
+				os.writeObject(obj);
+				os.close();
+				
+				byte[] bytes = baos.toByteArray();
+				String s = DatatypeConverter.printBase64Binary(bytes);
+				out.writeUTF(s);
+				LOG.debug("Array on Write Converted: "+s);
+				
+				String str = new String(bytes);
+				LOG.debug("Array on Write: "+str);
 			}
 		} catch (Exception e) {
 			throw new IOException("Exception marshalling map.", e);
@@ -53,18 +70,21 @@ public class LazyDeserializingObject implements LazyDeserializing<Serializable> 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 		this.lazyObjType = in.readUTF();
-		this.lazyObj = in.readUTF();
+		String utfObj = in.readUTF();
+		this.lazyObj = DatatypeConverter.parseBase64Binary(utfObj);
 		
-		if(LOG.isDebugEnabled()) {
-			LOG.debug("Setting up lazy value: "+lazyObjType);
-		}
+		LOG.debug("Array on Read Converted: "+utfObj);
+		
+		String str = new String(this.lazyObj);
+		LOG.debug("Array on Read: "+str);
 	}
 
-	public void initializeLazy() throws IOException {
+	public void initializeLazy(ClassLoader classloader) throws IOException {
 		LOG.debug("Lazily object: "+this.lazyObjType);
 		try {
-			Class clz = Class.forName(lazyObjType);
-			this.obj = (Serializable)JaxbSerializer.unmarshall(clz, lazyObj);	
+			ByteArrayInputStream bais = new ByteArrayInputStream(this.lazyObj);
+			LazyDeserializingObjectInputStream ldois = new LazyDeserializingObjectInputStream(bais);
+			this.obj = (Serializable)ldois.readObject();
 		}
 		catch(Exception e) {
 			throw new IOException("Exception reading class.", e);

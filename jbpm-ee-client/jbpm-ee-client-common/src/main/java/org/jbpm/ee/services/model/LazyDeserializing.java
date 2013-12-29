@@ -10,6 +10,6 @@ public interface LazyDeserializing<T> extends Externalizable {
 	 * 
 	 * @throws IOException
 	 */
-	public void initializeLazy() throws IOException;
+	public void initializeLazy(ClassLoader classloader) throws IOException;
 	public T getDelegate();
 }

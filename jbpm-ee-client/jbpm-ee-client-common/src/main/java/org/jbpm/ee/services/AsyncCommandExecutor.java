@@ -1,6 +1,7 @@
 package org.jbpm.ee.services;
 
 import org.drools.core.command.impl.GenericCommand;
+import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ReleaseId;
 import org.jbpm.ee.services.model.CommandResponse;
@@ -15,7 +16,7 @@ public interface AsyncCommandExecutor {
 	 * @return
 	 */
 	@PreprocessClassloader
-	String execute(@ReleaseId KieReleaseId kieReleaseId, GenericCommand<?> command);
+	String execute(@ReleaseId KieReleaseId kieReleaseId, @LazilyDeserialized GenericCommand<?> command);
 	
 	String execute(GenericCommand<?> command);
 	

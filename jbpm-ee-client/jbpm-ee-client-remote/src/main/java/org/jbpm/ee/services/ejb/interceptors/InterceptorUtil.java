@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
 import org.jbpm.ee.services.ejb.annotations.ReleaseId;
@@ -25,7 +26,8 @@ public class InterceptorUtil {
 		// seal
 	}
 	
-	public static boolean requiresClassloaderInterception(Class clz, Method method) {
+	
+	public static boolean requiresClassloaderInterception(Class clz, Method method, Set<Integer> indexes) {
 		//cache reflection.
 		if(noClassloaderRequired.contains(clz.getName()+method.hashCode())) {
 			return false;
@@ -35,6 +37,18 @@ public class InterceptorUtil {
 		}
 		
 		if(method.isAnnotationPresent(PreprocessClassloader.class)) {
+			Annotation[][] annotations = method.getParameterAnnotations();
+			for(int i=0, j=annotations.length; i<j; i++) {
+				if(annotations[i].length > 0) {
+					//check to see if one of the declared annotations is the lazy initialization annotation.
+					for(Annotation annotation : annotations[i]) {
+						if(annotation instanceof LazilyDeserialized){
+							indexes.add(i);
+						}
+					}
+				}
+			}
+			
 			return true;
 		}
 		else {
@@ -42,7 +56,7 @@ public class InterceptorUtil {
 			for(Class clzz : clz.getInterfaces()) {
 				try {
 					Method superInterfaceMethod = clzz.getMethod(method.getName(), method.getParameterTypes());
-					boolean response = requiresClassloaderInterception(clzz, superInterfaceMethod);
+					boolean response = requiresClassloaderInterception(clzz, superInterfaceMethod, indexes);
 					
 					if(response == true) {
 						//add to cache.

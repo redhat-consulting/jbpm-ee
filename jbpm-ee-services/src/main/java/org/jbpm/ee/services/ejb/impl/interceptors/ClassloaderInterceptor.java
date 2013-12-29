@@ -2,6 +2,8 @@ package org.jbpm.ee.services.ejb.impl.interceptors;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
@@ -13,6 +15,7 @@ import org.jbpm.ee.services.ejb.interceptors.InterceptorUtil;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.LazyDeserializing;
+import org.jbpm.ee.services.model.adapter.ClassloaderManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +29,9 @@ public class ClassloaderInterceptor {
 	
 	@AroundInvoke
 	public Object intercept(InvocationContext ctx) throws Exception {
-		if(!InterceptorUtil.requiresClassloaderInterception(ctx.getTarget().getClass(), ctx.getMethod())) {
+		Set<Integer> indexes = new HashSet<Integer>();
+		
+		if(!InterceptorUtil.requiresClassloaderInterception(ctx.getTarget().getClass(), ctx.getMethod(), indexes)) {
 			if(LOG.isDebugEnabled()) {
 				LOG.debug("Interceptor not required for method: "+ctx.getMethod().getName()+".  Target: "+ctx.getTarget().getClass());
 				LOG.debug("  - Source: "+ctx.getMethod().getDeclaringClass().getName()+" Method: "+ctx.getMethod().getName());
@@ -61,7 +66,7 @@ public class ClassloaderInterceptor {
 			}
 			if(LazyDeserializing.class.isAssignableFrom(parameter.getClass())) {
 				LazyDeserializing obj = (LazyDeserializing)parameter;
-				obj.initializeLazy();
+				obj.initializeLazy(ClassloaderManager.get());
 				
 				//set in the delegate.
 				parameters[i] = obj.getDelegate();
