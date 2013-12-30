@@ -104,7 +104,12 @@ public class ProcessServiceWSImpl implements ProcessServiceWS {
 
 	@Override
 	public KieReleaseId getReleaseId(long processInstanceId) {
-		return this.processRuntimeService.getReleaseId(processInstanceId);
+		try {
+			return this.processRuntimeService.getReleaseId(processInstanceId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 	
 	

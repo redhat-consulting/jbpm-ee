@@ -60,7 +60,12 @@ public class WorkItemServiceWSImpl implements WorkItemServiceWS {
 
 	@Override
 	public KieReleaseId getReleaseId(long workItemId) {
-		return this.workItemManager.getReleaseId(workItemId);
+		try {
+			return this.workItemManager.getReleaseId(workItemId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 }

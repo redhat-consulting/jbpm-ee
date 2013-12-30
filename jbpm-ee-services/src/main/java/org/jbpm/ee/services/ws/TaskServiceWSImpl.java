@@ -306,6 +306,11 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 
 	@Override
 	public KieReleaseId getReleaseId(long taskId) {
-		return this.taskService.getReleaseId(taskId);
+		try {
+			return this.taskService.getReleaseId(taskId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 }
