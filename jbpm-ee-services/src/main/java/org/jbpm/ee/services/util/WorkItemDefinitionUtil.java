@@ -10,11 +10,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
-import org.jbpm.ee.runtime.KieContainerEE;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.kie.api.builder.ReleaseId;
-import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.scanner.MavenRepository;
 import org.mvel2.MVEL;
 import org.slf4j.Logger;

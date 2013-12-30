@@ -178,7 +178,7 @@ public interface TaskServiceWS {
 	@Path("{taskId}")
 	@WebResult(name="task")
 	Task getTaskById(
-	    @WebParam(name="taskId") @PathParam("taskId") long taskId
+	    @WebParam(name="task-id") @PathParam("taskId") long taskId
 	);
 	
 	@WebMethod

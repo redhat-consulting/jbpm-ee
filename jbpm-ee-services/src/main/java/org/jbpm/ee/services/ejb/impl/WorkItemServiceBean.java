@@ -13,8 +13,8 @@ import javax.persistence.Query;
 
 import org.drools.persistence.info.WorkItemInfo;
 import org.jbpm.ee.services.WorkItemService;
-import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderBinding;
-import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
+import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
+import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
 import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
@@ -25,8 +25,8 @@ import org.kie.api.runtime.process.WorkItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ClassloaderBinding
-@Interceptors({ClassloaderInterceptor.class})
+@JBPMContextEJBBinding
+@Interceptors({JBPMContextEJBInterceptor.class})
 @Stateless
 public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLocal, WorkItemServiceRemote {
 

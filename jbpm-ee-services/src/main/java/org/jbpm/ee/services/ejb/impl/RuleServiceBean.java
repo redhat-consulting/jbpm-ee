@@ -5,14 +5,14 @@ import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 
 import org.jbpm.ee.services.RuleService;
-import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderBinding;
-import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
+import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
+import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
 import org.jbpm.ee.services.ejb.local.RuleServiceLocal;
 import org.jbpm.ee.services.ejb.remote.RuleServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 
-@ClassloaderBinding
-@Interceptors({ClassloaderInterceptor.class})
+@JBPMContextEJBBinding
+@Interceptors({JBPMContextEJBInterceptor.class})
 @Stateless
 public class RuleServiceBean implements RuleService, RuleServiceLocal, RuleServiceRemote {
 

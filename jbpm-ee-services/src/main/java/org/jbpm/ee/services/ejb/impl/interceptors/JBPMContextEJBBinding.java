@@ -12,5 +12,5 @@ import javax.interceptor.InterceptorBinding;
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface ClassloaderBinding {
+public @interface JBPMContextEJBBinding {
 }

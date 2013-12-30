@@ -20,9 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Interceptor
-@ClassloaderBinding
-public class ClassloaderInterceptor {
-	private static final Logger LOG = LoggerFactory.getLogger(ClassloaderInterceptor.class);
+@JBPMContextEJBBinding
+public class JBPMContextEJBInterceptor {
+	private static final Logger LOG = LoggerFactory.getLogger(JBPMContextEJBInterceptor.class);
 
 	@Inject
 	BPMClassloaderService classloaderService;

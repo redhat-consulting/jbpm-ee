@@ -19,8 +19,8 @@ import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.drools.core.command.impl.GenericCommand;
-import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderBinding;
-import org.jbpm.ee.services.ejb.impl.interceptors.ClassloaderInterceptor;
+import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
+import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.services.ejb.remote.AsyncCommandExecutorRemote;
 import org.jbpm.ee.services.model.CommandResponse;
@@ -36,9 +36,9 @@ import org.slf4j.LoggerFactory;
  * @author bdavis, abaxter
  *
  */
-@ClassloaderBinding
+@JBPMContextEJBBinding
 @Stateless
-@Interceptors({ClassloaderInterceptor.class})
+@Interceptors({JBPMContextEJBInterceptor.class})
 public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, AsyncCommandExecutorRemote{
 
 	private static final Logger LOG = LoggerFactory.getLogger(AsyncCommandExecutorBean.class);
