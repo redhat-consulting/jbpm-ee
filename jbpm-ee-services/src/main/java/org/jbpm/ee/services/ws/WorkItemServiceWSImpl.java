@@ -55,7 +55,12 @@ public class WorkItemServiceWSImpl implements WorkItemServiceWS {
 
 	@Override
 	public List<WorkItem> getWorkItemByProcessInstance(long processInstanceId) {
-		return (List)workItemManager.getWorkItemByProcessInstance(processInstanceId);
+		try {
+			return (List)workItemManager.getWorkItemByProcessInstance(processInstanceId);
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 	@Override
