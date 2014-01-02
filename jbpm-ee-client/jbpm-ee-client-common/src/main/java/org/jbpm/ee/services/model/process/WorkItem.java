@@ -104,7 +104,7 @@ public class WorkItem implements org.kie.api.runtime.process.WorkItem, Serializa
 
 	@Override
 	public Map<String, Object> getParameters() {
-		return this.getParameters();
+		return this.parameters;
 	}
 
 	@Override
