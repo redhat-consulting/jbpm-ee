@@ -2,8 +2,8 @@ package org.jbpm.ee.services.ejb.interceptors;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 
 public class InterceptorUtil {
 
-	private static final Set<String> noClassloaderRequired = new HashSet<String>(); 
-	private static final Set<String> classloaderRequired = new HashSet<String>(); 
+	private static final Set<String> noClassloaderRequired = new ConcurrentSkipListSet<String>(); 
+	private static final Set<String> classloaderRequired = new ConcurrentSkipListSet<String>(); 
 	
 	private static final Logger LOG = LoggerFactory.getLogger(InterceptorUtil.class);
 	
