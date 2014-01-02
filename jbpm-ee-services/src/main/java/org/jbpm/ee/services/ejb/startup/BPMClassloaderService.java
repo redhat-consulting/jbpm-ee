@@ -13,6 +13,15 @@ import org.jbpm.ee.services.util.BridgedClassloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * Provides a service for bridging the applications classloader with the classloader required to 
+ * service the incoming request.  The classloader for servicing the incoming request would be based on the 
+ * KIE Release ID information provided by the incoming request.  This may be resolved, as well, from the Process Instance ID,
+ * Task ID, or WorkItem ID.
+ * 
+ * @author bradsdavis
+ *
+ */
 @Startup
 @Singleton
 public class BPMClassloaderService {

@@ -19,6 +19,15 @@ import org.jbpm.ee.services.model.adapter.ClassloaderManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/***
+ * This interceptor introspects the message for EJB and determines the identifier that can be used to re-associate the 
+ * jBPM context to the request on the server side.  For example, if the request contains the process instance id, this can be
+ * leveraged to determine the kie release id, which is needed to re-instantiate the classpath on the server side for the incoming request. 
+ * 
+ * @author bradsdavis
+ *
+ */
 @Interceptor
 @JBPMContextEJBBinding
 public class JBPMContextEJBInterceptor {
@@ -108,8 +117,5 @@ public class JBPMContextEJBInterceptor {
 			classloaderService.bridgeClassloaderByWorkItemId(workItemId);
 			return;
 		}
-			
-		
-		
 	}
 }

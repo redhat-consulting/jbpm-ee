@@ -9,6 +9,12 @@ import org.jbpm.ee.persistence.provider.JbpmDatabasePropertyProvider.JbpmDatabas
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Sets up the Quartz properties based on the Database selected by {@link JbpmDatabasePropertyProvider}
+ * 
+ * @author bradsdavis
+ *
+ */
 public class JbpmQuartzSettingProvider {
 
 	private static final Logger LOG = LoggerFactory.getLogger(JbpmQuartzSettingProvider.class);

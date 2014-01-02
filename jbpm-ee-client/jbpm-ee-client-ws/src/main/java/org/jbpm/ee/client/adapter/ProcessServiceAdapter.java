@@ -14,7 +14,7 @@ import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 import org.kie.api.runtime.process.ProcessInstance;
 
 /**
- * Adapts the Rest Service JAXB responses to the ProcessRuntime interface. 
+ * Adapts the WS Services JAXB responses to the {@link ProcessService} interface. 
  * 
  * @see ProcessService
  * 

@@ -15,6 +15,12 @@ import org.jbpm.ee.persistence.provider.JbpmDatabasePropertyProvider.JbpmDatabas
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Produces the EntityManagerFactory for jBPM, leveraging the appropriate Hibernate dialect, loaded by {@link JbpmDatabasePropertyProvider}
+ * 
+ * @author bradsdavis
+ *
+ */
 public class JbpmEntityManagerProvider {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(JbpmEntityManagerProvider.class);

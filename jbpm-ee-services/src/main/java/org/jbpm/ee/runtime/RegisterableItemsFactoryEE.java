@@ -10,6 +10,12 @@ import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.process.WorkItemHandler;
 
+/***
+ * Registers the {@link KieReleaseIdXProcessInstanceListener} and the {@link WorkItemHandler}s that are 
+ * configured by the {@link KieContainerEE} within the WorkDefinitions.wid file for each KJar.
+ * @author bradsdavis
+ *
+ */
 public class RegisterableItemsFactoryEE extends DefaultRegisterableItemsFactory {
 
 	protected KieContainerEE container;

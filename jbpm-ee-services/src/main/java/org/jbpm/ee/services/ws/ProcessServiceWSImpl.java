@@ -17,6 +17,11 @@ import org.jbpm.ee.services.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 
+/**
+ * @see ProcessServiceWS
+ * @author bradsdavis
+ *
+ */
 @WebService(targetNamespace="http://jbpm.org/v6/ProcessService/wsdl", serviceName="ProcessService", endpointInterface="org.jbpm.ee.services.ws.ProcessServiceWS")
 @HandlerChain(file="jbpm-context-handler.xml")
 public class ProcessServiceWSImpl implements ProcessServiceWS {

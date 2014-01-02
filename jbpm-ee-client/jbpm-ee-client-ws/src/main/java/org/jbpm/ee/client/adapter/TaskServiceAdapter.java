@@ -15,6 +15,14 @@ import org.kie.api.task.model.Status;
 import org.kie.api.task.model.Task;
 import org.kie.api.task.model.TaskSummary;
 
+/**
+ * Adapts the WS Services JAXB responses to the {@link TaskService} interface. 
+ * 
+ * @see TaskService
+ * 
+ * @author bradsdavis
+ *
+ */
 public class TaskServiceAdapter implements TaskService {
 
 	private final TaskServiceWS taskService;

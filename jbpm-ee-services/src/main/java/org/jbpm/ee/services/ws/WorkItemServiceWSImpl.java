@@ -12,6 +12,11 @@ import org.jbpm.ee.services.model.process.WorkItem;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 
+/**
+ * @see WorkItemServiceWS
+ * @author bradsdavis
+ *
+ */
 @WebService(targetNamespace="http://jbpm.org/v6/WorkItemService/wsdl", serviceName="WorkItemService", endpointInterface="org.jbpm.ee.services.ws.WorkItemServiceWS")
 public class WorkItemServiceWSImpl implements WorkItemServiceWS {
 

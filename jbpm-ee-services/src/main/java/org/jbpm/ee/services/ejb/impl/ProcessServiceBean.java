@@ -24,6 +24,14 @@ import org.kie.api.runtime.process.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * Provides a wrapper implementation for the CDI services in order to support consistent execution by Local, Remote, REST, and SOAP execution.
+ * 
+ * {@see ProcessService}
+ * 
+ * @author bradsdavis
+ *
+ */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
 @Stateless

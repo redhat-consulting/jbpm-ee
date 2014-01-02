@@ -17,7 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provides CDI Resources
+ * Provides the UserGroupCallback, loaded via System Properties.  If the system property indicates LDAP, the {@link LDAPUserGroupCallbackImpl} is returned.
+ * Otherwise, the {@link JBossUserGroupCallbackImpl} is provided.
  * 
  * @author abaxter
  * 

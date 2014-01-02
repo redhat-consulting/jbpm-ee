@@ -6,11 +6,15 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jbpm.ee.persistence.provider.JbpmDatabasePropertyProvider.JbpmDatabaseProperties;
 
+/***
+ * Generates the DDL for the jBPM Database based on a provided database type.
+ * @author bradsdavis
+ *
+ */
 public class DDLGeneratorUtil {
 
 	public static void main(String[] args) throws IOException {

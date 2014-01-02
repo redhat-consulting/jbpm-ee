@@ -33,6 +33,9 @@ import org.kie.internal.task.api.UserGroupCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Creates and maintains a cache of {@link RuntimeManager}s per {@link KieReleaseId}s
+**/
 @Startup
 @Singleton
 public class RuntimeManagerBean {

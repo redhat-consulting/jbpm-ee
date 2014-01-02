@@ -10,6 +10,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jbpm.ee.services.model.KieReleaseId;
 
+/***
+ * JAXB request for process instance instantiation.
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class JaxbInitializeProcessRequest {

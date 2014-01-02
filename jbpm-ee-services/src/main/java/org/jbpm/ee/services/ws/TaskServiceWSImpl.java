@@ -20,6 +20,11 @@ import org.jbpm.services.task.impl.model.xml.adapter.OrganizationalEntityXmlAdap
 import org.kie.api.task.model.OrganizationalEntity;
 import org.kie.api.task.model.Status;
 
+/**
+ * @see TaskServiceWS
+ * @author bradsdavis
+ *
+ */
 @WebService(targetNamespace="http://jbpm.org/v6/TaskService/wsdl", serviceName="TaskService", endpointInterface="org.jbpm.ee.services.ws.TaskServiceWS")
 public class TaskServiceWSImpl implements TaskServiceWS {
 

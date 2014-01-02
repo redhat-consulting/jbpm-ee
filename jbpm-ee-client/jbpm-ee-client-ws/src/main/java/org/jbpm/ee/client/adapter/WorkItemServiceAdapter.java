@@ -3,12 +3,21 @@ package org.jbpm.ee.client.adapter;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.ws.WorkItemServiceWS;
 import org.jbpm.ee.services.ws.request.JaxbMapRequest;
 import org.kie.api.runtime.process.WorkItem;
 
+/**
+ * Adapts the WS Services JAXB responses to the {@link WorkItemService} interface. 
+ * 
+ * @see WorkItemService
+ * 
+ * @author bradsdavis
+ *
+ */
 public class WorkItemServiceAdapter implements WorkItemService {
 
 	private WorkItemServiceWS workItemService;

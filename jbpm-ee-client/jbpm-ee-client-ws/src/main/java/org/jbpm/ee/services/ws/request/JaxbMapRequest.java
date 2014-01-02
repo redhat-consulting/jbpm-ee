@@ -9,6 +9,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/***
+ * Wrapper for JAXB Map implementation.
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="map-element")
 public class JaxbMapRequest {

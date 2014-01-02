@@ -28,6 +28,15 @@ import org.kie.internal.task.api.TaskAttachmentService;
 import org.kie.internal.task.api.TaskContentService;
 import org.kie.internal.task.api.TaskQueryService;
 
+
+/***
+ * Provides a wrapper implementation for the CDI services in order to support consistent execution by Local, Remote, REST, and SOAP execution.
+ * 
+ * {@see TaskService}
+ * 
+ * @author bradsdavis
+ *
+ */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
 @Stateless

@@ -6,6 +6,11 @@ import javax.jws.WebService;
 import org.jbpm.ee.services.ejb.local.RuleServiceLocal;
 import org.jbpm.ee.services.ws.exceptions.RemoteServiceException;
 
+/**
+ * @see RuleServiceWS
+ * @author bradsdavis
+ *
+ */
 @WebService(targetNamespace="http://jbpm.org/v6/RuleService/wsdl", serviceName="RuleService", endpointInterface="org.jbpm.ee.services.ws.RuleServiceWS")
 public class RuleServiceWSImpl implements RuleServiceWS {
 	

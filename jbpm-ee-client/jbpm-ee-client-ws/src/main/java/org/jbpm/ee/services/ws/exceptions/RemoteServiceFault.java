@@ -4,6 +4,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/***
+ * JAXB safe transport for exception information.
+ * 
+ * @author bradsdavis
+ *
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RemoteServiceFault {

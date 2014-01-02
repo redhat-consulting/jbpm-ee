@@ -9,6 +9,12 @@ import javax.ws.rs.core.Application;
 
 import org.jbpm.ee.services.ws.interceptors.JBPMContextRestInterceptor;
 
+/**
+ * This is used to setup the REST services and REST interceptor.
+ * 
+ * @author bradsdavis
+ *
+ */
 @ApplicationPath("/rest")
 public class JaxRSServiceBootstrap extends Application {
 

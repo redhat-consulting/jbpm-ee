@@ -6,6 +6,13 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * This loads the jBPM Database Property from the system properties, and then uses this to setup 
+ * the appropriate Hibernate Dialect and Quartz configuration properties. 
+ * 
+ * @author bradsdavis
+ *
+ */
 public class JbpmDatabasePropertyProvider {
 
 	private static final Logger LOG = LoggerFactory.getLogger(JbpmDatabasePropertyProvider.class);

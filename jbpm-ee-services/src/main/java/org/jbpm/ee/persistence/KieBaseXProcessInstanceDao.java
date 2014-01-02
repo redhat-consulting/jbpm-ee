@@ -16,6 +16,12 @@ import org.kie.api.builder.ReleaseId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * Data Access Object for queries against @link {@link KieBaseXProcessInstance}
+ * 
+ * @author bradsdavis
+ *
+ */
 @Stateless
 @LocalBean
 public class KieBaseXProcessInstanceDao {

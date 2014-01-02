@@ -19,6 +19,12 @@ import org.jbpm.ee.services.ws.RuleServiceWS;
 import org.jbpm.ee.services.ws.TaskServiceWS;
 import org.jbpm.ee.services.ws.WorkItemServiceWS;
 
+/**
+ * Leverage this class to setup the SOAP proxy to the jBPM services.
+ * 
+ * @author bradsdavis
+ *
+ */
 public class SoapClientFactory {
 
 	private SoapClientFactory() {

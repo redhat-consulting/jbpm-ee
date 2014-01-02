@@ -18,6 +18,14 @@ import org.kie.api.runtime.process.WorkItemHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * Extends the base Kie Container to ensure that when the KieContainer is loaded, all WorkDefinitions provides for the 
+ * Release ID are also loaded into memory.  This allows jBPM-EE to instantiate the WorkItemHandlers configured in the WorkDefinitions.wid
+ * when the process instance is instantiated or rehydrated.
+ * 
+ * @author bradsdavis
+ *
+ */
 public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KieContainerEE.class);

@@ -30,6 +30,14 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+/***
+ * This interceptor introspects the message for REST and determines the identifier that can be used to re-associate the 
+ * jBPM context to the request on the server side.  For example, if the request contains the process instance id, this can be
+ * leveraged to determine the kie release id, which is needed to re-instantiate the classpath on the server side for the incoming request. 
+ * 
+ * @author bradsdavis
+ *
+ */
 @Provider
 @ServerInterceptor
 public class JBPMContextRestInterceptor implements MessageBodyReaderInterceptor {

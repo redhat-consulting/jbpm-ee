@@ -13,6 +13,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Used by {@link JBPMContextRestInterceptor} and {@link JBPMContextSoapInterceptor} to introspect 
+ * XML messages for the KIE Release ID information.
+ * 
+ * @author bradsdavis
+ *
+ */
 public class XmlUtil {
 	private static final XPathFactory factory = XPathFactory.newInstance();
 	private static final Logger LOG = LoggerFactory.getLogger(XmlUtil.class);

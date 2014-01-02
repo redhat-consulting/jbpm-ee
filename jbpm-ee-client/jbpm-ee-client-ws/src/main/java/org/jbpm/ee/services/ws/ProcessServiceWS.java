@@ -22,7 +22,7 @@ import org.jbpm.ee.services.model.process.ProcessInstance;
 import org.jbpm.ee.services.ws.request.JaxbInitializeProcessRequest;
 
 /**
- * Rest interface equivalent to {@link ProcessService}.  Returns JAXB types.
+ * REST interface equivalent to {@link ProcessService}.  Returns JAXB types.
  * 
  * @see ProcessService
  * @author bradsdavis

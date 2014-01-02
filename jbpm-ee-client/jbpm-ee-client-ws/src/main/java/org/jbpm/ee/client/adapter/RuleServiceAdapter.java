@@ -3,6 +3,15 @@ package org.jbpm.ee.client.adapter;
 import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.ws.RuleServiceWS;
 
+
+/**
+ * Adapts the WS Services JAXB responses to the {@link RuleService} interface. 
+ * 
+ * @see RuleService
+ * 
+ * @author bradsdavis
+ *
+ */
 public class RuleServiceAdapter implements RuleService {
 
 	private final RuleServiceWS ruleService;

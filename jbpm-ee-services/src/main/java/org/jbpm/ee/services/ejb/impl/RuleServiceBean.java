@@ -11,6 +11,15 @@ import org.jbpm.ee.services.ejb.local.RuleServiceLocal;
 import org.jbpm.ee.services.ejb.remote.RuleServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 
+
+/***
+ * Provides a wrapper implementation for the CDI services in order to support consistent execution by Local, Remote, REST, and SOAP execution.
+ * 
+ * {@see RuleService}
+ * 
+ * @author bradsdavis
+ *
+ */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
 @Stateless

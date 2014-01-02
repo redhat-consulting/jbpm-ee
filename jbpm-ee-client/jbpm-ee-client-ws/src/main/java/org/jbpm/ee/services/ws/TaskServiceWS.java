@@ -17,6 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.task.Content;
 import org.jbpm.ee.services.model.task.Task;
@@ -28,7 +29,7 @@ import org.kie.api.task.model.OrganizationalEntity;
 import org.kie.api.task.model.Status;
 
 /**
- * Rest interface equivalent to {@link TaskServiceWS}.  Returns JAXB types.
+ * Rest interface equivalent to {@link TaskService}.  Returns JAXB types.
  * 
  * @see TaskServiceWS
  * @author bradsdavis

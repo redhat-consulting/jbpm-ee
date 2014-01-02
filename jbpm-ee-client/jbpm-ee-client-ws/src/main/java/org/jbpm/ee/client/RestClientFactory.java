@@ -14,6 +14,13 @@ import org.jbpm.ee.services.ws.RuleServiceWS;
 import org.jbpm.ee.services.ws.TaskServiceWS;
 import org.jbpm.ee.services.ws.WorkItemServiceWS;
 
+
+/**
+ * Leverage this class to setup the REST proxy to the jBPM services.
+ * 
+ * @author bradsdavis
+ *
+ */
 public class RestClientFactory {
 
 	private RestClientFactory() {

@@ -25,6 +25,15 @@ import org.kie.api.runtime.process.WorkItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/***
+ * Provides a wrapper implementation for the CDI services in order to support consistent execution by Local, Remote, REST, and SOAP execution.
+ * 
+ * {@see WorkItemService}
+ * 
+ * @author bradsdavis
+ *
+ */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
 @Stateless
