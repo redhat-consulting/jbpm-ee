@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.jws.HandlerChain;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -26,6 +27,7 @@ import org.kie.api.task.model.Status;
  *
  */
 @WebService(targetNamespace="http://jbpm.org/v6/TaskService/wsdl", serviceName="TaskService", endpointInterface="org.jbpm.ee.services.ws.TaskServiceWS")
+@HandlerChain(file="jbpm-context-handler.xml")
 public class TaskServiceWSImpl implements TaskServiceWS {
 
 
