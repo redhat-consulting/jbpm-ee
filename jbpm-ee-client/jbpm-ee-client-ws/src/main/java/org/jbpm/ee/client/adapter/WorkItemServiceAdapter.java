@@ -3,7 +3,6 @@ package org.jbpm.ee.client.adapter;
 import java.util.List;
 import java.util.Map;
 
-import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.ws.WorkItemServiceWS;
