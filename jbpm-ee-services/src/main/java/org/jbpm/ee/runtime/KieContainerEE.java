@@ -63,8 +63,12 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 
 	protected void refreshWorkItemDefinitionCache() { 
 		List<Map<String, Object>> definition = WorkItemDefinitionUtil.loadWorkItemDefinitions(getReleaseId(), "META-INF/WorkDefinitions.wid");
-		if(definition == null) {
-			return;
+		if(definition == null || definition.size() == 0) {
+			// also try this path, since Business Central in JBPM6 seems to put it here now by default
+			definition = WorkItemDefinitionUtil.loadWorkItemDefinitions(getReleaseId(), "WorkDefinitions.wid");
+			if (definition == null) {
+				return;
+			}
 		}
 		
 		//otherwise, populate.
@@ -83,7 +87,7 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 				defaultHandler = getClassLoader().loadClass(defaultHandlerName);
 				WorkItemHandler instance = (WorkItemHandler)defaultHandler.newInstance();
 				this.workItemHandlers.put(handlerName, instance);
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			} catch (Exception e) {
 				LOG.error("Handler ["+handlerName+"] unable to register class ["+defaultHandlerName+"]");
 			}
 		}
