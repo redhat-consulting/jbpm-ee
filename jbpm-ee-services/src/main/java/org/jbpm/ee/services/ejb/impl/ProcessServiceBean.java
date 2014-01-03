@@ -75,24 +75,6 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 	@Override
 	public void abortProcessInstance(final long processInstanceId) {
 		final KieSession kieSession = knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
-		final ProcessInstance processInstance = kieSession.getProcessInstance(processInstanceId);
-		ProcessCompletedEvent pCompletedEvent = new ProcessCompletedEvent() {
-			@Override
-			public KieRuntime getKieRuntime() {
-				return kieSession;
-			}
-			
-			@Override
-			public ProcessInstance getProcessInstance() {
-				return processInstance;
-			}
-		};
-		for(ProcessEventListener listener : kieSession.getProcessEventListeners()) {
-			if(listener.getClass().equals(KieReleaseIdXProcessInstanceListener.class)) {
-				listener.afterProcessCompleted(pCompletedEvent);
-				break;
-			}
-		}
 		kieSession.abortProcessInstance(processInstanceId);
 	}
 
