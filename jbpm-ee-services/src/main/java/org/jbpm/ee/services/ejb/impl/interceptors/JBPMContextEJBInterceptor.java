@@ -40,7 +40,7 @@ public class JBPMContextEJBInterceptor {
 	public Object intercept(InvocationContext ctx) throws Exception {
 		Set<Integer> indexes = new HashSet<Integer>();
 		
-		if(!InterceptorUtil.requiresClassloaderInterception(ctx.getTarget().getClass(), ctx.getMethod(), indexes)) {
+		if(!InterceptorUtil.getInstance().requiresClassloaderInterception(ctx.getTarget().getClass(), ctx.getMethod(), indexes)) {
 			if(LOG.isDebugEnabled()) {
 				LOG.debug("Interceptor not required for method: "+ctx.getMethod().getName()+".  Target: "+ctx.getTarget().getClass());
 				LOG.debug("  - Source: "+ctx.getMethod().getDeclaringClass().getName()+" Method: "+ctx.getMethod().getName());
@@ -94,25 +94,25 @@ public class JBPMContextEJBInterceptor {
 	private void setupClassloader(Class clz, Method method, Object[] parameters) {
 		
 		//setup the classloder..
-		KieReleaseId releaseId = InterceptorUtil.extractReleaseId(clz, method, parameters);
+		KieReleaseId releaseId = InterceptorUtil.getInstance().extractReleaseId(clz, method, parameters);
 		if(releaseId != null) {
 			classloaderService.bridgeClassloaderByReleaseId(releaseId);
 			return;
 		}
 		
-		Long processInstanceId = InterceptorUtil.extractProcessInstanceId(clz, method, parameters);
+		Long processInstanceId = InterceptorUtil.getInstance().extractProcessInstanceId(clz, method, parameters);
 		if(processInstanceId != null) {
 			classloaderService.bridgeClassloaderByProcessInstanceId(processInstanceId);
 			return;
 		}
 		
-		Long taskId = InterceptorUtil.extractTaskId(clz, method, parameters);
+		Long taskId = InterceptorUtil.getInstance().extractTaskId(clz, method, parameters);
 		if(taskId != null) {
 			classloaderService.bridgeClassloaderByTaskId(taskId);
 			return;
 		}
 		
-		Long workItemId = InterceptorUtil.extractWorkItemId(clz, method, parameters);
+		Long workItemId = InterceptorUtil.getInstance().extractWorkItemId(clz, method, parameters);
 		if(workItemId != null) {
 			classloaderService.bridgeClassloaderByWorkItemId(workItemId);
 			return;

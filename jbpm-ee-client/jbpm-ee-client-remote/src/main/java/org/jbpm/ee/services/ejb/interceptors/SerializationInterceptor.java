@@ -18,7 +18,7 @@ public class SerializationInterceptor implements EJBClientInterceptor {
 	public void handleInvocation(EJBClientInvocationContext context) throws Exception {
 		Set<Integer> lazyParameterIndex = new HashSet<Integer>(); 
 		 
-		boolean response = InterceptorUtil.requiresClassloaderInterception(context.getViewClass(), context.getInvokedMethod(), lazyParameterIndex);
+		boolean response = InterceptorUtil.getInstance().requiresClassloaderInterception(context.getViewClass(), context.getInvokedMethod(), lazyParameterIndex);
 		if(!response) {
 			if(LOG.isDebugEnabled()) {
 				LOG.debug("Method: "+context.getInvokedMethod().getName()+" does not require preprocessing.");

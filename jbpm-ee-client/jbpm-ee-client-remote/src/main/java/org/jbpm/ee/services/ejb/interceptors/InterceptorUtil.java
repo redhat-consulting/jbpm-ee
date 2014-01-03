@@ -2,8 +2,8 @@ package org.jbpm.ee.services.ejb.interceptors;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
@@ -17,17 +17,26 @@ import org.slf4j.LoggerFactory;
 
 public class InterceptorUtil {
 
-	private static final Set<String> noClassloaderRequired = new HashSet<String>(); 
-	private static final Set<String> classloaderRequired = new HashSet<String>(); 
+	private Set<String> noClassloaderRequired = null; 
+	private Set<String> classloaderRequired = null; 
+
+	// Initialization-on-demand holder idiom
+	private static class Holder {
+		static final InterceptorUtil INSTANCE = new InterceptorUtil();
+	}
 	
 	private static final Logger LOG = LoggerFactory.getLogger(InterceptorUtil.class);
 	
 	private InterceptorUtil() {
-		// seal
+		noClassloaderRequired = new ConcurrentSkipListSet<String>(); 
+		classloaderRequired = new ConcurrentSkipListSet<String>(); 
 	}
 	
+	public static InterceptorUtil getInstance() {
+		return Holder.INSTANCE;
+	}
 	
-	public static boolean requiresClassloaderInterception(Class clz, Method method, Set<Integer> indexes) {
+	public boolean requiresClassloaderInterception(Class clz, Method method, Set<Integer> indexes) {
 		//cache reflection.
 		if(noClassloaderRequired.contains(clz.getName()+method.hashCode())) {
 			return false;
@@ -74,23 +83,23 @@ public class InterceptorUtil {
 		return false;
 	}
 	
-	public static KieReleaseId extractReleaseId(Class clz, Method method, Object[] parameters) {
+	public KieReleaseId extractReleaseId(Class clz, Method method, Object[] parameters) {
 		return (KieReleaseId)extractMethodParameterValue(clz, method, parameters, ReleaseId.class);
 	}
 	
-	public static Long extractProcessInstanceId(Class clz, Method method, Object[] parameters) {
+	public Long extractProcessInstanceId(Class clz, Method method, Object[] parameters) {
 		return (Long)extractMethodParameterValue(clz, method, parameters, ProcessInstanceId.class);
 	}
 	
-	public static Long extractTaskId(Class clz, Method method, Object[] parameters) {
+	public Long extractTaskId(Class clz, Method method, Object[] parameters) {
 		return (Long)extractMethodParameterValue(clz, method, parameters, TaskId.class);
 	}
 	
-	public static Long extractWorkItemId(Class clz, Method method, Object[] parameters) {
+	public Long extractWorkItemId(Class clz, Method method, Object[] parameters) {
 		return (Long)extractMethodParameterValue(clz, method, parameters, WorkItemId.class);
 	}
 	
-	public static Object extractMethodParameterValue(Class clz, Method method, Object[] parameters, Class annotation) {
+	public Object extractMethodParameterValue(Class clz, Method method, Object[] parameters, Class annotation) {
 		//annotations on all parameters
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 
