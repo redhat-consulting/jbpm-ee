@@ -2,8 +2,9 @@ package org.jbpm.ee.services.ejb.interceptors;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
@@ -17,8 +18,8 @@ import org.slf4j.LoggerFactory;
 
 public class InterceptorUtil {
 
-	private Set<String> noClassloaderRequired = null; 
-	private Set<String> classloaderRequired = null; 
+	private final Set<String> noClassloaderRequired; 
+	private final Set<String> classloaderRequired; 
 
 	// Initialization-on-demand holder idiom
 	private static class Holder {
@@ -28,8 +29,8 @@ public class InterceptorUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(InterceptorUtil.class);
 	
 	private InterceptorUtil() {
-		noClassloaderRequired = new ConcurrentSkipListSet<String>(); 
-		classloaderRequired = new ConcurrentSkipListSet<String>(); 
+		noClassloaderRequired = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>()); 
+		classloaderRequired = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());  
 	}
 	
 	public static InterceptorUtil getInstance() {
