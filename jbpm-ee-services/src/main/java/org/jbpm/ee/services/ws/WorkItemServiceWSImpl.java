@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.jws.HandlerChain;
 import javax.jws.WebService;
 
 import org.jbpm.ee.services.ejb.local.WorkItemServiceLocal;
@@ -18,6 +19,7 @@ import org.jbpm.ee.services.ws.request.JaxbMapRequest;
  *
  */
 @WebService(targetNamespace="http://jbpm.org/v6/WorkItemService/wsdl", serviceName="WorkItemService", endpointInterface="org.jbpm.ee.services.ws.WorkItemServiceWS")
+@HandlerChain(file="jbpm-context-handler.xml")
 public class WorkItemServiceWSImpl implements WorkItemServiceWS {
 
 	@EJB
