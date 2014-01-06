@@ -46,14 +46,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 	private KnowledgeManagerBean knowledgeManager;
 
 	@Inject
-	private TaskQueryService taskQueryService;
-	
-	@Inject
-	private TaskContentService taskContentService;
-	
-	@Inject
-	private TaskAttachmentService taskAttachmentService;
-	
+	private TaskService taskService;	
 	
 	@Override
 	public void activate(long taskId, String userId) {
@@ -67,7 +60,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public void claimNextAvailable(String userId, String language) {
-		List<TaskSummary> tasks = taskQueryService.getTasksOwned(userId, language);
+		List<TaskSummary> tasks = taskService.getTasksOwned(userId, language);
 		if(tasks.isEmpty()) {
 			return;
 		}
@@ -131,7 +124,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public Task getTaskByWorkItemId(long workItemId) {
-		return TaskFactory.convert(taskQueryService.getTaskByWorkItemId(workItemId));
+		return TaskFactory.convert(taskService.getTaskByWorkItemId(workItemId));
 	}
 
 	@Override
@@ -141,37 +134,37 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsBusinessAdministrator(String userId, String language) {
-		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksAssignedAsBusinessAdministrator(userId, language));
+		return TaskFactory.convertTaskSummaries(taskService.getTasksAssignedAsBusinessAdministrator(userId, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsPotentialOwner(String userId, String language) {
-		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksAssignedAsPotentialOwner(userId, language));
+		return TaskFactory.convertTaskSummaries(taskService.getTasksAssignedAsPotentialOwner(userId, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksAssignedAsPotentialOwnerByStatus(String userId, List<Status> status, String language) {
-		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
+		return TaskFactory.convertTaskSummaries(taskService.getTasksAssignedAsPotentialOwnerByStatus(userId, status, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksOwned(String userId, String language) {
-		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksOwned(userId, language));
+		return TaskFactory.convertTaskSummaries(taskService.getTasksOwned(userId, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksOwnedByStatus(String userId, List<Status> status, String language) {
-		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksOwnedByStatus(userId, status, language));
+		return TaskFactory.convertTaskSummaries(taskService.getTasksOwnedByStatus(userId, status, language));
 	}
 
 	@Override
 	public List<TaskSummary> getTasksByStatusByProcessInstanceId(long processInstanceId, List<Status> status, String language) {
-		return TaskFactory.convertTaskSummaries(taskQueryService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
+		return TaskFactory.convertTaskSummaries(taskService.getTasksByStatusByProcessInstanceId(processInstanceId, status, language));
 	}
 
 	@Override
 	public List<Long> getTasksByProcessInstanceId(long processInstanceId) {
-		return taskQueryService.getTasksByProcessInstanceId(processInstanceId);
+		return taskService.getTasksByProcessInstanceId(processInstanceId);
 	}
 
 
@@ -212,12 +205,12 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public Content getContentById(long contentId) {
-		return TaskFactory.convert(taskContentService.getContentById(contentId));
+		return TaskFactory.convert(taskService.getContentById(contentId));
 	}
 
 	@Override
 	public Attachment getAttachmentById(long attachId) {
-		return TaskFactory.convert(taskAttachmentService.getAttachmentById(attachId));
+		return TaskFactory.convert(taskService.getAttachmentById(attachId));
 	}
 	
 	@Override
