@@ -46,7 +46,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 	private KnowledgeManagerBean knowledgeManager;
 
 	@Inject
-	private TaskService taskService;	
+	private org.kie.api.task.TaskService taskService;	
 	
 	@Override
 	public void activate(long taskId, String userId) {
