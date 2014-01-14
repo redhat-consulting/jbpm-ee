@@ -6,8 +6,8 @@
 	<name>JBPM EE Parent POM</name>
 
 	<properties>
-		<drools.version>6.0.0.Final</drools.version>
-		<jbpm.version>6.0.0.Final</jbpm.version>
+		<drools.version>6.1.0-SNAPSHOT</drools.version>
+		<jbpm.version>6.1.0-SNAPSHOT</jbpm.version>
 		<junit.version>4.8.1</junit.version>
 		<cxf.version>2.2.3</cxf.version>
 		<camel.version>2.11.1</camel.version>
