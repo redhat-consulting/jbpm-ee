@@ -54,11 +54,12 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 	}
 
 	@Override
-	public void updateToVersion(ReleaseId version) {
-		delegate.updateToVersion(version);
+	public Results updateToVersion(ReleaseId version) {
+		Results results = delegate.updateToVersion(version);
 
 		//refresh the workitemhandlers.
 		refreshWorkItemDefinitionCache();
+		return results;
 	}
 
 	protected void refreshWorkItemDefinitionCache() { 
