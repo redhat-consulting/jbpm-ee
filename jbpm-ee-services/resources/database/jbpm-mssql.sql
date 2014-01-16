@@ -1,135 +1,135 @@
 
     alter table Attachment 
-        drop constraint FK1C93543D937BFB5;
+        drop constraint FK_7ndpfa311i50bq7hy18q05va3;
 
     alter table Attachment 
-        drop constraint FK1C9354333CA892A;
+        drop constraint FK_hqupx569krp0f0sgu9kh87513;
 
     alter table BooleanExpression 
-        drop constraint FKE3D208C06C97C90E;
+        drop constraint FK_394nf2qoc0k9ok6omgd6jtpso;
 
     alter table CorrelationPropertyInfo 
-        drop constraint FK761452A5D87156ED;
+        drop constraint FK_hrmx1m882cejwj9c04ixh50i4;
 
     alter table Deadline 
-        drop constraint FK21DF3E78A9FE0EF4;
+        drop constraint FK_68w742sge00vco2cq3jhbvmgx;
 
     alter table Deadline 
-        drop constraint FK21DF3E78695E4DDB;
+        drop constraint FK_euoohoelbqvv94d8a8rcg8s5n;
 
     alter table Delegation_delegates 
-        drop constraint FK47485D5772B3A123;
+        drop constraint FK_gn7ula51sk55wj1o1m57guqxb;
 
     alter table Delegation_delegates 
-        drop constraint FK47485D57786553A5;
+        drop constraint FK_fajq6kossbsqwr3opkrctxei3;
 
     alter table Escalation 
-        drop constraint FK67B2C6B5D1E5CC1;
+        drop constraint FK_ay2gd4fvl9yaapviyxudwuvfg;
 
     alter table EventTypes 
-        drop constraint FKB0E5621F7665489A;
+        drop constraint FK_nrecj4617iwxlc65ij6m7lsl1;
 
     alter table I18NText 
-        drop constraint FK2349686BF4ACCD69;
+        drop constraint FK_k16jpgrh67ti9uedf6konsu1p;
 
     alter table I18NText 
-        drop constraint FK2349686B424B187C;
+        drop constraint FK_fd9uk6hemv2dx1ojovo7ms3vp;
 
     alter table I18NText 
-        drop constraint FK2349686BAB648139;
+        drop constraint FK_4eyfp69ucrron2hr7qx4np2fp;
 
     alter table I18NText 
-        drop constraint FK2349686BB340A2AA;
+        drop constraint FK_pqarjvvnwfjpeyb87yd7m0bfi;
 
     alter table I18NText 
-        drop constraint FK2349686BF0CDED35;
+        drop constraint FK_o84rkh69r47ti8uv4eyj7bmo2;
 
     alter table I18NText 
-        drop constraint FK2349686BCC03ED3C;
+        drop constraint FK_g1trxri8w64enudw2t1qahhk5;
 
     alter table I18NText 
-        drop constraint FK2349686B77C1C08A;
+        drop constraint FK_qoce92c70adem3ccb3i7lec8x;
 
     alter table I18NText 
-        drop constraint FK2349686B18DDFE05;
+        drop constraint FK_bw8vmpekejxt1ei2ge26gdsry;
 
     alter table I18NText 
-        drop constraint FK2349686B78AF072A;
+        drop constraint FK_21qvifarxsvuxeaw5sxwh473w;
 
     alter table Notification 
-        drop constraint FK2D45DD0BC0C0F29C;
+        drop constraint FK_bdbeml3768go5im41cgfpyso9;
 
     alter table Notification_BAs 
-        drop constraint FK2DD68EE072B3A123;
+        drop constraint FK_mfbsnbrhth4rjhqc2ud338s4i;
 
     alter table Notification_BAs 
-        drop constraint FK2DD68EE093F2090B;
+        drop constraint FK_fc0uuy76t2bvxaxqysoo8xts7;
 
     alter table Notification_Recipients 
-        drop constraint FK98FD214E72B3A123;
+        drop constraint FK_blf9jsrumtrthdaqnpwxt25eu;
 
     alter table Notification_Recipients 
-        drop constraint FK98FD214E93F2090B;
+        drop constraint FK_3l244pj8sh78vtn9imaymrg47;
 
     alter table Notification_email_header 
-        drop constraint FKF30FE3448BED1339;
+        drop constraint FK_ptaka5kost68h7l3wflv7w6y8;
 
     alter table Notification_email_header 
-        drop constraint FKF30FE3443E3E97EB;
+        drop constraint FK_eth4nvxn21fk1vnju85vkjrai;
 
     alter table PeopleAssignments_BAs 
-        drop constraint FK9D8CF4EC72B3A123;
+        drop constraint FK_t38xbkrq6cppifnxequhvjsl2;
 
     alter table PeopleAssignments_BAs 
-        drop constraint FK9D8CF4EC786553A5;
+        drop constraint FK_omjg5qh7uv8e9bolbaq7hv6oh;
 
     alter table PeopleAssignments_ExclOwners 
-        drop constraint FKC77B97E472B3A123;
+        drop constraint FK_pth28a73rj6bxtlfc69kmqo0a;
 
     alter table PeopleAssignments_ExclOwners 
-        drop constraint FKC77B97E4786553A5;
+        drop constraint FK_b8owuxfrdng050ugpk0pdowa7;
 
     alter table PeopleAssignments_PotOwners 
-        drop constraint FK1EE418D72B3A123;
+        drop constraint FK_tee3ftir7xs6eo3fdvi3xw026;
 
     alter table PeopleAssignments_PotOwners 
-        drop constraint FK1EE418D786553A5;
+        drop constraint FK_4dv2oji7pr35ru0w45trix02x;
 
     alter table PeopleAssignments_Recipients 
-        drop constraint FKC6F615C272B3A123;
+        drop constraint FK_4g7y3wx6gnokf6vycgpxs83d6;
 
     alter table PeopleAssignments_Recipients 
-        drop constraint FKC6F615C2786553A5;
+        drop constraint FK_enhk831fghf6akjilfn58okl4;
 
     alter table PeopleAssignments_Stakeholders 
-        drop constraint FK482F79D572B3A123;
+        drop constraint FK_met63inaep6cq4ofb3nnxi4tm;
 
     alter table PeopleAssignments_Stakeholders 
-        drop constraint FK482F79D5786553A5;
+        drop constraint FK_4bh3ay74x6ql9usunubttfdf1;
 
     alter table Reassignment 
-        drop constraint FK724D056062A1E871;
+        drop constraint FK_pnpeue9hs6kx2ep0sp16b6kfd;
 
     alter table Reassignment_potentialOwners 
-        drop constraint FK90B59CFF72B3A123;
+        drop constraint FK_8frl6la7tgparlnukhp8xmody;
 
     alter table Reassignment_potentialOwners 
-        drop constraint FK90B59CFF35D2FEE0;
+        drop constraint FK_qbega5ncu6b9yigwlw55aeijn;
 
     alter table Task 
-        drop constraint FK27A9A53C55C806;
+        drop constraint FK_dpk0f9ucm14c78bsxthh7h8yh;
 
     alter table Task 
-        drop constraint FK27A9A5B723BE8B;
+        drop constraint FK_nh9nnt47f3l61qjlyedqt05rf;
 
     alter table Task 
-        drop constraint FK27A9A55427E8F1;
+        drop constraint FK_k02og0u71obf1uxgcdjx9rcjc;
 
     alter table task_comment 
-        drop constraint FK61F475A57A3215D9;
+        drop constraint FK_aax378yjnsmw9kb9vsu994jjv;
 
     alter table task_comment 
-        drop constraint FK61F475A5F510CB46;
+        drop constraint FK_1ws9jdmhtey6mxu7jb0r0ufvs;
 
     drop table Attachment;
 
@@ -197,6 +197,8 @@
 
     drop table TaskDef;
 
+    drop table TaskEvent;
+
     drop table VariableInstanceLog;
 
     drop table WorkItemInfo;
@@ -229,6 +231,7 @@
         taskId numeric(19,0) not null,
         taskName varchar(255),
         userId varchar(255),
+        OPTLOCK int,
         primary key (pk)
     );
 
@@ -315,7 +318,7 @@
     );
 
     create table KieBaseXProcessInstance (
-        kieProcessInstanceId numeric(19,0) not null unique,
+        kieProcessInstanceId numeric(19,0) not null,
         releaseArtifactId varchar(255) not null,
         releaseGroupId varchar(255) not null,
         releaseVersion varchar(255) not null,
@@ -361,8 +364,7 @@
         Notification_id numeric(19,0) not null,
         emailHeaders_id numeric(19,0) not null,
         mapkey varchar(255) not null,
-        primary key (Notification_id, mapkey),
-        unique (emailHeaders_id)
+        primary key (Notification_id, mapkey)
     );
 
     create table OrganizationalEntity (
@@ -502,6 +504,16 @@
         primary key (id)
     );
 
+    create table TaskEvent (
+        id numeric(19,0) identity not null,
+        logTime datetime,
+        taskId numeric(19,0),
+        type varchar(255),
+        userId varchar(255),
+        OPTLOCK int,
+        primary key (id)
+    );
+
     create table VariableInstanceLog (
         id numeric(19,0) identity not null,
         log_date datetime,
@@ -545,222 +557,225 @@
         primary key (id)
     );
 
+    alter table Notification_email_header 
+        add constraint UK_ptaka5kost68h7l3wflv7w6y8 unique (emailHeaders_id);
+
     alter table Attachment 
-        add constraint FK1C93543D937BFB5 
+        add constraint FK_7ndpfa311i50bq7hy18q05va3 
         foreign key (attachedBy_id) 
         references OrganizationalEntity;
 
     alter table Attachment 
-        add constraint FK1C9354333CA892A 
+        add constraint FK_hqupx569krp0f0sgu9kh87513 
         foreign key (TaskData_Attachments_Id) 
         references Task;
 
     alter table BooleanExpression 
-        add constraint FKE3D208C06C97C90E 
+        add constraint FK_394nf2qoc0k9ok6omgd6jtpso 
         foreign key (Escalation_Constraints_Id) 
         references Escalation;
 
     alter table CorrelationPropertyInfo 
-        add constraint FK761452A5D87156ED 
+        add constraint FK_hrmx1m882cejwj9c04ixh50i4 
         foreign key (correlationKey_keyId) 
         references CorrelationKeyInfo;
 
     alter table Deadline 
-        add constraint FK21DF3E78A9FE0EF4 
+        add constraint FK_68w742sge00vco2cq3jhbvmgx 
         foreign key (Deadlines_StartDeadLine_Id) 
         references Task;
 
     alter table Deadline 
-        add constraint FK21DF3E78695E4DDB 
+        add constraint FK_euoohoelbqvv94d8a8rcg8s5n 
         foreign key (Deadlines_EndDeadLine_Id) 
         references Task;
 
     alter table Delegation_delegates 
-        add constraint FK47485D5772B3A123 
+        add constraint FK_gn7ula51sk55wj1o1m57guqxb 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table Delegation_delegates 
-        add constraint FK47485D57786553A5 
+        add constraint FK_fajq6kossbsqwr3opkrctxei3 
         foreign key (task_id) 
         references Task;
 
     alter table Escalation 
-        add constraint FK67B2C6B5D1E5CC1 
+        add constraint FK_ay2gd4fvl9yaapviyxudwuvfg 
         foreign key (Deadline_Escalation_Id) 
         references Deadline;
 
     alter table EventTypes 
-        add constraint FKB0E5621F7665489A 
+        add constraint FK_nrecj4617iwxlc65ij6m7lsl1 
         foreign key (InstanceId) 
         references ProcessInstanceInfo;
 
     alter table I18NText 
-        add constraint FK2349686BF4ACCD69 
+        add constraint FK_k16jpgrh67ti9uedf6konsu1p 
         foreign key (Task_Subjects_Id) 
         references Task;
 
     alter table I18NText 
-        add constraint FK2349686B424B187C 
+        add constraint FK_fd9uk6hemv2dx1ojovo7ms3vp 
         foreign key (Task_Names_Id) 
         references Task;
 
     alter table I18NText 
-        add constraint FK2349686BAB648139 
+        add constraint FK_4eyfp69ucrron2hr7qx4np2fp 
         foreign key (Task_Descriptions_Id) 
         references Task;
 
     alter table I18NText 
-        add constraint FK2349686BB340A2AA 
+        add constraint FK_pqarjvvnwfjpeyb87yd7m0bfi 
         foreign key (Reassignment_Documentation_Id) 
         references Reassignment;
 
     alter table I18NText 
-        add constraint FK2349686BF0CDED35 
+        add constraint FK_o84rkh69r47ti8uv4eyj7bmo2 
         foreign key (Notification_Subjects_Id) 
         references Notification;
 
     alter table I18NText 
-        add constraint FK2349686BCC03ED3C 
+        add constraint FK_g1trxri8w64enudw2t1qahhk5 
         foreign key (Notification_Names_Id) 
         references Notification;
 
     alter table I18NText 
-        add constraint FK2349686B77C1C08A 
+        add constraint FK_qoce92c70adem3ccb3i7lec8x 
         foreign key (Notification_Documentation_Id) 
         references Notification;
 
     alter table I18NText 
-        add constraint FK2349686B18DDFE05 
+        add constraint FK_bw8vmpekejxt1ei2ge26gdsry 
         foreign key (Notification_Descriptions_Id) 
         references Notification;
 
     alter table I18NText 
-        add constraint FK2349686B78AF072A 
+        add constraint FK_21qvifarxsvuxeaw5sxwh473w 
         foreign key (Deadline_Documentation_Id) 
         references Deadline;
 
     alter table Notification 
-        add constraint FK2D45DD0BC0C0F29C 
+        add constraint FK_bdbeml3768go5im41cgfpyso9 
         foreign key (Escalation_Notifications_Id) 
         references Escalation;
 
     alter table Notification_BAs 
-        add constraint FK2DD68EE072B3A123 
+        add constraint FK_mfbsnbrhth4rjhqc2ud338s4i 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table Notification_BAs 
-        add constraint FK2DD68EE093F2090B 
+        add constraint FK_fc0uuy76t2bvxaxqysoo8xts7 
         foreign key (task_id) 
         references Notification;
 
     alter table Notification_Recipients 
-        add constraint FK98FD214E72B3A123 
+        add constraint FK_blf9jsrumtrthdaqnpwxt25eu 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table Notification_Recipients 
-        add constraint FK98FD214E93F2090B 
+        add constraint FK_3l244pj8sh78vtn9imaymrg47 
         foreign key (task_id) 
         references Notification;
 
     alter table Notification_email_header 
-        add constraint FKF30FE3448BED1339 
+        add constraint FK_ptaka5kost68h7l3wflv7w6y8 
         foreign key (emailHeaders_id) 
         references email_header;
 
     alter table Notification_email_header 
-        add constraint FKF30FE3443E3E97EB 
+        add constraint FK_eth4nvxn21fk1vnju85vkjrai 
         foreign key (Notification_id) 
         references Notification;
 
     alter table PeopleAssignments_BAs 
-        add constraint FK9D8CF4EC72B3A123 
+        add constraint FK_t38xbkrq6cppifnxequhvjsl2 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table PeopleAssignments_BAs 
-        add constraint FK9D8CF4EC786553A5 
+        add constraint FK_omjg5qh7uv8e9bolbaq7hv6oh 
         foreign key (task_id) 
         references Task;
 
     alter table PeopleAssignments_ExclOwners 
-        add constraint FKC77B97E472B3A123 
+        add constraint FK_pth28a73rj6bxtlfc69kmqo0a 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table PeopleAssignments_ExclOwners 
-        add constraint FKC77B97E4786553A5 
+        add constraint FK_b8owuxfrdng050ugpk0pdowa7 
         foreign key (task_id) 
         references Task;
 
     alter table PeopleAssignments_PotOwners 
-        add constraint FK1EE418D72B3A123 
+        add constraint FK_tee3ftir7xs6eo3fdvi3xw026 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table PeopleAssignments_PotOwners 
-        add constraint FK1EE418D786553A5 
+        add constraint FK_4dv2oji7pr35ru0w45trix02x 
         foreign key (task_id) 
         references Task;
 
     alter table PeopleAssignments_Recipients 
-        add constraint FKC6F615C272B3A123 
+        add constraint FK_4g7y3wx6gnokf6vycgpxs83d6 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table PeopleAssignments_Recipients 
-        add constraint FKC6F615C2786553A5 
+        add constraint FK_enhk831fghf6akjilfn58okl4 
         foreign key (task_id) 
         references Task;
 
     alter table PeopleAssignments_Stakeholders 
-        add constraint FK482F79D572B3A123 
+        add constraint FK_met63inaep6cq4ofb3nnxi4tm 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table PeopleAssignments_Stakeholders 
-        add constraint FK482F79D5786553A5 
+        add constraint FK_4bh3ay74x6ql9usunubttfdf1 
         foreign key (task_id) 
         references Task;
 
     alter table Reassignment 
-        add constraint FK724D056062A1E871 
+        add constraint FK_pnpeue9hs6kx2ep0sp16b6kfd 
         foreign key (Escalation_Reassignments_Id) 
         references Escalation;
 
     alter table Reassignment_potentialOwners 
-        add constraint FK90B59CFF72B3A123 
+        add constraint FK_8frl6la7tgparlnukhp8xmody 
         foreign key (entity_id) 
         references OrganizationalEntity;
 
     alter table Reassignment_potentialOwners 
-        add constraint FK90B59CFF35D2FEE0 
+        add constraint FK_qbega5ncu6b9yigwlw55aeijn 
         foreign key (task_id) 
         references Reassignment;
 
     alter table Task 
-        add constraint FK27A9A53C55C806 
+        add constraint FK_dpk0f9ucm14c78bsxthh7h8yh 
         foreign key (taskInitiator_id) 
         references OrganizationalEntity;
 
     alter table Task 
-        add constraint FK27A9A5B723BE8B 
+        add constraint FK_nh9nnt47f3l61qjlyedqt05rf 
         foreign key (actualOwner_id) 
         references OrganizationalEntity;
 
     alter table Task 
-        add constraint FK27A9A55427E8F1 
+        add constraint FK_k02og0u71obf1uxgcdjx9rcjc 
         foreign key (createdBy_id) 
         references OrganizationalEntity;
 
     alter table task_comment 
-        add constraint FK61F475A57A3215D9 
+        add constraint FK_aax378yjnsmw9kb9vsu994jjv 
         foreign key (addedBy_id) 
         references OrganizationalEntity;
 
     alter table task_comment 
-        add constraint FK61F475A5F510CB46 
+        add constraint FK_1ws9jdmhtey6mxu7jb0r0ufvs 
         foreign key (TaskData_Comments_Id) 
         references Task;

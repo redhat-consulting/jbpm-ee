@@ -63,13 +63,14 @@
 
 		<!--BAM for task service -->
 		<class>org.jbpm.services.task.impl.model.BAMTaskSummaryImpl</class>
-
+		<class>org.jbpm.services.task.audit.TaskEventImpl</class>
+		
 		<properties>
 			<property name="hibernate.max_fetch_depth" value="3" />
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.id.new_generator_mappings" value="false" />
 			<property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />
-			<property name="hibernate.transaction.flush_before_completion" value="true"/>
+			<!-- <property name="hibernate.transaction.flush_before_completion" value="true"/> -->
 		</properties>
 
 	</persistence-unit>

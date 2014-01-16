@@ -10,11 +10,14 @@ import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.builder.Results;
+import org.kie.api.builder.model.KieBaseModel;
+import org.kie.api.builder.model.KieSessionModel;
 import org.kie.api.runtime.Environment;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.StatelessKieSession;
 import org.kie.api.runtime.process.WorkItemHandler;
+import org.drools.compiler.kie.builder.impl.InternalKieContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @author bradsdavis
  *
  */
-public class KieContainerEE implements org.kie.api.runtime.KieContainer {
+public class KieContainerEE implements InternalKieContainer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KieContainerEE.class);
 	
@@ -54,11 +57,12 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 	}
 
 	@Override
-	public void updateToVersion(ReleaseId version) {
-		delegate.updateToVersion(version);
+	public Results updateToVersion(ReleaseId version) {
+		Results results = delegate.updateToVersion(version);
 
 		//refresh the workitemhandlers.
 		refreshWorkItemDefinitionCache();
+		return results;
 	}
 
 	protected void refreshWorkItemDefinitionCache() { 
@@ -178,5 +182,52 @@ public class KieContainerEE implements org.kie.api.runtime.KieContainer {
 	public KieSession newKieSession(Environment env, KieSessionConfiguration conf) {
 		return delegate.newKieSession(env, conf);
 	}
+
+	@Override
+	public KieSession getKieSession() {
+		return ((InternalKieContainer) delegate).getKieSession();
+	}
+
+	@Override
+	public KieSession getKieSession(String kSessionName) {
+		return ((InternalKieContainer) delegate).getKieSession(kSessionName);
+	}
+
+	@Override
+	public StatelessKieSession getStatelessKieSession() {
+		return ((InternalKieContainer) delegate).getStatelessKieSession();
+	}
+
+	@Override
+	public StatelessKieSession getStatelessKieSession(String kSessionName) {
+		return ((InternalKieContainer) delegate).getStatelessKieSession(kSessionName);
+	}
+
+	@Override
+	public void dispose() {
+		((InternalKieContainer) delegate).dispose();
+	}
+
+	@Override
+	public KieBaseModel getKieBaseModel(String kBaseName) {
+		return ((InternalKieContainer) delegate).getKieBaseModel(kBaseName);
+	}
+
+	@Override
+	public KieSessionModel getKieSessionModel(String kSessionName) {
+		return ((InternalKieContainer) delegate).getKieSessionModel(kSessionName);
+	}
+
+	@Override
+	public ReleaseId getContainerReleaseId() {
+		return ((InternalKieContainer) delegate).getContainerReleaseId();
+	}
+
+	// For a newer release
+/*	@Override
+	public Results updateDependencyToVersion(ReleaseId currentReleaseId,
+			ReleaseId newReleaseId) {
+		return ((InternalKieContainer) delegate).updateDependencyToVersion(currentReleaseId, newReleaseId);
+	}*/
 	
 }

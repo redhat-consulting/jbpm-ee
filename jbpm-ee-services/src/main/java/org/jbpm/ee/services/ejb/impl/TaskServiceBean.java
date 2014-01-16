@@ -24,9 +24,6 @@ import org.kie.api.task.model.OrganizationalEntity;
 import org.kie.api.task.model.Status;
 import org.kie.api.task.model.Task;
 import org.kie.api.task.model.TaskSummary;
-import org.kie.internal.task.api.TaskAttachmentService;
-import org.kie.internal.task.api.TaskContentService;
-import org.kie.internal.task.api.TaskQueryService;
 
 
 /***
