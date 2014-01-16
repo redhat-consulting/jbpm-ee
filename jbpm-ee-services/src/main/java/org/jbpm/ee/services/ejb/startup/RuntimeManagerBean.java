@@ -104,6 +104,7 @@ public class RuntimeManagerBean {
 				getRuntimeManager(release);
 			}
 		}
+		
 	}
 	
 	/**

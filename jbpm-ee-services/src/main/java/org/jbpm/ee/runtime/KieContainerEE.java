@@ -223,10 +223,11 @@ public class KieContainerEE implements InternalKieContainer {
 		return ((InternalKieContainer) delegate).getContainerReleaseId();
 	}
 
-	@Override
+	// For a newer release
+/*	@Override
 	public Results updateDependencyToVersion(ReleaseId currentReleaseId,
 			ReleaseId newReleaseId) {
 		return ((InternalKieContainer) delegate).updateDependencyToVersion(currentReleaseId, newReleaseId);
-	}
+	}*/
 	
 }
