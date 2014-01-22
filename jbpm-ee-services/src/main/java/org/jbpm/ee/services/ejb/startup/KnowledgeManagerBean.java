@@ -17,11 +17,14 @@ import org.jbpm.ee.persistence.KieBaseXProcessInstance;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.services.task.HumanTaskConfigurator;
 import org.jbpm.services.task.HumanTaskServiceFactory;
+import org.jbpm.services.task.lifecycle.listeners.BAMTaskEventListener;
+import org.jbpm.services.task.lifecycle.listeners.TaskLifeCycleEventListener;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Task;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
+import org.kie.internal.task.api.EventService;
 import org.kie.internal.task.api.UserGroupCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +61,15 @@ public class KnowledgeManagerBean {
 	
 	protected TaskService taskService;
 	
+	protected BAMTaskEventListener bamTaskEventListener;
+	
 	@PostConstruct
 	private void setup() {
 		HumanTaskConfigurator configurator = HumanTaskServiceFactory.newTaskServiceConfigurator()
 				.entityManagerFactory(emf)
 				.userGroupCallback(userGroupCallback);
 		taskService = configurator.getTaskService();
+		bamTaskEventListener  = new BAMTaskEventListener();
 	}
 	
 	@Produces
@@ -83,6 +89,7 @@ public class KnowledgeManagerBean {
 		RuntimeManager rm = runtimeManager.getRuntimeManager(releaseId);
 		RuntimeEngine engine = rm.getRuntimeEngine(ProcessInstanceIdContext.get());
 
+		addListeners(engine);
 		return engine;
 	}
 	
@@ -107,7 +114,9 @@ public class KnowledgeManagerBean {
 		LOG.debug("Kie Release: "+releaseId);
 		
 		RuntimeManager manager = runtimeManager.getRuntimeManager(releaseId);
-		return manager.getRuntimeEngine(context);
+		RuntimeEngine engine = manager.getRuntimeEngine(context);
+		addListeners(engine);
+		return engine;
 	}
 
 
@@ -119,7 +128,9 @@ public class KnowledgeManagerBean {
 	 */
 	public RuntimeEngine getRuntimeEngineByTaskId(Long taskId) {
 		Long processInstanceId = getProcessInstanceIdByTaskId(taskId);
-		return this.getRuntimeEngineByProcessId(processInstanceId);
+		RuntimeEngine engine = getRuntimeEngineByProcessId(processInstanceId);
+		addListeners(engine);
+		return engine;
 	}
 	
 	/**
@@ -129,7 +140,9 @@ public class KnowledgeManagerBean {
 	 */
 	public RuntimeEngine getRuntimeEngineByWorkItemId(Long workItemId) {
 		Long processInstanceId = getProcessInstanceIdByWorkItemId(workItemId);
-		return this.getRuntimeEngineByProcessId(processInstanceId);
+		RuntimeEngine engine = getRuntimeEngineByProcessId(processInstanceId);
+		addListeners(engine);
+		return engine;
 	}
 	
 	/**
@@ -211,6 +224,23 @@ public class KnowledgeManagerBean {
 		Long processInstanceId = (Long)q.getSingleResult();
 		
 		return this.getReleaseIdByProcessId(processInstanceId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void addListeners(RuntimeEngine engine) {
+		EventService<TaskLifeCycleEventListener> eventService = 
+				(EventService<TaskLifeCycleEventListener>) engine.getTaskService();
+		boolean hasBamEventListener = false;
+		for( TaskLifeCycleEventListener listener: eventService.getTaskEventListeners()) {
+			LOG.info("Listener: " + listener);
+			if(listener instanceof BAMTaskEventListener) {
+				hasBamEventListener = true;
+				break;
+			}
+		}
+		if (!hasBamEventListener) {
+			eventService.registerTaskEventListener(bamTaskEventListener);
+		}
 	}
 	
 }
