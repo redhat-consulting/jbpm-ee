@@ -279,5 +279,9 @@
 			<version>4.1.12.Final</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jboss.solder</groupId>
+			<artifactId>solder-impl</artifactId>
+		</dependency>
 	</dependencies>
 </project>
