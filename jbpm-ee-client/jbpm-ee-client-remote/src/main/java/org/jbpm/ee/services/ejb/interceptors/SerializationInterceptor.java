@@ -39,6 +39,10 @@ public class SerializationInterceptor implements EJBClientInterceptor {
 			if(lazyParameterIndex.contains(i)) {
 				//serialize it to lazy implementation.
 				Serializable parameter = (Serializable)context.getParameters()[i];
+				if (parameter instanceof LazyDeserializingObject) {
+					LOG.warn("Serialization interceptor should only be registered once per application. Lazy deserialization appears to be invoked multiple times. Please validate that " + SerializationInterceptor.class + "is only registered once per application.");
+					continue;
+				}
 				LazyDeserializingObject obj = new LazyDeserializingObject(parameter);
 				context.getParameters()[i] = obj;
 				
