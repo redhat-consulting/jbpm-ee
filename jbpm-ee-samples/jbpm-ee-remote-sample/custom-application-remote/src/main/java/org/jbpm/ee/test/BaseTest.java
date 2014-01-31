@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 public abstract class BaseTest {
 	
 	static {
-		EJBClientContext.getCurrent().registerInterceptor(0, new SerializationInterceptor("custom-application-remote"));
+		EJBClientContext.getCurrent().registerInterceptor(0, new SerializationInterceptor());
 	}
 	
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(BaseTest.class);
