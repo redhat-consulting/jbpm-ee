@@ -14,10 +14,24 @@ public class SerializationInterceptor implements EJBClientInterceptor {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SerializationInterceptor.class);
 	
+	private String parentInitializer;
+	
+	public SerializationInterceptor() {
+		parentInitializer = "unknown";
+	}
+	
+	public SerializationInterceptor(String parentInitializer) {
+		this.parentInitializer = parentInitializer;
+	}
+	
 	@Override
 	public void handleInvocation(EJBClientInvocationContext context) throws Exception {
 		Set<Integer> lazyParameterIndex = new HashSet<Integer>(); 
-		 
+		
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Interceptor initialized by: " + parentInitializer);
+		}
+		
 		boolean response = InterceptorUtil.getInstance().requiresClassloaderInterception(context.getViewClass(), context.getInvokedMethod(), lazyParameterIndex);
 		if(!response) {
 			if(LOG.isDebugEnabled()) {

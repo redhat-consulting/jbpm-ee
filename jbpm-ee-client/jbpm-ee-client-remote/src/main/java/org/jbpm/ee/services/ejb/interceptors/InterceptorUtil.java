@@ -18,8 +18,15 @@ import org.slf4j.LoggerFactory;
 
 public class InterceptorUtil {
 
-	private final Set<String> noClassloaderRequired; 
-	private final Set<String> classloaderRequired; 
+	/*
+	 * Classloader caching is disabled for now due to a bug in 
+	 * annotation analysis across different classloaders.
+	 * 
+	 *  Interceptor from Classloader A cannot find Annotations of a class in Classloader B
+	 *  
+	 */
+/*	private final Set<String> noClassloaderRequired; 
+	private final Set<String> classloaderRequired; */
 
 	// Initialization-on-demand holder idiom
 	private static class Holder {
@@ -29,8 +36,8 @@ public class InterceptorUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(InterceptorUtil.class);
 	
 	private InterceptorUtil() {
-		noClassloaderRequired = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>()); 
-		classloaderRequired = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());  
+/*		noClassloaderRequired = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>()); 
+		classloaderRequired = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());  */
 	}
 	
 	public static InterceptorUtil getInstance() {
@@ -39,12 +46,12 @@ public class InterceptorUtil {
 	
 	public boolean requiresClassloaderInterception(Class clz, Method method, Set<Integer> indexes) {
 		//cache reflection.
-		if(noClassloaderRequired.contains(clz.getName()+method.hashCode())) {
+/*		if(noClassloaderRequired.contains(clz.getName()+method.hashCode())) {
 			return false;
 		}
 		if(classloaderRequired.contains(clz.getName()+method.hashCode())) {
 			return true;
-		}
+		}*/
 		
 		if(method.isAnnotationPresent(PreprocessClassloader.class)) {
 			Annotation[][] annotations = method.getParameterAnnotations();
@@ -70,7 +77,7 @@ public class InterceptorUtil {
 					
 					if(response == true) {
 						//add to cache.
-						classloaderRequired.add(clz.getName()+method.hashCode());
+						//classloaderRequired.add(clz.getName()+method.hashCode());
 						return true;
 					}
 				}
@@ -80,7 +87,7 @@ public class InterceptorUtil {
 			}
 		}
 		//add to cache.
-		noClassloaderRequired.add(clz.getName()+method.hashCode());
+		//noClassloaderRequired.add(clz.getName()+method.hashCode());
 		return false;
 	}
 	
