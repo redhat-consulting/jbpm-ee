@@ -67,12 +67,12 @@
 						<filter>
 							<artifact>org.kie:kie-api</artifact>
 							<includes>
-								<include>org/kie/api/runtime/KieContainer*</include>
+								<include>org/kie/api/runtime/**</include>
 								<include>org/kie/api/task/model/**</include>
 								<include>org/kie/api/builder/ReleaseId*</include>
-								<include>org/kie/api/runtime/process/ProcessInstance*</include>
+<!-- 								<include>org/kie/api/runtime/process/ProcessInstance*</include>
 								<include>org/kie/api/runtime/process/WorkItem*</include>
-								<include>org/kie/api/runtime/process/EventListener*</include>
+								<include>org/kie/api/runtime/process/EventListener*</include> -->
 								<include>org/kie/api/command/Command*</include>
 								<include>org/kie/api/definition/process/Process*</include>
 								<include>org/kie/api/definition/**</include>
