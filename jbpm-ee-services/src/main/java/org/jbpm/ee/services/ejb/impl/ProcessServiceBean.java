@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 
+import org.jboss.ejb3.annotation.Clustered;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
@@ -32,6 +33,7 @@ import org.slf4j.LoggerFactory;
  */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
+@Clustered
 @Stateless
 public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, ProcessServiceRemote {
 	

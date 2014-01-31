@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
+import org.jboss.ejb3.annotation.Clustered;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
@@ -36,6 +37,7 @@ import org.kie.api.task.model.TaskSummary;
  */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
+@Clustered
 @Stateless
 public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServiceRemote {
 

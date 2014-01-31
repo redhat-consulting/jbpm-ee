@@ -19,6 +19,7 @@ import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.drools.core.command.impl.GenericCommand;
+import org.jboss.ejb3.annotation.Clustered;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
@@ -37,6 +38,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 @JBPMContextEJBBinding
+@Clustered
 @Stateless
 @Interceptors({JBPMContextEJBInterceptor.class})
 public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, AsyncCommandExecutorRemote{
