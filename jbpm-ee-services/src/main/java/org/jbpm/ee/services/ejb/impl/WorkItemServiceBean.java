@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.drools.persistence.info.WorkItemInfo;
+import org.jboss.ejb3.annotation.Clustered;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
@@ -36,6 +37,7 @@ import org.slf4j.LoggerFactory;
  */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
+@Clustered
 @Stateless
 public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLocal, WorkItemServiceRemote {
 

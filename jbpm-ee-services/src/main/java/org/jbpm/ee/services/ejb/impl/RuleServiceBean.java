@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 
+import org.jboss.ejb3.annotation.Clustered;
 import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
@@ -22,6 +23,7 @@ import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
  */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
+@Clustered
 @Stateless
 public class RuleServiceBean implements RuleService, RuleServiceLocal, RuleServiceRemote {
 

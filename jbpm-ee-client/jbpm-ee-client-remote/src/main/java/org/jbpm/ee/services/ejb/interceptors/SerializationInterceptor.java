@@ -13,11 +13,15 @@ import org.slf4j.LoggerFactory;
 public class SerializationInterceptor implements EJBClientInterceptor {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SerializationInterceptor.class);
-	
+
 	@Override
 	public void handleInvocation(EJBClientInvocationContext context) throws Exception {
 		Set<Integer> lazyParameterIndex = new HashSet<Integer>(); 
-		 
+		
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Interceptor initialized by: " + SerializationInterceptor.class.getClassLoader());
+		}
+		
 		boolean response = InterceptorUtil.getInstance().requiresClassloaderInterception(context.getViewClass(), context.getInvokedMethod(), lazyParameterIndex);
 		if(!response) {
 			if(LOG.isDebugEnabled()) {

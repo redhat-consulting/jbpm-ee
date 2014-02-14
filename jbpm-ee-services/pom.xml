@@ -57,7 +57,7 @@
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-core</artifactId>
-						<version>4.1.12.Final</version> 
+						<version>4.1.12.Final</version>
 					</dependency>
 					<dependency>
 						<groupId>org.hibernate</groupId>
@@ -77,6 +77,11 @@
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-web-6.0</artifactId>
 			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.ejb3</groupId>
+			<artifactId>jboss-ejb3-ext-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 
+import org.jboss.ejb3.annotation.Clustered;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
@@ -15,12 +16,8 @@ import org.jbpm.ee.services.ejb.remote.ProcessServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
-import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
 import org.jbpm.workflow.instance.WorkflowProcessInstance;
 import org.jbpm.workflow.instance.impl.WorkflowProcessInstanceImpl;
-import org.kie.api.event.process.ProcessCompletedEvent;
-import org.kie.api.event.process.ProcessEventListener;
-import org.kie.api.runtime.KieRuntime;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.slf4j.Logger;
@@ -36,6 +33,7 @@ import org.slf4j.LoggerFactory;
  */
 @JBPMContextEJBBinding
 @Interceptors({JBPMContextEJBInterceptor.class})
+@Clustered
 @Stateless
 public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, ProcessServiceRemote {
 	
