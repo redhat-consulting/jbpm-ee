@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.drools.core.command.impl.GenericCommand;
 import org.drools.core.command.runtime.process.AbortProcessInstanceCommand;
 import org.drools.core.command.runtime.process.AbortWorkItemCommand;
 import org.drools.core.command.runtime.process.CompleteWorkItemCommand;
@@ -12,6 +13,7 @@ import org.drools.core.command.runtime.process.GetWorkItemCommand;
 import org.drools.core.command.runtime.process.SetProcessInstanceVariablesCommand;
 import org.drools.core.command.runtime.process.SignalEventCommand;
 import org.drools.core.command.runtime.process.StartProcessInstanceCommand;
+import org.jbpm.services.task.commands.TaskCommand;
 import org.jbpm.services.task.commands.ActivateTaskCommand;
 import org.jbpm.services.task.commands.ClaimTaskCommand;
 import org.jbpm.services.task.commands.CompleteTaskCommand;
@@ -85,20 +87,12 @@ public class AcceptedCommands {
 		commandsThatInfluenceKieSession = Collections.unmodifiableSet(commandsThatInfluenceKieSession);
 	}
 	
-	public static boolean containsProcessInstanceId(Class clz) {
-		return commandsWithProcessInstanceId.contains(clz);
-	}
-	
-	public static boolean containsWorkItemId(Class clz) {
-		return commandsWithWorkItemId.contains(clz);
-	}
-	
-	public static boolean influencesKieSession(Class clz) {
-		return commandsThatInfluenceKieSession.contains(clz);
-	}
-	
-	public static boolean containsTaskId(Class clz) {
-		return commandsWithTaskId.contains(clz);
+	public static boolean influencesKieSession(GenericCommand<?> cmd) {
+		if (cmd instanceof TaskCommand<?> &&
+				!commandsThatInfluenceKieSession.contains(cmd.getClass())) {
+			return false;
+		}
+		return true;
 	}
 	
 }

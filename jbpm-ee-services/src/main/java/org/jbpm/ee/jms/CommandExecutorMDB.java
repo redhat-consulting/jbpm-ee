@@ -187,20 +187,34 @@ public class CommandExecutorMDB implements MessageListener {
 
 		try {
 			LazyDeserializingObject obj = (LazyDeserializingObject)objectMessage.getObject();
-			KieReleaseId releaseId = getReleaseIdFromMessage(message);
 			
-			//now, setup the classloader.
-			classloaderService.bridgeClassloaderByReleaseId(releaseId);
+			CommandExecutor executor = null;
 			
+			boolean commandRequiresReleaseId = objectMessage.getBooleanProperty("commandRequiresReleaseId");
+			if (commandRequiresReleaseId) {
+				KieReleaseId releaseId = getReleaseIdFromMessage(message);
+			
+				//now, setup the classloader.
+				classloaderService.bridgeClassloaderByReleaseId(releaseId);
+				
+				executor = getCommandExecutor(releaseId);
+			} else {
+				executor = (CommandExecutor) knowledgeManager.getKieSessionUnboundTaskService();
+			}
 			//now, load the command into memory.
 			obj.initializeLazy(ClassloaderManager.get());
 			GenericCommand<?> command = (GenericCommand<?>)obj.getDelegate();
+			
+			if(!commandRequiresReleaseId &&
+					AcceptedCommands.influencesKieSession(command)) {
+				throw new CommandException("Command requires Release Id, but none provided: " + ReflectionToStringBuilder.toString(command));
+			}
 			
 			if(LOG.isDebugEnabled()) {
 				LOG.debug("Request: "+ReflectionToStringBuilder.toString(command));
 			}
 
-			Object commandResponse = getCommandExecutor(releaseId).execute(command);
+			Object commandResponse = executor.execute(command);
 
 			// Check to see if the execute method is supposed to return something
 			Class<?> returnType = commandResponse.getClass();
