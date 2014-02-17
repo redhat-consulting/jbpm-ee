@@ -58,8 +58,8 @@ public class BPMClassloaderService {
 	public void bridgeClassloaderByReleaseId(KieReleaseId releaseId) {
 		LOG.debug("Bridging by release id: " + releaseId);
 		
-		ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
 		if (releaseId != null) {
+			ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
 			ClassLoader bpmClassloader = runtimeManager.getKieContainer(releaseId).getClassLoader();
 			BridgedClassloader bridged = new BridgedClassloader(appLoader,bpmClassloader);
 			ClassloaderManager.set(bridged);
