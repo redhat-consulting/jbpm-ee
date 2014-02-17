@@ -65,12 +65,17 @@ public class BPMClassloaderService {
 			ClassloaderManager.set(bridged);
 			LOG.debug("Set thread classloader: " + bridged);
 		} else {
-			ClassloaderManager.set(appLoader);
-			LOG.debug("Set thread classloader: " + appLoader);
+			useThreadClassloader();
 		}
 		
 	}
-
+	
+	public void useThreadClassloader() {
+		ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
+		ClassloaderManager.set(appLoader);
+		LOG.debug("Set thread classloader: " + appLoader);
+	}
+	
 	public static void closeQuietly(Closeable c) {
 		try {
             if (c != null) {

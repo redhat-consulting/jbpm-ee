@@ -199,6 +199,9 @@ public class CommandExecutorMDB implements MessageListener {
 				
 				executor = getCommandExecutor(releaseId);
 			} else {
+				
+				classloaderService.useThreadClassloader();
+				
 				executor = (CommandExecutor) knowledgeManager.getKieSessionUnboundTaskService();
 			}
 			//now, load the command into memory.
