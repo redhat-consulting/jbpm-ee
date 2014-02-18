@@ -1,5 +1,7 @@
 package org.jbpm.ee.jms;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import javax.jms.Session;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.drools.core.command.impl.GenericCommand;
+import org.kie.internal.command.Context;
 import org.jbpm.ee.exception.CommandException;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
@@ -88,6 +91,11 @@ public class CommandExecutorMDB implements MessageListener {
 		return kSession;
 	}
 	
+	private Type getCommandReturnType(GenericCommand<?> command) throws NoSuchMethodException, SecurityException {
+		Class commandClass = command.getClass();
+		Method executeMethod = commandClass.getDeclaredMethod("execute", Context.class);
+		return executeMethod.getReturnType();
+	}
 	
 	/**
 	 * 
@@ -203,12 +211,14 @@ public class CommandExecutorMDB implements MessageListener {
 				LOG.debug("Request: "+ReflectionToStringBuilder.toString(command));
 			}
 
+			Type commandReturnType = getCommandReturnType(command);
+			
+			System.out.println("Command Return Type: " + commandReturnType);
+			
 			Object commandResponse = executor.execute(command);
 
-			// Check to see if the execute method is supposed to return something
-			Class<?> returnType = commandResponse.getClass();
 
-			if (!(returnType.equals(Void.class))) {
+			if (!(commandReturnType.equals(Void.TYPE))) {
 				// see if there is a correlation and reply to.ok
 
 				Object convertedObject = getResponseObjectFromCommandResponse(commandResponse);
@@ -252,7 +262,7 @@ public class CommandExecutorMDB implements MessageListener {
 					LOG.warn("Response from Command Object, but no ReplyTo and Coorelation: " + ReflectionToStringBuilder .toString(convertedObject));
 				}
 			}
-		} catch (JMSException | IOException | SecurityException e) {
+		} catch (JMSException | IOException | SecurityException | NoSuchMethodException e) {
 			throw new CommandException("Exception processing command via JMS.", e);
 		}
 
