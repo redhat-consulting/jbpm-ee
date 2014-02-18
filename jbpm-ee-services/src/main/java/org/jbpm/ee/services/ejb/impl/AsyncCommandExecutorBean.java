@@ -1,10 +1,12 @@
 package org.jbpm.ee.services.ejb.impl;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.jms.Connection;
@@ -21,13 +23,16 @@ import javax.jms.Topic;
 import org.drools.core.command.impl.GenericCommand;
 import org.jboss.ejb3.annotation.Clustered;
 import org.jbpm.ee.jms.AcceptedCommands;
+import org.jbpm.ee.jms.MessageUtil;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
 import org.jbpm.ee.services.ejb.local.AsyncCommandExecutorLocal;
 import org.jbpm.ee.services.ejb.remote.AsyncCommandExecutorRemote;
+import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.jbpm.ee.services.model.CommandResponse;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.LazyDeserializingObject;
+import org.jbpm.ee.services.model.adapter.ClassloaderManager;
 import org.jbpm.services.task.commands.TaskCommand;
 import org.mvel2.sh.CommandException;
 import org.slf4j.Logger;
@@ -56,6 +61,9 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 	@Resource(mappedName = "java:/jms/JBPMCommandResponseQueue")
 	private Topic responseQueue;
 
+	@EJB
+	private BPMClassloaderService classloaderService;
+	
 	private Connection connection;
 	private Session session;
 	private MessageProducer producer;
@@ -104,16 +112,11 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 			request.setJMSReplyTo(responseQueue);
 			
 			if(kieReleaseId == null) {
-				request.setBooleanProperty("commandRequiresReleaseId", false);
+				MessageUtil.setReleaseIdNotRequired(request);
 			} else {
 				//check the object, and see if we need to replace the map with a lazy map.
-				request.setBooleanProperty("commandRequiresReleaseId", true);
-				request.setStringProperty("groupId", kieReleaseId.getGroupId());
-				request.setStringProperty("artifactId", kieReleaseId.getArtifactId());
-				request.setStringProperty("version", kieReleaseId.getVersion());
-				
+				MessageUtil.setReleaseIdRequired(request, kieReleaseId);
 			}
-			
 
 			producer.send(request);
 			
@@ -142,10 +145,26 @@ public class AsyncCommandExecutorBean implements AsyncCommandExecutorLocal, Asyn
 			}
 			else {
 				LOG.debug("Recieved message for correlation: "+correlation);
-				return (CommandResponse) ((ObjectMessage)response).getObject();
+				ObjectMessage objResponse = (ObjectMessage) response;
+				
+				LazyDeserializingObject obj = (LazyDeserializingObject)objResponse.getObject();
+				
+				boolean commandRequiresReleaseId = MessageUtil.isReleaseIdRequired(objResponse);
+				if (commandRequiresReleaseId) {
+					KieReleaseId releaseId = MessageUtil.getReleaseId(objResponse);
+				
+					//now, setup the classloader.
+					classloaderService.bridgeClassloaderByReleaseId(releaseId);
+				} else {
+					classloaderService.useThreadClassloader();
+				}
+				
+				obj.initializeLazy(ClassloaderManager.get());
+				
+				return (CommandResponse) obj.getDelegate();
 			}
 		}
-		catch (JMSException e) {
+		catch (JMSException | IOException e) {
 			throw new CommandException("Exception receiving Command Message Response.", e);
 		}
 	}

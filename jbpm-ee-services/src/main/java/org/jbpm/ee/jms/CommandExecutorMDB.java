@@ -42,7 +42,6 @@ import org.kie.api.task.model.TaskSummary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * Executes a single command and returns a response object
  * 
@@ -82,19 +81,6 @@ public class CommandExecutorMDB implements MessageListener {
 			session.close();
 		}
 	}
-
-	public KieReleaseId getReleaseIdFromMessage(Message request) throws JMSException {
-		String groupId = request.getStringProperty("groupId");
-		String artifactId = request.getStringProperty("artifactId");
-		String version = request.getStringProperty("version");
-
-		if ((groupId == null) || (artifactId == null) || (version == null)) {
-			throw new CommandException("Release Id information must not be null.");
-		}
-
-		return new KieReleaseId(groupId, artifactId, version);
-	}
-
 
 	public CommandExecutor getCommandExecutor(KieReleaseId releaseId) {
 		RuntimeEngine engine = knowledgeManager.getRuntimeEngine(releaseId);
@@ -190,9 +176,9 @@ public class CommandExecutorMDB implements MessageListener {
 			
 			CommandExecutor executor = null;
 			
-			boolean commandRequiresReleaseId = objectMessage.getBooleanProperty("commandRequiresReleaseId");
+			boolean commandRequiresReleaseId = MessageUtil.isReleaseIdRequired(objectMessage);
 			if (commandRequiresReleaseId) {
-				KieReleaseId releaseId = getReleaseIdFromMessage(message);
+				KieReleaseId releaseId = MessageUtil.getReleaseId(objectMessage);
 			
 				//now, setup the classloader.
 				classloaderService.bridgeClassloaderByReleaseId(releaseId);
@@ -244,7 +230,15 @@ public class CommandExecutorMDB implements MessageListener {
 					responseObject.setResponse(convertedObject);
 					responseObject.setCommand(command);
 					
-					responseMessage.setObject(responseObject);
+					if(commandRequiresReleaseId) {
+						KieReleaseId releaseId = MessageUtil.getReleaseId(objectMessage);
+						MessageUtil.setReleaseIdRequired(responseMessage, releaseId);
+					} else {
+						MessageUtil.setReleaseIdNotRequired(responseMessage);
+					}
+					
+					LazyDeserializingObject lazyObject = new LazyDeserializingObject(responseObject);
+					responseMessage.setObject(lazyObject);
 					responseMessage.setJMSCorrelationID(correlation);
 					
 					if(LOG.isDebugEnabled()) {
