@@ -36,4 +36,11 @@ public class RuleServiceAdapter implements RuleService {
 		return this.ruleService.insert(processInstanceId, object);
 	}
 
+	@Override
+	public void retract(Long processInstanceId, FactHandle factHandle) {
+		this.ruleService.retract(processInstanceId, factHandle);
+		
+	}
+	
+
 }

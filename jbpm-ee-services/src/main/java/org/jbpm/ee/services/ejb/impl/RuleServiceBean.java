@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 
+import org.drools.core.common.DefaultFactHandle;
 import org.jboss.ejb3.annotation.Clustered;
 import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBBinding;
@@ -11,6 +12,8 @@ import org.jbpm.ee.services.ejb.impl.interceptors.JBPMContextEJBInterceptor;
 import org.jbpm.ee.services.ejb.local.RuleServiceLocal;
 import org.jbpm.ee.services.ejb.remote.RuleServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
+import org.jbpm.ee.services.model.RuleFactory;
+import org.jbpm.ee.services.model.rules.FactHandle;
 
 
 /***
@@ -41,8 +44,14 @@ public class RuleServiceBean implements RuleService, RuleServiceLocal, RuleServi
 	}
 
 	@Override
-	public void insert(Long processInstanceId, Object object) {
-		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().insert(object);
+	public FactHandle insert(Long processInstanceId, Object object) {
+		return RuleFactory.convert(knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().insert(object));
+	}
+
+	@Override
+	public void retract(Long processInstanceId, FactHandle factHandle) {
+		DefaultFactHandle defaultFactHandle = new DefaultFactHandle(factHandle.getExternalForm()); 
+		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().retract(defaultFactHandle);		
 	}
 	
 	
