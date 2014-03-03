@@ -105,9 +105,13 @@ public class CommandExecutorMDB implements MessageListener {
 			return knowledgeManager.getRuntimeEngineByWorkItemId(workItemId).getKieSession();
 		}
 		
-		RuntimeEngine engine = knowledgeManager.getRuntimeEngine(releaseId);
-		KieSession kSession = engine.getKieSession();
-		return kSession;
+		if (releaseId != null) {
+			RuntimeEngine engine = knowledgeManager.getRuntimeEngine(releaseId);
+			KieSession kSession = engine.getKieSession();
+			return kSession;
+		} else {
+			throw new CommandException("Unknown executor for null release id.");
+		}
 	}
 	
 	private static Type getCommandReturnType(GenericCommand<?> command) throws NoSuchMethodException, SecurityException {
@@ -201,10 +205,11 @@ public class CommandExecutorMDB implements MessageListener {
 		try {
 			LazyDeserializingObject obj = (LazyDeserializingObject)objectMessage.getObject();
 			
-			KieReleaseId releaseId = MessageUtil.getReleaseId(objectMessage);
+			KieReleaseId releaseId = null;
 			
 			boolean commandRequiresReleaseId = MessageUtil.isReleaseIdRequired(objectMessage);
 			if (commandRequiresReleaseId) {
+				releaseId = MessageUtil.getReleaseId(objectMessage);
 				classloaderService.bridgeClassloaderByReleaseId(releaseId);
 			} else {
 				classloaderService.useThreadClassloader();
