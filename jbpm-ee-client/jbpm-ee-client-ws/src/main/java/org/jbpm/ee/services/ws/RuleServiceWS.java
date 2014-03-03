@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.jbpm.ee.services.RuleService;
+import org.jbpm.ee.services.model.rules.FactHandle;
 
 
 /**
@@ -47,7 +48,7 @@ public interface RuleServiceWS {
     @WebMethod
     @POST
     @Path("/instance/{processInstanceId}/rule/insert")
-    void insert(
+    FactHandle insert(
     		@WebParam(name="processInstanceId") @PathParam("processInstanceId") Long processInstanceId, 
     		@WebParam(name="object") Object object
     );

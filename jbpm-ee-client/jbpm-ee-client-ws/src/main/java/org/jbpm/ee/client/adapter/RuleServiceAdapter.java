@@ -1,6 +1,7 @@
 package org.jbpm.ee.client.adapter;
 
 import org.jbpm.ee.services.RuleService;
+import org.jbpm.ee.services.model.rules.FactHandle;
 import org.jbpm.ee.services.ws.RuleServiceWS;
 
 
@@ -31,8 +32,8 @@ public class RuleServiceAdapter implements RuleService {
 	}
 
 	@Override
-	public void insert(Long processInstanceId, Object object) {
-		this.ruleService.insert(processInstanceId, object);
+	public FactHandle insert(Long processInstanceId, Object object) {
+		return this.ruleService.insert(processInstanceId, object);
 	}
 
 }
