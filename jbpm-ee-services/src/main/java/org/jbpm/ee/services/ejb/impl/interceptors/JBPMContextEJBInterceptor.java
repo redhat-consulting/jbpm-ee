@@ -117,5 +117,7 @@ public class JBPMContextEJBInterceptor {
 			classloaderService.bridgeClassloaderByWorkItemId(workItemId);
 			return;
 		}
+		
+		classloaderService.useThreadClassloader();
 	}
 }
