@@ -27,8 +27,10 @@ import javax.jms.Session;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.drools.core.command.impl.GenericCommand;
+import org.drools.core.command.runtime.process.GetProcessInstanceCommand;
 import org.kie.internal.command.Context;
 import org.jbpm.ee.exception.CommandException;
+import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.CommandResponse;
@@ -108,7 +110,7 @@ public class CommandExecutorMDB implements MessageListener {
 		return kSession;
 	}
 	
-	private Type getCommandReturnType(GenericCommand<?> command) throws NoSuchMethodException, SecurityException {
+	private static Type getCommandReturnType(GenericCommand<?> command) throws NoSuchMethodException, SecurityException {
 		Class commandClass = command.getClass();
 		Method executeMethod = commandClass.getDeclaredMethod("execute", Context.class);
 		return executeMethod.getReturnType();
@@ -191,7 +193,7 @@ public class CommandExecutorMDB implements MessageListener {
 		}
 		return response;
 	}
-
+	
 	@Override
 	public void onMessage(Message message) {
 		ObjectMessage objectMessage = (ObjectMessage) message;
@@ -199,23 +201,17 @@ public class CommandExecutorMDB implements MessageListener {
 		try {
 			LazyDeserializingObject obj = (LazyDeserializingObject)objectMessage.getObject();
 			
-			CommandExecutor executor = null;
-			
 			KieReleaseId releaseId = MessageUtil.getReleaseId(objectMessage);
 			
 			boolean commandRequiresReleaseId = MessageUtil.isReleaseIdRequired(objectMessage);
 			if (commandRequiresReleaseId) {
-				//now, setup the classloader.
 				classloaderService.bridgeClassloaderByReleaseId(releaseId);
 			} else {
-				
 				classloaderService.useThreadClassloader();
 			}
 			//now, load the command into memory.
 			obj.initializeLazy(ClassloaderManager.get());
 			GenericCommand<?> command = (GenericCommand<?>)obj.getDelegate();
-			
-			executor = getCommandExecutor(releaseId, command);
 			
 			if(!commandRequiresReleaseId &&
 					AcceptedCommands.influencesKieSession(command)) {
@@ -230,7 +226,21 @@ public class CommandExecutorMDB implements MessageListener {
 			
 			System.out.println("Command Return Type: " + commandReturnType);
 			
-			Object commandResponse = executor.execute(command);
+			Object commandResponse = null;
+			try {
+				CommandExecutor executor = getCommandExecutor(releaseId, command);
+				commandResponse = executor.execute(command);
+			} catch (InactiveProcessInstance e) {
+				if (!command.getClass().equals(GetProcessInstanceCommand.class)) {
+					throw new IllegalStateException("Unknown process for command",
+						e);
+				} else {
+					LOG.debug("Null process for GetProcessInstance cmd");
+					commandResponse = null;
+				}
+			}
+			
+			
 
 
 			if (!(commandReturnType.equals(Void.TYPE))) {
