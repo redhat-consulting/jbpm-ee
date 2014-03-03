@@ -232,7 +232,6 @@ public class KnowledgeManagerBean {
 				(EventService<TaskLifeCycleEventListener>) engine.getTaskService();
 		boolean hasBamEventListener = false;
 		for( TaskLifeCycleEventListener listener: eventService.getTaskEventListeners()) {
-			LOG.info("Listener: " + listener);
 			if(listener instanceof BAMTaskEventListener) {
 				hasBamEventListener = true;
 				break;
