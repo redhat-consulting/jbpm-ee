@@ -55,8 +55,8 @@ public interface RuleServiceWS {
     
     @WebMethod
     @POST
-    @Path("instance/{processInstanceId}/rule/retract")
-    void retract(
+    @Path("instance/{processInstanceId}/rule/delete")
+    void delete(
     		@WebParam(name="processInstanceId") @PathParam("processInstanceId") Long processInstanceId, 
     		@WebParam(name="factHandle") FactHandle factHandle
     );

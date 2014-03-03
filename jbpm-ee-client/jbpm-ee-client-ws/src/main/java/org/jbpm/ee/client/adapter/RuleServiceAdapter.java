@@ -37,8 +37,8 @@ public class RuleServiceAdapter implements RuleService {
 	}
 
 	@Override
-	public void retract(Long processInstanceId, FactHandle factHandle) {
-		this.ruleService.retract(processInstanceId, factHandle);
+	public void delete(Long processInstanceId, FactHandle factHandle) {
+		this.ruleService.delete(processInstanceId, factHandle);
 		
 	}
 	

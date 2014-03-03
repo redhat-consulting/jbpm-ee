@@ -51,9 +51,9 @@ public class RuleServiceWSImpl implements RuleServiceWS {
 	}
 
 	@Override
-	public void retract(Long processInstanceId, FactHandle factHandle) {
+	public void delete(Long processInstanceId, FactHandle factHandle) {
 		try {
-			ruleRuntime.retract(processInstanceId, factHandle);			
+			ruleRuntime.delete(processInstanceId, factHandle);			
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);

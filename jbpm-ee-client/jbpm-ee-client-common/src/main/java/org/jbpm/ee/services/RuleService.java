@@ -48,5 +48,5 @@ public interface RuleService {
 	@PreprocessClassloader
     FactHandle insert(@ProcessInstanceId Long processInstanceId, @LazilyDeserialized Object object);
 
-	void retract(@ProcessInstanceId Long processInstanceId, FactHandle factHandle);
+	void delete(@ProcessInstanceId Long processInstanceId, FactHandle factHandle);
 }

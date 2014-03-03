@@ -49,9 +49,9 @@ public class RuleServiceBean implements RuleService, RuleServiceLocal, RuleServi
 	}
 
 	@Override
-	public void retract(Long processInstanceId, FactHandle factHandle) {
+	public void delete(Long processInstanceId, FactHandle factHandle) {
 		DefaultFactHandle defaultFactHandle = new DefaultFactHandle(factHandle.getExternalForm()); 
-		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().retract(defaultFactHandle);		
+		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().delete(defaultFactHandle);		
 	}
 	
 	
