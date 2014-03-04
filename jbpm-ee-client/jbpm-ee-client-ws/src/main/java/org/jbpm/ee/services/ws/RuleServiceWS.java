@@ -1,5 +1,7 @@
 package org.jbpm.ee.services.ws;
 
+import java.util.Collection;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -60,5 +62,20 @@ public interface RuleServiceWS {
     		@WebParam(name="processInstanceId") @PathParam("processInstanceId") Long processInstanceId, 
     		@WebParam(name="factHandle") FactHandle factHandle
     );
+    
+    @WebMethod
+    @POST
+    @Path("instance/{processInstanceId}/rule/getObject")
+	public Object getObject(
+			@WebParam(name="processInstanceId") @PathParam("processInstanceId") Long processInstanceId, 
+			@WebParam(name="factHandle") FactHandle factHandle
+	);
+
+    @WebMethod
+    @POST
+    @Path("instance/{processInstanceId}/rule/getObjects")
+	public Collection<? extends Object> getObjects(
+			@WebParam(name="processInstanceId") @PathParam("processInstanceId") Long processIntanceId
+	);
     
 }

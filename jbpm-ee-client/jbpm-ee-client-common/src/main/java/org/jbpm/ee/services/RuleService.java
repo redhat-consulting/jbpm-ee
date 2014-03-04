@@ -1,5 +1,6 @@
 package org.jbpm.ee.services;
 
+import java.util.Collection;
 import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
@@ -48,5 +49,27 @@ public interface RuleService {
 	@PreprocessClassloader
     FactHandle insert(@ProcessInstanceId Long processInstanceId, @LazilyDeserialized Object object);
 
+    /**
+     * Delete a fact from the process's rule runtime
+     * 
+     * @param processInstanceId The process instance's unique identifier
+     * @param object The fact to be inserted
+     */
 	void delete(@ProcessInstanceId Long processInstanceId, FactHandle factHandle);
+	
+    /**
+     * Retrieve a fact from the process's rule runtime
+     * 
+     * @param processInstanceId The process instance's unique identifier
+     * @param object The fact to be inserted
+     */
+	Object getObject(@ProcessInstanceId Long processInstanceId, FactHandle factHandle);
+	
+    /**
+     * Retrieve all facts from the process's rule runtime
+     * 
+     * @param processInstanceId The process instance's unique identifier
+     * @param object The fact to be inserted
+     */
+	Collection<? extends Object> getObjects(@ProcessInstanceId Long processInstanceId);
 }

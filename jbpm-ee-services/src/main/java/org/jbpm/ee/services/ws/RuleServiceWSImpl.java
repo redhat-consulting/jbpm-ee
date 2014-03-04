@@ -1,5 +1,7 @@
 package org.jbpm.ee.services.ws;
 
+import java.util.Collection;
+
 import javax.ejb.EJB;
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
@@ -59,6 +61,26 @@ public class RuleServiceWSImpl implements RuleServiceWS {
 			throw new RemoteServiceException(e);
 		}
 		
+	}
+
+	@Override
+	public Object getObject(Long processInstanceId, FactHandle factHandle) {
+		try {
+			return ruleRuntime.getObject(processInstanceId, factHandle);			
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
+
+	@Override
+	public Collection<? extends Object> getObjects(Long processInstanceId) {
+		try {
+			return ruleRuntime.getObjects(processInstanceId);			
+		}
+		catch(Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
 }

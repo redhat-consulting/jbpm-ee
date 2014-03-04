@@ -1,5 +1,9 @@
 package org.jbpm.ee.services.ejb.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
@@ -38,6 +42,10 @@ public class RuleServiceBean implements RuleService, RuleServiceLocal, RuleServi
 		return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
 	}
 	
+	private org.kie.api.runtime.rule.FactHandle deserializeFactHandle(FactHandle factHandle) {
+		return new DefaultFactHandle(factHandle.getExternalForm());
+	}
+	
 	@Override
 	public int fireAllRules(Long processInstanceId) {
 		return getSessionByProcess(processInstanceId).fireAllRules();
@@ -55,13 +63,22 @@ public class RuleServiceBean implements RuleService, RuleServiceLocal, RuleServi
 
 	@Override
 	public void delete(Long processInstanceId, FactHandle factHandle) {
-		DefaultFactHandle defaultFactHandle = new DefaultFactHandle(factHandle.getExternalForm()); 
-		getSessionByProcess(processInstanceId).delete(defaultFactHandle);		
+		org.kie.api.runtime.rule.FactHandle internalHandle = deserializeFactHandle(factHandle); 
+		getSessionByProcess(processInstanceId).delete(internalHandle);		
 	}
-	
-	
 
-	
-	
-	
+	@Override
+	public Object getObject(Long processInstanceId, FactHandle factHandle) {
+		org.kie.api.runtime.rule.FactHandle internalHandle = deserializeFactHandle(factHandle); 
+		return getSessionByProcess(processInstanceId).getObject(internalHandle);
+	}
+
+	@Override
+	public Collection<? extends Object> getObjects(Long processInstanceId) {
+		// We don't want to return the jbpm's set object. An ArrayList will do
+		Collection<? extends Object> objectSet = getSessionByProcess(processInstanceId).getObjects();
+		List<Object> objectList = new ArrayList<Object>(objectSet);
+		return objectList;
+	}
+
 }
