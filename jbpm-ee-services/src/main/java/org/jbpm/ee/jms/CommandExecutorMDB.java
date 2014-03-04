@@ -1,5 +1,8 @@
 package org.jbpm.ee.jms;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +27,10 @@ import javax.jms.Session;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.drools.core.command.impl.GenericCommand;
+import org.drools.core.command.runtime.process.GetProcessInstanceCommand;
+import org.kie.internal.command.Context;
 import org.jbpm.ee.exception.CommandException;
+import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.CommandResponse;
@@ -33,6 +39,8 @@ import org.jbpm.ee.services.model.LazyDeserializingObject;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
 import org.jbpm.ee.services.model.TaskFactory;
 import org.jbpm.ee.services.model.adapter.ClassloaderManager;
+import org.jbpm.services.task.commands.TaskCommand;
+import org.kie.internal.task.api.InternalTaskService;
 import org.kie.api.runtime.CommandExecutor;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
@@ -82,12 +90,35 @@ public class CommandExecutorMDB implements MessageListener {
 		}
 	}
 
-	public CommandExecutor getCommandExecutor(KieReleaseId releaseId) {
-		RuntimeEngine engine = knowledgeManager.getRuntimeEngine(releaseId);
-		KieSession kSession = engine.getKieSession();
-		return kSession;
+	public CommandExecutor getCommandExecutor(KieReleaseId releaseId, GenericCommand<?> cmd) {
+		if (TaskCommand.class.isAssignableFrom(cmd.getClass())) {
+			
+			TaskCommand<?> taskCmd = (TaskCommand<?>) cmd;
+			return (InternalTaskService) knowledgeManager
+					.getRuntimeEngineByTaskId(taskCmd.getTaskId())
+					.getTaskService();
+		} else if (AcceptedCommands.containsProcessInstanceId(cmd)) {
+			Long processInstanceId = getLongFromCommand("getProcessInstanceId", cmd);
+			return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
+		} else if (AcceptedCommands.containsWorkItemId(cmd)) {
+			Long workItemId = getLongFromCommand("getWorkItemId", cmd);
+			return knowledgeManager.getRuntimeEngineByWorkItemId(workItemId).getKieSession();
+		}
+		
+		if (releaseId != null) {
+			RuntimeEngine engine = knowledgeManager.getRuntimeEngine(releaseId);
+			KieSession kSession = engine.getKieSession();
+			return kSession;
+		} else {
+			throw new CommandException("Unknown executor for null release id.");
+		}
 	}
 	
+	private static Type getCommandReturnType(GenericCommand<?> command) throws NoSuchMethodException, SecurityException {
+		Class commandClass = command.getClass();
+		Method executeMethod = commandClass.getDeclaredMethod("execute", Context.class);
+		return executeMethod.getReturnType();
+	}
 	
 	/**
 	 * 
@@ -166,7 +197,7 @@ public class CommandExecutorMDB implements MessageListener {
 		}
 		return response;
 	}
-
+	
 	@Override
 	public void onMessage(Message message) {
 		ObjectMessage objectMessage = (ObjectMessage) message;
@@ -174,21 +205,14 @@ public class CommandExecutorMDB implements MessageListener {
 		try {
 			LazyDeserializingObject obj = (LazyDeserializingObject)objectMessage.getObject();
 			
-			CommandExecutor executor = null;
+			KieReleaseId releaseId = null;
 			
 			boolean commandRequiresReleaseId = MessageUtil.isReleaseIdRequired(objectMessage);
 			if (commandRequiresReleaseId) {
-				KieReleaseId releaseId = MessageUtil.getReleaseId(objectMessage);
-			
-				//now, setup the classloader.
+				releaseId = MessageUtil.getReleaseId(objectMessage);
 				classloaderService.bridgeClassloaderByReleaseId(releaseId);
-				
-				executor = getCommandExecutor(releaseId);
 			} else {
-				
 				classloaderService.useThreadClassloader();
-				
-				executor = (CommandExecutor) knowledgeManager.getKieSessionUnboundTaskService();
 			}
 			//now, load the command into memory.
 			obj.initializeLazy(ClassloaderManager.get());
@@ -203,12 +227,28 @@ public class CommandExecutorMDB implements MessageListener {
 				LOG.debug("Request: "+ReflectionToStringBuilder.toString(command));
 			}
 
-			Object commandResponse = executor.execute(command);
+			Type commandReturnType = getCommandReturnType(command);
+			
+			System.out.println("Command Return Type: " + commandReturnType);
+			
+			Object commandResponse = null;
+			try {
+				CommandExecutor executor = getCommandExecutor(releaseId, command);
+				commandResponse = executor.execute(command);
+			} catch (InactiveProcessInstance e) {
+				if (!command.getClass().equals(GetProcessInstanceCommand.class)) {
+					throw new IllegalStateException("Unknown process for command",
+						e);
+				} else {
+					LOG.debug("Null process for GetProcessInstance cmd");
+					commandResponse = null;
+				}
+			}
+			
+			
 
-			// Check to see if the execute method is supposed to return something
-			Class<?> returnType = commandResponse.getClass();
 
-			if (!(returnType.equals(Void.class))) {
+			if (!(commandReturnType.equals(Void.TYPE))) {
 				// see if there is a correlation and reply to.ok
 
 				Object convertedObject = getResponseObjectFromCommandResponse(commandResponse);
@@ -231,7 +271,6 @@ public class CommandExecutorMDB implements MessageListener {
 					responseObject.setCommand(command);
 					
 					if(commandRequiresReleaseId) {
-						KieReleaseId releaseId = MessageUtil.getReleaseId(objectMessage);
 						MessageUtil.setReleaseIdRequired(responseMessage, releaseId);
 					} else {
 						MessageUtil.setReleaseIdNotRequired(responseMessage);
@@ -252,9 +291,24 @@ public class CommandExecutorMDB implements MessageListener {
 					LOG.warn("Response from Command Object, but no ReplyTo and Coorelation: " + ReflectionToStringBuilder .toString(convertedObject));
 				}
 			}
-		} catch (JMSException | IOException | SecurityException e) {
-			throw new CommandException("Exception processing command via JMS.", e);
+		} catch (JMSException | IOException | SecurityException
+				| NoSuchMethodException e) {
+			throw new CommandException("Exception processing command via JMS.",
+					e);
 		}
 
+	}
+
+	private static Long getLongFromCommand(final String methodName,
+			final GenericCommand<?> command) {
+		try {
+			Method longMethod = command.getClass().getMethod(methodName);
+			Long result = (Long) longMethod.invoke(command, (Object[]) null);
+			return result;
+		} catch (NoSuchMethodException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			// We do not expect this
+			throw new CommandException(e);
+		}
 	}
 }

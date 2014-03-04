@@ -3,6 +3,7 @@ package org.jbpm.ee.services.model.task;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -54,6 +55,11 @@ public class Content implements Initializable<org.kie.api.task.model.Content>, o
     public void initialize(org.kie.api.task.model.Content content) { 
         this.id = content.getId();
         Object realContentObject = ContentMarshallerHelper.unmarshall(content.getContent(), null);
+        
+        if(realContentObject == null) {
+        	realContentObject = new HashMap<String, Object>();
+        }
+        
         this.className = realContentObject.getClass().getName();
         boolean serialize = true;
         if( realContentObject instanceof Map<?, ?> ) { 
@@ -64,9 +70,9 @@ public class Content implements Initializable<org.kie.api.task.model.Content>, o
                     this.contentMap = (Map<String, Object>) contentMap;
                 }
             }
-        }
-        if( serialize ) { 
-            this.content = StringObjectMapXmlAdapter.serializeObject(realContentObject, "Content(" + this.id + ").content" );
+	        if( serialize ) { 
+	            this.content = StringObjectMapXmlAdapter.serializeObject(realContentObject, "Content(" + this.id + ").content" );
+	        }
         }
     }
     

@@ -21,6 +21,7 @@ import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.ProcessInstanceFactory;
+import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.process.WorkItem;
 import org.slf4j.Logger;
@@ -49,25 +50,34 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 	@EJB
 	private KnowledgeManagerBean knowledgeManager;
 
+	private KieSession getSessionByProcess(Long processInstanceId) {
+		return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
+	}
+	
+	private KieSession getSessionByWorkItem(long workItemId) {
+		return knowledgeManager.getRuntimeEngineByWorkItemId(workItemId).getKieSession();
+	}
+	
 	@Override
 	public void completeWorkItem(long id, Map<String, Object> results) {
-		knowledgeManager.getRuntimeEngineByWorkItemId(id).getKieSession().getWorkItemManager().completeWorkItem(id, results);
+		getSessionByWorkItem(id).getWorkItemManager().completeWorkItem(id, results);
 	}
 
 	@Override
 	public void abortWorkItem(long id) {
-		knowledgeManager.getRuntimeEngineByWorkItemId(id).getKieSession().getWorkItemManager().abortWorkItem(id);
+		getSessionByWorkItem(id).getWorkItemManager().abortWorkItem(id);
 	}
 
 	@Override
-	public org.kie.api.runtime.process.WorkItem getWorkItem(long id) {
+	public org.kie.api.runtime.process.WorkItem getWorkItem(long workItemId) {
 		Query query = entityManager.createQuery("from WorkItemInfo wii where wii.workItemId = :workItemId");
-		query.setParameter("workItemId", id);
+		query.setParameter("workItemId", workItemId);
 		WorkItemInfo info = (WorkItemInfo)query.getSingleResult();
 		
-		RuntimeEngine engine = knowledgeManager.getRuntimeEngineByProcessId(info.getProcessInstanceId());
-		org.drools.core.process.instance.WorkItemManager wim = (org.drools.core.process.instance.WorkItemManager)(engine.getKieSession().getWorkItemManager());
-		return ProcessInstanceFactory.convert(wim.getWorkItem(id));
+		org.drools.core.process.instance.WorkItemManager wim = 
+				(org.drools.core.process.instance.WorkItemManager)
+				(getSessionByProcess(info.getProcessInstanceId()).getWorkItemManager());
+		return ProcessInstanceFactory.convert(wim.getWorkItem(workItemId));
 	}
 
 	@Override
@@ -80,8 +90,9 @@ public class WorkItemServiceBean implements WorkItemService, WorkItemServiceLoca
 		query.setParameter("state", pendingStatus);
 		
 		List<WorkItemInfo> infos = (List)query.getResultList();
-		RuntimeEngine engine = knowledgeManager.getRuntimeEngineByProcessId(processInstanceId);
-		org.drools.core.process.instance.WorkItemManager wim = (org.drools.core.process.instance.WorkItemManager)(engine.getKieSession().getWorkItemManager());
+		org.drools.core.process.instance.WorkItemManager wim = 
+				(org.drools.core.process.instance.WorkItemManager)
+				(getSessionByProcess(processInstanceId).getWorkItemManager());
 
 		List<org.kie.api.runtime.process.WorkItem> workItem = new LinkedList<WorkItem>(); 
 		for(WorkItemInfo info : infos) {

@@ -51,7 +51,11 @@ public class SerializationInterceptor implements EJBClientInterceptor {
 				context.getParameters()[i] = obj;
 				
 				if(LOG.isDebugEnabled()) {
-					LOG.debug("Wrapped serializable parameter["+i+"]: "+parameter.getClass().getName());
+					if(parameter == null) {
+						LOG.debug("Wrapped serializable parameter["+i+"]: null");
+					} else {
+						LOG.debug("Wrapped serializable parameter["+i+"]: "+parameter.getClass().getName());
+					}
 				}
 			}
 		}

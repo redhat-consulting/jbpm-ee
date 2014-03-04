@@ -95,5 +95,12 @@ public class AcceptedCommands {
 		return true;
 	}
 	
+	public static boolean containsProcessInstanceId(GenericCommand<?> cmd) {
+		return commandsWithProcessInstanceId.contains(cmd.getClass());
+	}
+	
+	public static boolean containsWorkItemId(GenericCommand<?> cmd) {
+		return commandsWithWorkItemId.contains(cmd.getClass());
+	}
 }
 
