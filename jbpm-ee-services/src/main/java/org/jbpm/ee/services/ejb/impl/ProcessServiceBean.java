@@ -42,28 +42,36 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 	@EJB
 	private KnowledgeManagerBean knowledgeManager;
 
+	private KieSession getSessionByProcess(Long processInstanceId) {
+		return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
+	}
+	
+	private KieSession getNewSession(KieReleaseId releaseId) {
+		return knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
+	}
+	
 	@Override
 	public ProcessInstance startProcess(KieReleaseId releaseId, String processId) {
-		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
+		KieSession session = getNewSession(releaseId);
 		
 		return ProcessInstanceFactory.convert(session.startProcess(processId));
 	}
 
 	@Override
 	public ProcessInstance startProcess(KieReleaseId releaseId, String processId, Map<String, Object> parameters) {
-		KieSession session = knowledgeManager.getRuntimeEngine(releaseId).getKieSession();
+		KieSession session = getNewSession(releaseId);
 		return ProcessInstanceFactory.convert(session.startProcess(processId, parameters));
 	}
 
 	@Override
 	public void signalEvent(long processInstanceId, String type, Object event) {
-		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().signalEvent(type, event);
+		getSessionByProcess(processInstanceId).signalEvent(type, event);
 	}
 
 	@Override
 	public ProcessInstance getProcessInstance(long processInstanceId) {
 		try {
-			return ProcessInstanceFactory.convert(knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId, true));
+			return ProcessInstanceFactory.convert(getSessionByProcess(processInstanceId).getProcessInstance(processInstanceId, true));
 		} 
 		catch(InactiveProcessInstance e) {
 			return null;
@@ -72,25 +80,25 @@ public class ProcessServiceBean implements ProcessService, ProcessServiceLocal, 
 
 	@Override
 	public void abortProcessInstance(final long processInstanceId) {
-		final KieSession kieSession = knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
+		final KieSession kieSession = getSessionByProcess(processInstanceId);
 		kieSession.abortProcessInstance(processInstanceId);
 	}
 
 	@Override
 	public void setProcessInstanceVariable(long processInstanceId, String variableName, Object variable) {
-		WorkflowProcessInstance pi = (WorkflowProcessInstance)knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId);
+		WorkflowProcessInstance pi = (WorkflowProcessInstance) getSessionByProcess(processInstanceId).getProcessInstance(processInstanceId);
 		pi.setVariable(variableName, variable);
 	}
 
 	@Override
 	public Object getProcessInstanceVariable(long processInstanceId, String variableName) {
-		WorkflowProcessInstance pi = (WorkflowProcessInstance)knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId);
+		WorkflowProcessInstance pi = (WorkflowProcessInstance) getSessionByProcess(processInstanceId).getProcessInstance(processInstanceId);
 		return pi.getVariable(variableName);
 	}
 
 	@Override
 	public Map<String, Object> getProcessInstanceVariables(long processInstanceId) {
-		WorkflowProcessInstanceImpl pi = (WorkflowProcessInstanceImpl)knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().getProcessInstance(processInstanceId);
+		WorkflowProcessInstanceImpl pi = (WorkflowProcessInstanceImpl) getSessionByProcess(processInstanceId).getProcessInstance(processInstanceId);
 		LOG.debug("Process variable size: "+pi.getVariables().size());
 		return pi.getVariables();
 	}

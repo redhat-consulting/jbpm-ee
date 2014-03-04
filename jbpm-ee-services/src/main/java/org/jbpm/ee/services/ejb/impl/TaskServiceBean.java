@@ -47,14 +47,18 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 	@Inject
 	private org.kie.api.task.TaskService taskService;	
 	
+	private org.kie.api.task.TaskService getTaskServiceByTask(long taskId) {
+		return knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService();
+	}
+	
 	@Override
 	public void activate(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().activate(taskId, userId);
+		getTaskServiceByTask(taskId).activate(taskId, userId);
 	}
 
 	@Override
 	public void claim(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().claim(taskId, userId);
+		getTaskServiceByTask(taskId).claim(taskId, userId);
 	}
 
 	@Override
@@ -98,27 +102,27 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public void complete(long taskId, String userId, Map<String, Object> data) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().complete(taskId, userId, data);
+		getTaskServiceByTask(taskId).complete(taskId, userId, data);
 	}
 
 	@Override
 	public void delegate(long taskId, String userId, String targetUserId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().delegate(taskId, userId, targetUserId);
+		getTaskServiceByTask(taskId).delegate(taskId, userId, targetUserId);
 	}
 
 	@Override
 	public void exit(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().exit(taskId, userId);
+		getTaskServiceByTask(taskId).exit(taskId, userId);
 	}
 
 	@Override
 	public void fail(long taskId, String userId, Map<String, Object> faultData) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().fail(taskId, userId, faultData);
+		getTaskServiceByTask(taskId).fail(taskId, userId, faultData);
 	}
 
 	@Override
 	public void forward(long taskId, String userId, String targetEntityId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().forward(taskId, userId, targetEntityId);
+		getTaskServiceByTask(taskId).forward(taskId, userId, targetEntityId);
 	}
 
 	@Override
@@ -128,7 +132,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public Task getTaskById(long taskId) {
-		return TaskFactory.convert(knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().getTaskById(taskId));
+		return TaskFactory.convert(getTaskServiceByTask(taskId).getTaskById(taskId));
 	}
 
 	@Override
@@ -169,37 +173,37 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public void release(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().release(taskId, userId);
+		getTaskServiceByTask(taskId).release(taskId, userId);
 	}
 
 	@Override
 	public void resume(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().resume(taskId, userId);
+		getTaskServiceByTask(taskId).resume(taskId, userId);
 	}
 
 	@Override
 	public void skip(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().skip(taskId, userId);
+		getTaskServiceByTask(taskId).skip(taskId, userId);
 	}
 
 	@Override
 	public void start(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().start(taskId, userId);
+		getTaskServiceByTask(taskId).start(taskId, userId);
 	}
 
 	@Override
 	public void stop(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().stop(taskId, userId);
+		getTaskServiceByTask(taskId).stop(taskId, userId);
 	}
 
 	@Override
 	public void suspend(long taskId, String userId) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().suspend(taskId, userId);
+		getTaskServiceByTask(taskId).suspend(taskId, userId);
 	}
 
 	@Override
 	public void nominate(long taskId, String userId, List<OrganizationalEntity> potentialOwners) {
-		knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService().nominate(taskId, userId, potentialOwners);
+		getTaskServiceByTask(taskId).nominate(taskId, userId, potentialOwners);
 	}
 
 	@Override

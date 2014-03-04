@@ -14,6 +14,7 @@ import org.jbpm.ee.services.ejb.remote.RuleServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.RuleFactory;
 import org.jbpm.ee.services.model.rules.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 
 /***
@@ -33,25 +34,29 @@ public class RuleServiceBean implements RuleService, RuleServiceLocal, RuleServi
 	@EJB
 	private KnowledgeManagerBean knowledgeManager;
 
+	private KieSession getSessionByProcess(Long processInstanceId) {
+		return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession();
+	}
+	
 	@Override
 	public int fireAllRules(Long processInstanceId) {
-		return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().fireAllRules();
+		return getSessionByProcess(processInstanceId).fireAllRules();
 	}
 
 	@Override
 	public int fireAllRules(Long processInstanceId, int max) {
-		return knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().fireAllRules(max);
+		return getSessionByProcess(processInstanceId).fireAllRules(max);
 	}
 
 	@Override
 	public FactHandle insert(Long processInstanceId, Object object) {
-		return RuleFactory.convert(knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().insert(object));
+		return RuleFactory.convert(getSessionByProcess(processInstanceId).insert(object));
 	}
 
 	@Override
 	public void delete(Long processInstanceId, FactHandle factHandle) {
 		DefaultFactHandle defaultFactHandle = new DefaultFactHandle(factHandle.getExternalForm()); 
-		knowledgeManager.getRuntimeEngineByProcessId(processInstanceId).getKieSession().delete(defaultFactHandle);		
+		getSessionByProcess(processInstanceId).delete(defaultFactHandle);		
 	}
 	
 	
