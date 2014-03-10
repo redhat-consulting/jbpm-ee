@@ -40,12 +40,18 @@ public class BPMClassloaderService {
 		KieReleaseId kid = knowledgeManager.getReleaseIdByProcessId(processInstanceId);
 		bridgeClassloaderByReleaseId(kid);
 	}
-		
+	
 	public void bridgeClassloaderByTaskId(Long taskInstanceId) {
 		LOG.debug("Bridging by task ID: "+taskInstanceId);
 		
 		KieReleaseId kid = knowledgeManager.getReleaseIdByTaskId(taskInstanceId);
 		bridgeClassloaderByReleaseId(kid);
+	}
+	
+	public void bridgeClassloaderByContentId(Long contentId) {
+		LOG.debug("Bridging by content ID: " + contentId);
+		Long taskId = knowledgeManager.getTaskIdByContentId(contentId);
+		bridgeClassloaderByTaskId(taskId);
 	}
 	
 	public void bridgeClassloaderByWorkItemId(Long workItemId) {

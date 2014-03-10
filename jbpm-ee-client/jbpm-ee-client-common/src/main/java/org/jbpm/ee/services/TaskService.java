@@ -3,6 +3,7 @@ package org.jbpm.ee.services;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.ee.services.ejb.annotations.ContentId;
 import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
@@ -264,7 +265,7 @@ public interface TaskService {
 	 * @param contentId
 	 * @return
 	 */
-	Content getContentById(long contentId);
+	Content getContentById(@ContentId long contentId);
 
 	/**
 	 * 

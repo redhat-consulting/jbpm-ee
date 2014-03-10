@@ -19,6 +19,7 @@ import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.startup.KnowledgeManagerBean;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.TaskFactory;
+import org.jbpm.ee.services.model.adapter.ClassloaderManager;
 import org.kie.api.task.model.Attachment;
 import org.kie.api.task.model.Content;
 import org.kie.api.task.model.OrganizationalEntity;
@@ -51,6 +52,9 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 		return knowledgeManager.getRuntimeEngineByTaskId(taskId).getTaskService();
 	}
 	
+	private org.kie.api.task.TaskService getTaskServiceByContent(long contentId) {
+		return knowledgeManager.getRuntimeEngineByContentId(contentId).getTaskService();
+	}
 	@Override
 	public void activate(long taskId, String userId) {
 		getTaskServiceByTask(taskId).activate(taskId, userId);
@@ -208,7 +212,7 @@ public class TaskServiceBean implements TaskService, TaskServiceLocal, TaskServi
 
 	@Override
 	public Content getContentById(long contentId) {
-		return TaskFactory.convert(taskService.getContentById(contentId));
+		return TaskFactory.convert(getTaskServiceByContent(contentId).getContentById(contentId), ClassloaderManager.get());
 	}
 
 	@Override

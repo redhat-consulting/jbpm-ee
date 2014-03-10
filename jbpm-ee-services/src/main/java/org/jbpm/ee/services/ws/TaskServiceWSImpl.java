@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jbpm.ee.services.ejb.local.TaskServiceLocal;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.jbpm.ee.services.model.TaskFactory;
+import org.jbpm.ee.services.model.adapter.ClassloaderManager;
 import org.jbpm.ee.services.model.task.Content;
 import org.jbpm.ee.services.model.task.Task;
 import org.jbpm.ee.services.model.task.TaskAttachment;
@@ -283,7 +284,7 @@ public class TaskServiceWSImpl implements TaskServiceWS {
 	@Override
 	public Content getContentById(long contentId) {
 		try {
-			return (Content)TaskFactory.convert(taskService.getContentById(contentId));
+			return (Content)TaskFactory.convert(taskService.getContentById(contentId), ClassloaderManager.get());
 		}
 		catch(Exception e) {
 			throw new RemoteServiceException(e);

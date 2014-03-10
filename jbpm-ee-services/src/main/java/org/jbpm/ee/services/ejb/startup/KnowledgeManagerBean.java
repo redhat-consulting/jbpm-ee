@@ -146,6 +146,18 @@ public class KnowledgeManagerBean {
 	}
 	
 	/**
+	 * Returns the RuntimeEngine for a given Content
+	 * @param contentId
+	 * @return
+	 */
+	public RuntimeEngine getRuntimeEngineByContentId(Long contentId) {
+		Long taskId = getTaskIdByContentId(contentId);
+		RuntimeEngine engine = getRuntimeEngineByTaskId(taskId);
+		addListeners(engine);
+		return engine;
+	}
+	
+	/**
 	 * Returns the ProcessInstance associated with the given Task
 	 * 
 	 * @param taskId
@@ -172,6 +184,19 @@ public class KnowledgeManagerBean {
 		return processInstanceId;
 	}
 
+	/**
+	 * Returns the Task Id associated with the given Content Id
+	 * 
+	 * @param contentId
+	 * @return
+	 */
+	public Long getTaskIdByContentId(Long contentId) {
+		Query q = em.createQuery("SELECT id FROM TaskImpl task WHERE task.taskData.documentContentId=:contentId OR task.taskData.faultContentId=:contentId OR task.taskData.outputContentId=:contentId");
+		q.setParameter("contentId", contentId);
+		Long taskId = (Long) q.getSingleResult();
+		return taskId;
+	}
+	
 	/**
 	 * Returns the KieReleaseId associated with a given ProcessInstance
 	 * 
@@ -225,6 +250,7 @@ public class KnowledgeManagerBean {
 		
 		return this.getReleaseIdByProcessId(processInstanceId);
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	private void addListeners(RuntimeEngine engine) {

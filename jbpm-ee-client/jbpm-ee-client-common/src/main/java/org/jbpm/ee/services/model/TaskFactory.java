@@ -28,12 +28,12 @@ import org.slf4j.LoggerFactory;
 public class TaskFactory {
 	private static final Logger LOG = LoggerFactory.getLogger(TaskFactory.class);
 
-	public static Content convert(Content content) {
+	public static Content convert(Content content, ClassLoader classLoader) {
 		if(content == null) {
 			return null;
 		}
 		
-		return new org.jbpm.ee.services.model.task.Content(content);
+		return new org.jbpm.ee.services.model.task.Content(content, classLoader);
 	}
 	
 	
