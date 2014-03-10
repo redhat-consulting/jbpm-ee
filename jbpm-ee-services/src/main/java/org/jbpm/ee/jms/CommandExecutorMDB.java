@@ -165,7 +165,7 @@ public class CommandExecutorMDB implements MessageListener {
 			
 		}else if(commandResponse instanceof org.kie.api.task.model.Content){
 			
-			response = TaskFactory.convert((Content)commandResponse);
+			response = TaskFactory.convert((Content)commandResponse, ClassloaderManager.get());
 			
 		}else if(commandResponse instanceof Long){
 			

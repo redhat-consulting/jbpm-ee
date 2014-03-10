@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jbpm.ee.services.ejb.annotations.ContentId;
 import org.jbpm.ee.services.ejb.annotations.LazilyDeserialized;
 import org.jbpm.ee.services.ejb.annotations.PreprocessClassloader;
 import org.jbpm.ee.services.ejb.annotations.ProcessInstanceId;
@@ -105,6 +106,10 @@ public class InterceptorUtil {
 	
 	public Long extractWorkItemId(Class clz, Method method, Object[] parameters) {
 		return (Long)extractMethodParameterValue(clz, method, parameters, WorkItemId.class);
+	}
+	
+	public Long extractContentId(Class clz, Method method, Object[] parameters) {
+		return (Long)extractMethodParameterValue(clz, method, parameters, ContentId.class);
 	}
 	
 	public Object extractMethodParameterValue(Class clz, Method method, Object[] parameters, Class annotation) {

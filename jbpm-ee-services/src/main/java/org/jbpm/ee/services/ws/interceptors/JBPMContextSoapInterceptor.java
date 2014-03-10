@@ -15,6 +15,7 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
+import org.hibernate.service.classloading.spi.ClassLoaderService;
 import org.jbpm.ee.services.ejb.startup.BPMClassloaderService;
 import org.jbpm.ee.services.model.KieReleaseId;
 import org.slf4j.Logger;
@@ -70,9 +71,18 @@ public class JBPMContextSoapInterceptor implements SOAPHandler<SOAPMessageContex
 				return true;
 			}
 			
+			Long contentId = XmlUtil.extractValueId(body, "//content-id");
+			if(contentId != null) {
+				classloaderService.bridgeClassloaderByContentId(contentId);
+				return true;
+			}
+			
+			classloaderService.useThreadClassloader();
+			
 		} catch (Exception e) {
 			LOG.error("Exception handing XML.", e);
 		}
+		
 		return true;
 	}
 	

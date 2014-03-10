@@ -47,14 +47,20 @@ public class Content implements Initializable<org.kie.api.task.model.Content>, o
         //default
     }
     
+	@Override
+	public void initialize(org.kie.api.task.model.Content content) {
+		initialize(content, null);
+		
+	}
+    
     @SuppressWarnings("unchecked")
-    public Content(org.kie.api.task.model.Content content) { 
-        initialize(content);
+    public Content(org.kie.api.task.model.Content content, ClassLoader classLoader) { 
+        initialize(content, classLoader);
     }
     
-    public void initialize(org.kie.api.task.model.Content content) { 
+    public void initialize(org.kie.api.task.model.Content content, ClassLoader classLoader) { 
         this.id = content.getId();
-        Object realContentObject = ContentMarshallerHelper.unmarshall(content.getContent(), null);
+        Object realContentObject = ContentMarshallerHelper.unmarshall(content.getContent(), null,classLoader);
         
         if(realContentObject == null) {
         	realContentObject = new HashMap<String, Object>();

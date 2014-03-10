@@ -118,8 +118,14 @@ public class JBPMContextRestInterceptor implements MessageBodyReaderInterceptor 
 			return context.proceed();
 		}
 		
+		Long contentId = extractId(uri, "contentId");
 		
+		if(contentId != null) {
+			classloaderService.bridgeClassloaderByContentId(contentId);
+			return context.proceed();
+		}
 		
+		classloaderService.useThreadClassloader();
 		return context.proceed();
 	}
 

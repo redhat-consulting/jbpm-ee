@@ -251,7 +251,7 @@ public interface TaskServiceWS {
 	@GET
 	@Path("/content/{contentId}")
 	Content getContentById(
-	    @WebParam(name="contentId") @PathParam("contentId") long contentId
+	    @WebParam(name="content-id") @PathParam("contentId") long contentId
 	);
 	
 	@WebMethod

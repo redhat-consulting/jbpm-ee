@@ -118,6 +118,13 @@ public class JBPMContextEJBInterceptor {
 			return;
 		}
 		
+		Long contentId = InterceptorUtil.getInstance().extractContentId(clz, method, parameters);
+		if(contentId != null) {
+			System.out.println("Content ID: " + contentId);
+			classloaderService.bridgeClassloaderByContentId(contentId);
+			return;
+		}
+		
 		classloaderService.useThreadClassloader();
 	}
 }
