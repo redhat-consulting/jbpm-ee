@@ -265,6 +265,7 @@ public interface TaskService {
 	 * @param contentId
 	 * @return
 	 */
+	@PreprocessClassloader
 	Content getContentById(@ContentId long contentId);
 
 	/**
