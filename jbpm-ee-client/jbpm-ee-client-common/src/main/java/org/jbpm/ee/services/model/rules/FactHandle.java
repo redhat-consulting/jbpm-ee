@@ -24,9 +24,12 @@ public class FactHandle implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	
 	@XmlElement(name = "external-form")
 	private String externalForm;
+	
+	public FactHandle() {
+		externalForm = "";
+	}
 	
 	public FactHandle(String externalForm) {
 		this.externalForm = externalForm;
