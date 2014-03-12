@@ -1,5 +1,6 @@
 package org.jbpm.ee.runtime;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
 import org.jbpm.runtime.manager.impl.DefaultRegisterableItemsFactory;
 import org.kie.api.event.process.ProcessEventListener;
+import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.process.WorkItemHandler;
 
@@ -41,5 +43,13 @@ public class RegisterableItemsFactoryEE extends DefaultRegisterableItemsFactory 
 		return listeners;
 	}
 	
-	
+	/* 
+	 * Workaround for eager rules not firing correctly. https://bugzilla.redhat.com/show_bug.cgi?id=1075745
+	 */
+	@Override
+    public List<AgendaEventListener> getAgendaEventListeners(
+                    RuntimeEngine runtime) {
+
+		return new ArrayList<AgendaEventListener>();
+    }
 }
