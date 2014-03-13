@@ -1,0 +1,14 @@
+package org.jbpm.ee.test
+
+import org.jbpm.ee.test.model.OrderEligibility
+import function org.jbpm.ee.test.model.OrderEligibilityCheck.dateDifference
+
+rule "Customer Eligibility"
+ruleflow-group "eligibility"
+dialect "java"
+when
+ $orderEligibility: OrderEligibility(dateDifference(getOrderDetails().getEndDate(), getOrderDetails().getStartDate()))
+then
+ $orderEligibility.setOrderEligibile(true);
+ System.out.println(" Order Eligibility Rule called - then part after changing value  "+ $orderEligibility);
+end

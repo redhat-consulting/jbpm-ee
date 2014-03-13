@@ -6,6 +6,7 @@ import javax.jws.WebService;
 import org.jbpm.ee.client.ClientException;
 import org.jbpm.ee.client.SoapClientFactory;
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
 
@@ -15,10 +16,12 @@ public class SoapTest extends BaseTest {
 	private TaskService cachedTaskService = null;
 	private ProcessService cachedProcessService = null;
 	private WorkItemService cachedWorkItemService = null;
+	private RuleService cachedRuleService = null;
 	
 	private static final String PROCESS_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/ProcessService?wsdl";
 	private static final String TASK_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/TaskService?wsdl"; 
 	private static final String WORK_ITEM_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/WorkItemService?wsdl"; 
+	private static final String RULE_SERVICE_URL = "http://localhost:8080/jbpm-ee-services/RuleService?wsdl";
 	
 	/**
 	 * Creates the ProcessService & caches the instance for reuse.  
@@ -61,5 +64,17 @@ public class SoapTest extends BaseTest {
 			}
 		}
 		return cachedWorkItemService;
+	}
+	
+	@Override
+	protected RuleService getRuleService() {
+		if(cachedRuleService == null) {
+			try {
+				cachedRuleService = SoapClientFactory.getRuleService(RULE_SERVICE_URL);
+			} catch (ClientException e) {
+				throw new RuntimeException("Unable to create RuleService from ["+RULE_SERVICE_URL+"]. Please validate URL.", e);
+			}
+		}
+		return cachedRuleService;
 	}
 }
