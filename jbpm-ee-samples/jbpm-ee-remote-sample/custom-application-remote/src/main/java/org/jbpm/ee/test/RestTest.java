@@ -5,6 +5,7 @@ import javax.jws.WebService;
 import org.jbpm.ee.client.RestClientFactory;
 import org.jbpm.ee.services.AsyncCommandExecutor;
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
 
@@ -17,7 +18,7 @@ public class RestTest extends BaseTest {
 	protected ProcessService cachedProcessService = null;
 	protected TaskService cachedTaskService = null;
 	protected WorkItemService cachedWorkItemService = null;
-	
+	protected RuleService cachedRuleService = null;
 
 	/**
 	 * Creates the ProcessService & caches the instance for reuse.  
@@ -50,5 +51,14 @@ public class RestTest extends BaseTest {
 		}
 		
 		return cachedWorkItemService;
+	}
+	
+	@Override
+	protected RuleService getRuleService() {
+		if(cachedRuleService == null) {
+			cachedRuleService = RestClientFactory.getRuleService(REST_URL);
+		}
+		
+		return cachedRuleService;
 	}
 }

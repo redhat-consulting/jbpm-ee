@@ -7,10 +7,12 @@ import javax.jws.WebService;
 
 import org.jbpm.ee.services.AsyncCommandExecutor;
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.ejb.remote.AsyncCommandExecutorRemote;
 import org.jbpm.ee.services.ejb.remote.ProcessServiceRemote;
+import org.jbpm.ee.services.ejb.remote.RuleServiceRemote;
 import org.jbpm.ee.services.ejb.remote.TaskServiceRemote;
 import org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote;
 import org.slf4j.Logger;
@@ -35,6 +37,8 @@ public class EJBRemoteTest extends BaseEJBTest {
 	@EJB(lookup = "java:global/jbpm-ee-services/WorkItemServiceBean!org.jbpm.ee.services.ejb.remote.WorkItemServiceRemote")
 	private WorkItemServiceRemote workItemService;
 	
+	@EJB(lookup = "java:global/jbpm-ee-services/RuleServiceBean!org.jbpm.ee.services.ejb.remote.RuleServiceRemote")
+	private RuleServiceRemote ruleService;
 	
 	@Override
 	protected AsyncCommandExecutor getAsyncCommandExecutor() {
@@ -54,6 +58,11 @@ public class EJBRemoteTest extends BaseEJBTest {
 	@Override
 	protected WorkItemService getWorkItemService() {
 		return workItemService;
+	}
+
+	@Override
+	protected RuleService getRuleService() {
+		return ruleService;
 	}
 
 }

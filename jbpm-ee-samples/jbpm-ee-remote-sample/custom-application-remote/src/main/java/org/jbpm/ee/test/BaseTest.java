@@ -1,5 +1,9 @@
 package org.jbpm.ee.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +13,18 @@ import javax.jws.WebMethod;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.jboss.ejb.client.EJBClientContext;
 import org.jbpm.ee.services.ProcessService;
+import org.jbpm.ee.services.RuleService;
 import org.jbpm.ee.services.TaskService;
 import org.jbpm.ee.services.WorkItemService;
 import org.jbpm.ee.services.ejb.interceptors.SerializationInterceptor;
 import org.jbpm.ee.services.model.KieReleaseId;
+import org.jbpm.ee.services.model.rules.FactHandle;
+import org.jbpm.ee.test.model.Account;
+import org.jbpm.ee.test.model.OrderDetails;
+import org.jbpm.ee.test.model.OrderEligibility;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
+import org.kie.api.task.model.Status;
 import org.kie.api.task.model.Task;
 import org.kie.api.task.model.TaskData;
 import org.kie.api.task.model.TaskSummary;
@@ -31,12 +41,17 @@ public abstract class BaseTest {
 	protected abstract ProcessService getProcessService();
 	protected abstract TaskService getTaskService();
 	protected abstract WorkItemService getWorkItemService();
+	protected abstract RuleService getRuleService();
+	
 	
 	protected static final KieReleaseId taskTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 	protected static final String taskTestProcessId = "testTaskProcess.bpmn2";
 	
 	protected static final KieReleaseId loanTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 	protected static final String loanTestProcessId = "testWorkItemProcess.bpmn2";
+	
+	protected static final KieReleaseId ruleTestReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
+	protected static final String ruleTestProcessId = "testRuleProcess.bpmn2";
 	
 	@WebMethod
 	public Long startProcess() {
@@ -51,6 +66,32 @@ public abstract class BaseTest {
 		LOG.info("Process Instance: "+processInstance.getId());
 		
 		return processInstance.getId();
+	}
+	
+	@WebMethod
+	public void executeTestRun() {
+		
+		ProcessService processService = getProcessService();
+		final String variableKey = "processString";
+		
+		Map<String, Object> processVariables = new HashMap<String, Object>();
+		processVariables.put(variableKey, "Initial");
+		
+		LOG.info("Starting Processes");
+/*		for(int i = 0; i < 3000; i++) {
+			ProcessInstance processInstance = processService.startProcess(taskTestReleaseId, taskTestProcessId, processVariables);
+			
+		}*/
+		LOG.info("Finished Starting Processes");
+		TaskService taskService = getTaskService();
+		
+		List<Status> statusList = new ArrayList<Status>();
+        statusList.add(Status.Ready);
+        
+        LOG.info("Searching for Ready Tasks");
+        List<TaskSummary> tSummaryList = taskService.getTasksAssignedAsPotentialOwner("abaxter", "en-UK");
+        LOG.info("TaskList Count: " + tSummaryList.size());
+        //LOG.info("Task Status is: " + tSummaryList.get(0).getStatus());
 	}
 	
 	@WebMethod
@@ -204,5 +245,54 @@ public abstract class BaseTest {
 	}
 	
 	
-	
+	@WebMethod
+	public void testRuleProcess() throws ParseException {
+		
+		ProcessService processService =  getProcessService();
+		
+		Map<String, Object> processVariables = new HashMap<String, Object>();
+		
+		ProcessInstance processInstance = processService.startProcess(ruleTestReleaseId, ruleTestProcessId, processVariables);
+		LOG.info("Process Instance: "+processInstance.getId());
+		
+		long processInstanceId =  processInstance.getId();
+		
+		RuleService ruleService = getRuleService();
+		
+		Account accountOpen = new Account("O");
+        Account accountClosed = new Account("C");
+        
+        FactHandle accountOpen_fh = ruleService.insert(processInstanceId, accountOpen);
+        FactHandle accountClosed_fh = ruleService.insert(processInstanceId, accountClosed);
+        
+        SimpleDateFormat stdDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date today = stdDateFormat.parse("2014/03/10");
+        Date yesterday = stdDateFormat.parse("2014/03/09");
+        Date lastYear = stdDateFormat.parse("2013/03/10");
+        
+        OrderDetails lastYearOrder = new OrderDetails(lastYear, today);
+        OrderDetails thisYearOrder = new OrderDetails(yesterday, today);
+        
+        OrderEligibility lastYearEligibility = new OrderEligibility(lastYearOrder);
+        OrderEligibility thisYearEligibility = new OrderEligibility(thisYearOrder);
+        
+        FactHandle lye_fh = ruleService.insert(processInstanceId, lastYearEligibility);
+        FactHandle tye_fh = ruleService.insert(processInstanceId, thisYearEligibility);
+        
+        ruleService.fireAllRules(processInstanceId);
+        
+        accountOpen = (Account) ruleService.getObject(processInstanceId, accountOpen_fh);
+        accountClosed = (Account) ruleService.getObject(processInstanceId, accountClosed_fh);
+        
+        System.out.println("Account Open eligibility: " + accountOpen.getAccountEligible());
+        System.out.println("Account Closed eligibility: " + accountClosed.getAccountEligible());
+        
+        lastYearEligibility = (OrderEligibility) ruleService.getObject(processInstanceId, lye_fh);
+        thisYearEligibility = (OrderEligibility) ruleService.getObject(processInstanceId, tye_fh);
+        
+        System.out.println("Last Year Eligibility: " + lastYearEligibility.getOrderEligibile());
+        System.out.println("This Year Eligibility: " + thisYearEligibility.getOrderEligibile());
+        processService.signalEvent(processInstanceId, "complete", null);
+        
+	}
 }
