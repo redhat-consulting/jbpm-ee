@@ -1,0 +1,13 @@
+package org.jbpm.ee.test
+
+import org.jbpm.ee.test.model.Account
+
+rule "Account Eligibility"
+ruleflow-group "eligibility"
+dialect "java"
+when
+ $account:Account( getAccountStatus().equals("O"))
+then
+ $account.setAccountEligible(true);
+ System.out.println(" Account Eligibility Rule called - then part after changing value  "+$account);
+end

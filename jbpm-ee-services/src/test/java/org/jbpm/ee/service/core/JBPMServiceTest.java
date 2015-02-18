@@ -15,11 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
+import org.drools.compiler.kproject.ReleaseIdImpl;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jbpm.ee.services.ProcessService;
 import org.jbpm.ee.services.TaskService;
-import org.jbpm.ee.support.KieReleaseId;
+import org.jbpm.ee.services.model.KieReleaseId;
+import org.jbpm.ee.test.LoanOrder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kie.api.KieServices;
@@ -31,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
 	private static final KieReleaseId kri = new KieReleaseId("com.redhat.demo", "testProj", "1.0-SNAPSHOT");
+	private static final KieReleaseId loanReleaseId = new KieReleaseId("org.jbpm.jbpm-ee", "jbpm-ee-kjar-sample", "1.0.0-SNAPSHOT");
 	private static final Logger LOG = LoggerFactory.getLogger(JBPMServiceTest.class);
 	
 	public abstract TaskService getTaskService();
@@ -42,7 +45,9 @@ public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
 		KieServices ks = KieServices.Factory.get();
         List<String> processes = new ArrayList<String>();
         processes.add("src/test/resources/kjar/testProcess.bpmn2");
-        InternalKieModule kjar = createKieJar(ks, kri.toReleaseIdImpl(), processes);
+        
+        ReleaseIdImpl impl = new ReleaseIdImpl(kri.getGroupId(), kri.getArtifactId(), kri.getVersion());
+        InternalKieModule kjar = createKieJar(ks, impl, processes);
         File pom = new File("target/kmodule", "pom.xml");
         pom.getParentFile().mkdir();
         try {
@@ -53,7 +58,7 @@ public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
             
         }
         MavenRepository repository = getMavenRepository();
-        repository.deployArtifact(kri.toReleaseIdImpl(), kjar, pom);
+        repository.deployArtifact(impl, kjar, pom);
     }
 	
 	@Test
@@ -107,4 +112,23 @@ public abstract class JBPMServiceTest extends BaseJBPMServiceTest {
         processInstance = processService.getProcessInstance(processInstance.getId());
         assertNull(processInstance);
 	}
+	
+	//@Test
+	@Transactional(value=TransactionMode.DEFAULT)
+	public void testLoanProcess() throws Exception {
+		final String processString = "ProcessingTest.LoanProcess";
+		final String variableKey = "loanOrder";
+		
+		Map<String, Object> processVariables = new HashMap<String, Object>();
+		LoanOrder order = new LoanOrder();
+		order.setFirstName("Adam");
+		order.setLastName("Baxter");
+		order.setLoanAmount(500000L);
+		processVariables.put(variableKey, order);
+		
+		ProcessService processService = getProcessService();
+		
+		ProcessInstance processInstance = processService.startProcess(loanReleaseId, processString, processVariables);
+	}
+	
 }

@@ -6,7 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 
 /**
- * Links a given processInstanceId to the KieReleaseId that it was started from
+ * Links a given processInstanceId to the KieReleaseId to maintain the relationship.  
+ * This is leveraged to lookup the appropriate classloader that needs to be loaded when rehydrating the session.
  * 
  * @author bdavis, abaxter
  *

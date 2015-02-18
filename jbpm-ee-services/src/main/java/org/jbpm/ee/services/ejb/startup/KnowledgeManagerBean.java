@@ -1,13 +1,10 @@
 package org.jbpm.ee.services.ejb.startup;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,25 +12,19 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.hibernate.SessionException;
-import org.jbpm.ee.config.Configuration;
 import org.jbpm.ee.exception.InactiveProcessInstance;
 import org.jbpm.ee.persistence.KieBaseXProcessInstance;
-import org.jbpm.ee.services.support.KieReleaseIdXProcessInstanceListener;
-import org.jbpm.ee.support.KieReleaseId;
-import org.jbpm.runtime.manager.impl.RuntimeEnvironmentBuilder;
-import org.kie.api.KieBase;
-import org.kie.api.KieServices;
-import org.kie.api.PropertiesConfiguration;
-import org.kie.api.builder.KieScanner;
-import org.kie.api.event.process.ProcessEventListener;
-import org.kie.api.runtime.KieContainer;
+import org.jbpm.ee.services.model.KieReleaseId;
+import org.jbpm.services.task.HumanTaskConfigurator;
+import org.jbpm.services.task.HumanTaskServiceFactory;
+import org.jbpm.services.task.lifecycle.listeners.BAMTaskEventListener;
+import org.jbpm.services.task.lifecycle.listeners.TaskLifeCycleEventListener;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Task;
-import org.kie.internal.runtime.manager.RuntimeEnvironment;
-import org.kie.internal.runtime.manager.RuntimeManagerFactory;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
+import org.kie.internal.task.api.EventService;
 import org.kie.internal.task.api.UserGroupCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,115 +46,37 @@ import org.slf4j.LoggerFactory;
 @DependsOn("ResourceManager")
 public class KnowledgeManagerBean {
 	private static final Logger LOG = LoggerFactory.getLogger(KnowledgeManagerBean.class);
-	
-	protected Map<KieReleaseId, KieContainer> containers;
-	protected Map<KieReleaseId, KieScanner> scanners;
-	
-	protected Map<KieReleaseId, RuntimeManager> runtimeManagers;
-	
-	protected KieServices kieServices;
-	
-	@Inject
-	@Configuration(value="scannerPollFrequency")
-	protected Long scannerPollFrequency;
-	
-	@Inject
-	protected EntityManagerFactory emf;
-	
+
 	@Inject
 	protected EntityManager em;
 	
 	@Inject
-	protected UserGroupCallback userGroupCallback;
-	
+	protected RuntimeManagerBean runtimeManager;
+
 	@Inject
+	protected EntityManagerFactory emf;
+
+	@Inject
+	UserGroupCallback userGroupCallback;
+	
 	protected TaskService taskService;
 	
+	protected BAMTaskEventListener bamTaskEventListener;
 	
 	@PostConstruct
 	private void setup() {
-		 kieServices = KieServices.Factory.get();
-		 containers = new ConcurrentHashMap<KieReleaseId, KieContainer>();
-		 scanners = new ConcurrentHashMap<KieReleaseId, KieScanner>();
-		 
-		 runtimeManagers = new ConcurrentHashMap<KieReleaseId, RuntimeManager>();
-	}
-
-	@PreDestroy
-	private void destroy() {
-		LOG.info("Stopping jBPM Resource Change Listeners.");
-		
-		for(KieScanner scanner : scanners.values()) {
-			scanner.stop();
-		}
-		
-		//set for dispose.
-		this.scanners = null;
-	}
-
-	/**
-	 * Loads a kjar via the given Release Id (maven deployment information)
-	 * Additionally, sets up scanning to monitor for kjar changes
-	 * 
-	 * @param resourceKey The maven deployment information for the kjar
-	 * @return The in-memory loaded kjar
-	 */
-	protected KieContainer getKieContainer(KieReleaseId resourceKey) {
-		
-		if(!containers.containsKey(resourceKey)) {
-			//create a new container.
-			KieContainer kieContainer = kieServices.newKieContainer(resourceKey.toReleaseIdImpl());
-			KieScanner kieScanner = kieServices.newKieScanner(kieContainer);
-			kieScanner.start(scannerPollFrequency);
-			
-			//register the new container and scanner.
-			this.containers.put(resourceKey, kieContainer);
-			this.scanners.put(resourceKey, kieScanner);
-		}
-		return this.containers.get(resourceKey);
-	}
-	
-	/**
-	 * Returns the kjar resources for the given kjar deployment information
-	 * 
-	 * @param resourceKey The maven deployment information for the kjar
-	 * @return
-	 */
-	protected KieBase getKieBase(KieReleaseId resourceKey) {
-		return getKieContainer(resourceKey).getKieBase();
-	}	
-	
-	/**
-	 * Creates the RuntimeEnvironment for the RuntimeManager to use
-	 * 
-	 * @param releaseId  The maven deployment information for the kjar
-	 * @return
-	 */
-	public RuntimeEnvironment getRuntimeEnvironment(KieReleaseId releaseId) {
-		RuntimeEnvironment re = RuntimeEnvironmentBuilder.getDefault()
+		HumanTaskConfigurator configurator = HumanTaskServiceFactory.newTaskServiceConfigurator()
 				.entityManagerFactory(emf)
-				.userGroupCallback(userGroupCallback)
-				.knowledgeBase(getKieBase(releaseId))
-				.persistence(true)
-				.get();
-		return re;
+				.userGroupCallback(userGroupCallback);
+		taskService = configurator.getTaskService();
+		bamTaskEventListener  = new BAMTaskEventListener();
 	}
 	
-	/**
-	 * Creates/returns the RuntimeManager for the specified kjar
-	 * 
-	 * @param releaseId  The maven deployment information for the kjar
-	 * @return
-	 * @throws SessionException
-	 */
-	protected RuntimeManager getRuntimeManager(KieReleaseId releaseId) {
-		if(!runtimeManagers.containsKey(releaseId)) {
-			RuntimeEnvironment re = getRuntimeEnvironment(releaseId);
-			runtimeManagers.put(releaseId, RuntimeManagerFactory.Factory.get().newPerProcessInstanceRuntimeManager(re, releaseId.toString()));
-		}
-		
-		return runtimeManagers.get(releaseId);
+	@Produces
+	public TaskService getKieSessionUnboundTaskService() {
+		return taskService;
 	}
+	
 	
 	/**
 	 * Returns the default RuntimeEngine for a specified kjar
@@ -173,8 +86,11 @@ public class KnowledgeManagerBean {
 	 * @throws SessionException
 	 */
 	public RuntimeEngine getRuntimeEngine(KieReleaseId releaseId) {
-		RuntimeManager rm = getRuntimeManager(releaseId);
-		return rm.getRuntimeEngine(ProcessInstanceIdContext.get());
+		RuntimeManager rm = runtimeManager.getRuntimeManager(releaseId);
+		RuntimeEngine engine = rm.getRuntimeEngine(ProcessInstanceIdContext.get());
+
+		addListeners(engine);
+		return engine;
 	}
 	
 	/**
@@ -187,43 +103,22 @@ public class KnowledgeManagerBean {
 	 * @return
 	 */
 	public RuntimeEngine getRuntimeEngineByProcessId(Long processInstanceId) {
-		LOG.info("Loading instance: "+processInstanceId);
+		LOG.debug("Loading instance: "+processInstanceId);
 		ProcessInstanceIdContext context = ProcessInstanceIdContext.get(processInstanceId);
 		
-		LOG.info("Context: "+context);
+		LOG.debug("Context: "+context);
 		KieReleaseId releaseId = getReleaseIdByProcessId(processInstanceId);
 		if(releaseId == null) {
 			throw new InactiveProcessInstance(processInstanceId);
 		}
-		LOG.info("Kie Release: "+releaseId);
+		LOG.debug("Kie Release: "+releaseId);
 		
-		RuntimeManager manager = getRuntimeManager(releaseId);
-		if(!hasDisposalListener(manager, processInstanceId)) {
-			//add the listener.
-			LOG.info("Adding the disposal listener to existing runtime for process ID: "+processInstanceId);
-			manager.getRuntimeEngine(context).getKieSession().addEventListener(new KieReleaseIdXProcessInstanceListener(releaseId, em));
-		}
-		return manager.getRuntimeEngine(context);
+		RuntimeManager manager = runtimeManager.getRuntimeManager(releaseId);
+		RuntimeEngine engine = manager.getRuntimeEngine(context);
+		addListeners(engine);
+		return engine;
 	}
-	
-	/**
-	 * Checks to see whether the given runtime engine has the KieReleaseIdXProcessInstanceListener for disposing the cross reference when the process is completed.
-	 * 
-	 * @param manager
-	 * @param processInstanceId
-	 * @return
-	 */
-	protected boolean hasDisposalListener(RuntimeManager manager, long processInstanceId) {
-		
-		 RuntimeEngine engine = manager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId));
-		 for(ProcessEventListener pel : (engine.getKieSession().getProcessEventListeners())) {
-			if(KieReleaseIdXProcessInstanceListener.class.isAssignableFrom(pel.getClass())) {
-				return true;
-			}
-		}
-		 
-		return false;
-	}
+
 
 	/**
 	 * Returns the RuntimeEngine for a given Task
@@ -233,7 +128,9 @@ public class KnowledgeManagerBean {
 	 */
 	public RuntimeEngine getRuntimeEngineByTaskId(Long taskId) {
 		Long processInstanceId = getProcessInstanceIdByTaskId(taskId);
-		return this.getRuntimeEngineByProcessId(processInstanceId);
+		RuntimeEngine engine = getRuntimeEngineByProcessId(processInstanceId);
+		addListeners(engine);
+		return engine;
 	}
 	
 	/**
@@ -243,7 +140,21 @@ public class KnowledgeManagerBean {
 	 */
 	public RuntimeEngine getRuntimeEngineByWorkItemId(Long workItemId) {
 		Long processInstanceId = getProcessInstanceIdByWorkItemId(workItemId);
-		return this.getRuntimeEngineByProcessId(processInstanceId);
+		RuntimeEngine engine = getRuntimeEngineByProcessId(processInstanceId);
+		addListeners(engine);
+		return engine;
+	}
+	
+	/**
+	 * Returns the RuntimeEngine for a given Content
+	 * @param contentId
+	 * @return
+	 */
+	public RuntimeEngine getRuntimeEngineByContentId(Long contentId) {
+		Long taskId = getTaskIdByContentId(contentId);
+		RuntimeEngine engine = getRuntimeEngineByTaskId(taskId);
+		addListeners(engine);
+		return engine;
 	}
 	
 	/**
@@ -266,13 +177,26 @@ public class KnowledgeManagerBean {
 	 * @return
 	 */
 	public Long getProcessInstanceIdByWorkItemId(Long workItemId) {
-		Query q = em.createQuery("select processInstanceId from WorkItemInfo wii where kb.workItemId=:workItemId");
+		Query q = em.createQuery("select processInstanceId from WorkItemInfo wii where wii.workItemId=:workItemId");
 		q.setParameter("workItemId", workItemId);
 		Long processInstanceId = (Long)q.getSingleResult();
 		
 		return processInstanceId;
 	}
 
+	/**
+	 * Returns the Task Id associated with the given Content Id
+	 * 
+	 * @param contentId
+	 * @return
+	 */
+	public Long getTaskIdByContentId(Long contentId) {
+		Query q = em.createQuery("SELECT id FROM TaskImpl task WHERE task.taskData.documentContentId=:contentId OR task.taskData.faultContentId=:contentId OR task.taskData.outputContentId=:contentId");
+		q.setParameter("contentId", contentId);
+		Long taskId = (Long) q.getSingleResult();
+		return taskId;
+	}
+	
 	/**
 	 * Returns the KieReleaseId associated with a given ProcessInstance
 	 * 
@@ -320,7 +244,7 @@ public class KnowledgeManagerBean {
 	 * @return
 	 */
 	public KieReleaseId getReleaseIdByWorkItemId(Long workItemId) {
-		Query q = em.createQuery("select processInstanceId from WorkItemInfo wii where kb.workItemId=:workItemId");
+		Query q = em.createQuery("select processInstanceId from WorkItemInfo wii where wii.workItemId=:workItemId");
 		q.setParameter("workItemId", workItemId);
 		Long processInstanceId = (Long)q.getSingleResult();
 		
@@ -328,29 +252,20 @@ public class KnowledgeManagerBean {
 	}
 	
 	
-	private static void setDefaultingProperty(String name, String val, PropertiesConfiguration config) {
-		if(val == null) return;
-
-		LOG.debug("Setting property: "+name+" to value: "+val);
-		config.setProperty(name, val);
+	@SuppressWarnings("unchecked")
+	private void addListeners(RuntimeEngine engine) {
+		EventService<TaskLifeCycleEventListener> eventService = 
+				(EventService<TaskLifeCycleEventListener>) engine.getTaskService();
+		boolean hasBamEventListener = false;
+		for( TaskLifeCycleEventListener listener: eventService.getTaskEventListeners()) {
+			if(listener instanceof BAMTaskEventListener) {
+				hasBamEventListener = true;
+				break;
+			}
+		}
+		if (!hasBamEventListener) {
+			eventService.registerTaskEventListener(bamTaskEventListener);
+		}
 	}
-	private static void setDefaultingProperty(String name, Boolean val, PropertiesConfiguration config) {
-		if(val == null) return;
-
-		String value = Boolean.toString(val);
-		LOG.debug("Setting property: "+name+" to value: "+value);
-		config.setProperty(name, value);
-	}
-	private static void setDefaultingProperty(String name, Integer val, PropertiesConfiguration config) {
-		if(val == null) return;
-
-		String value = Integer.toString(val);
-		LOG.debug("Setting property: "+name+" to value: "+value);
-		config.setProperty(name, value);
-	}
-	
-	
-	
-	
 	
 }

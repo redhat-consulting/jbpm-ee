@@ -7,8 +7,8 @@
 	<name>JBPM EE Parent POM</name>
 
 	<properties>
-		<drools.version>6.0.0.CR4</drools.version>
-		<jbpm.version>6.0.0.CR4</jbpm.version>
+		<drools.version>6.0.1.Final</drools.version>
+		<jbpm.version>6.0.1.Final</jbpm.version>
 		<junit.version>4.8.1</junit.version>
 		<cxf.version>2.2.3</cxf.version>
 		<camel.version>2.11.1</camel.version>
@@ -26,6 +26,17 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
 				<version>4.2.6.Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-compiler</artifactId>
+				<version>${drools.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-core</artifactId>
+				<version>${drools.version}</version>
+				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.jbpm</groupId>
@@ -96,8 +107,14 @@
 			<dependency>
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz</artifactId>
-				<version>2.2.1</version>
+				<version>1.8.5</version>
 			</dependency>
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz-oracle</artifactId>
+				<version>1.8.5</version>
+			</dependency>
+
 
 			<!-- Java EE6 stack -->
 			<dependency>
@@ -236,6 +253,26 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+			<dependency>
+				<groupId>org.jbpm</groupId>
+				<artifactId>jbpm-shared-services</artifactId>
+				<version>${jbpm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.kie</groupId>
+				<artifactId>kie-internal</artifactId>
+				<version>${jbpm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.ejb3</groupId>
+				<artifactId>jboss-ejb3-ext-api</artifactId>
+				<version>2.1.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<profiles>
@@ -286,6 +323,8 @@
 	<modules>
 		<module>jbpm-ee-client</module>
 		<module>jbpm-ee-services</module>
-		<module>jbpm-ee-ws-client</module>
+		<module>jbpm-ee-samples</module>
+		<module>jbpm-ee-archetypes</module>
+
 	</modules>
 </project>
