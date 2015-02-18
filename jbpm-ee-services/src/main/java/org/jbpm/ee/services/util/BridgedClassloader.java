@@ -21,7 +21,7 @@ public class BridgedClassloader extends ClassLoader {
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		try {
-			return this.getParent().loadClass(name);
+			this.getParent().loadClass(name);
 		}
 		catch(ClassNotFoundException e) {
 			LOG.trace("Looking up class["+name+"] in secondary classloader.");
