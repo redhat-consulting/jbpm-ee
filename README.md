@@ -1,3 +1,9 @@
+DEPRECATED - This has moved into core functionality of BPMS 6.1.
+
+For more information, please see:
+https://access.redhat.com/products/red-hat-process-automation-manager/
+
+
 jbpm-ee
 =======
 Enterprise Services for jBPM 6.
