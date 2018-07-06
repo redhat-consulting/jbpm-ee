@@ -1,4 +1,6 @@
-DEPRECATED - This has moved into core functionality of BPMS 6.1.
+DEPRECATED
+==========
+This has moved into core functionality of BPMS 6.1.
 
 For more information, please see:
 https://access.redhat.com/products/red-hat-process-automation-manager/
@@ -6,7 +8,7 @@ https://access.redhat.com/products/red-hat-process-automation-manager/
 
 jbpm-ee
 =======
-Enterprise Services for jBPM 6.
+Enterprise Services for jBPM 6 - DEPRECATED since BPMS 6.1.
 
 1) A "black box" approach to jBPM internals - The approach tries to black box jBPM, and provide 4 simple interfaces for integration: Process Services, Task Services, Work Item Services, and Rule Services.  These same interfaces are shared and exposed as: Remote EJB, Local EJB, Rest, and SOAP.
   * Integration Mode - Embedded: https://github.com/redhat-consulting/jbpm-ee/wiki/Embedded-Mode
